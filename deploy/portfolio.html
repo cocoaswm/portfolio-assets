@@ -363,6 +363,16 @@ html[lang=th] .sh-pill .h-sec{letter-spacing:0;line-height:1.5}
 .rc-n{display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:9999px;font-size:.72rem;color:#fff;background:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6)}
 @media (max-width:767px){.rolecard{padding:1.25rem;border-radius:1.5rem}.rc-l li{font-size:.8rem}.fx{font-size:.86rem}}
 @media (max-width:767px){.rc-h h3{font-size:1.05rem}.rc-p{font-size:.9rem;line-height:1.6;margin-bottom:.8rem}.rc-l{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}.rc-l li{font-size:.74rem;padding:.35rem .5rem .35rem .35rem;gap:.35rem;line-height:1.25}.rc-n{flex:none;width:1.2rem;height:1.2rem;font-size:.65rem}}
+/* expected salary */
+.sal-wrap{display:flex;justify-content:center;padding-top:0}
+.salary{display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:.75rem 1rem;padding:1rem 1.25rem 1rem 1.5rem;border-radius:9999px;max-width:100%}
+.sal-ic{color:#7e22ce;flex:none}
+.sal-l{font-weight:800;color:#0B1325;letter-spacing:.01em}
+.sal-v{font-weight:800;font-size:1.05rem;padding:.35rem .9rem;border-radius:9999px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.75);color:#0B1325;min-width:11rem;text-align:center;transition:filter .3s,color .3s;font-variant-numeric:tabular-nums}
+.salary:not(.shown) .sal-v{color:rgba(11,19,37,.45);letter-spacing:.08em}
+.sal-b{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .9rem;border-radius:9999px;border:0;cursor:pointer;font:inherit;font-size:.82rem;font-weight:700;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 4px 10px -2px rgba(168,85,247,.35);transition:transform .2s}
+.sal-b:hover{transform:translateY(-1px)}
+@media (max-width:767px){.salary{border-radius:1.5rem;padding:1rem;flex-direction:column;gap:.6rem}.sal-v{font-size:1rem}}
 </style>
 </head>
 <body>
@@ -498,6 +508,8 @@ html[lang=th] .sh-pill .h-sec{letter-spacing:0;line-height:1.5}
 <a class="track" href="https://youtu.be/NODFrbduEl8?si=8ymfgZFDQ0E7S67-" target="_blank" rel="noreferrer"><div class="vinyl"><div class="gr g80"></div><div class="gr g60"></div><div class="gr g40"></div><div class="label" style="background:#fbbf24"><div class="hole"></div></div></div><div class="cover" style="background-image:linear-gradient(to bottom right,#fbbf24,#f97316,#dc2626)"><div class="shine"></div><div class="meta"><h3>Signal (The Warning)</h3><p>Cocoa S.</p></div></div></a>
 <a class="track" href="https://youtu.be/O-366MCSgIs?si=h-PfquBH_p8RouME" target="_blank" rel="noreferrer"><div class="vinyl"><div class="gr g80"></div><div class="gr g60"></div><div class="gr g40"></div><div class="label" style="background:#e879f9"><div class="hole"></div></div></div><div class="cover" style="background-image:linear-gradient(to bottom right,#d946ef,#a855f7,#db2777)"><div class="shine"></div><div class="meta"><h3>¡Co-co-a!</h3><p>Cocoa S.</p></div></div></a>
 </div></section>
+<section id="salary" class="sal-wrap"><div class="glass-panel salary" data-sv="eyJlbiI6ICLguL8zMywwMDAg4oCTIDM1LDAwMCAvIG1vbnRoIiwgInRoIjogIjMzLDAwMCDigJMgMzUsMDAwIOC4muC4suC4lyAvIOC5gOC4lOC4t+C4reC4mSJ9"><svg class="ic sal-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg><span class="sal-l" data-th="เงินเดือนที่คาดหวัง">Expected Salary</span><span class="sal-v" aria-live="polite">฿ ••,••• – ••,•••</span><button type="button" class="sal-b" aria-pressed="false"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.06 12.35a1 1 0 0 1 0-.7C3.42 8.29 7.36 5 12 5s8.58 3.29 9.94 6.65a1 1 0 0 1 0 .7C20.58 15.71 16.64 19 12 19s-8.58-3.29-9.94-6.65"/><circle cx="12" cy="12" r="3"/></svg><span class="sal-bt" data-th="แสดง">Show</span></button></div></section>
+
 </main>
 <div id="lb" class="lb" aria-hidden="true"><button type="button" class="lb-x" aria-label="Close"><svg class="ic " width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button><button type="button" class="lb-n lb-p" aria-label="Previous"><svg class="ic " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><figure class="lb-f"><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure><button type="button" class="lb-n lb-nx" aria-label="Next"><svg class="ic " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -561,6 +573,12 @@ try{var u=new URL(location.href);if(l==='th')u.searchParams.set('lang','th');els
 lb.addEventListener('click',function(){setLang(lang==='en'?'th':'en')});
 try{if(new URL(location.href).searchParams.get('lang')==='th')setLang('th')}catch(e){}
 fitHeads();})();
+;(function(){var c=document.querySelector('.salary');if(!c)return;var v=c.querySelector('.sal-v'),b=c.querySelector('.sal-b'),bt=c.querySelector('.sal-bt'),mask=v.textContent,d=null;
+function dec(){if(!d){try{d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(c.dataset.sv),function(x){return x.charCodeAt(0)})))}catch(e){d={en:'',th:''}}}return d}
+function th(){return document.documentElement.lang==='th'}
+function paint(){var on=c.classList.contains('shown');v.textContent=on?dec()[th()?'th':'en']:mask;var en=on?'Hide':'Show',t=on?'ซ่อน':'แสดง';bt.dataset.en=en;bt.dataset.th=t;bt.textContent=th()?t:en;b.setAttribute('aria-pressed',on)}
+b.addEventListener('click',function(){c.classList.toggle('shown');paint()});
+new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});})();
 </script>
 </body>
 </html>
