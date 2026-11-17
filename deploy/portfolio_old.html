@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suwimon Sae-ung \u2014 Technical Hosting Support & AI-Assisted Web Applications</title>
+  
+  <!-- Apple System Font Stack & Inter / SF Pro aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: APPLE LIQUID GLASS SPECIFICATION
+       - Glass is STRICTLY reserved for the floating control layer (toolbars, pills, dock)
+       - Underlying content remains completely opaque, solid, and unrestricted
+       - Lensing approximation: blur(28px) + saturate(200%) + dual refraction highlights
+       - Concentric corner radii on capsules
+       - Self-adapting tint for maximum legibility over changing content
+       - Strict Reduce Transparency and Reduce Motion fallbacks
+       ========================================================================== */
+
+    :root {
+      /* Core Opaque Content Palette (Apple Clean Editorial) */
+      --bg-canvas: #F5F5F7;
+      --surface-card: #FFFFFF;
+      --surface-card-subtle: #FAFAFC;
+      --surface-elevated: #FFFFFF;
+      
+      /* Typography & Lines */
+      --ink-primary: #1D1D1F;
+      --ink-secondary: #515154;
+      --ink-tertiary: #86868B;
+      --border-opaque: #E5E5EA;
+      --border-subtle: #EFEFF4;
+      
+      /* Apple System Accents */
+      --apple-blue: #0071E3;
+      --apple-blue-hover: #0077ED;
+      --apple-green: #34C759;
+      --apple-green-dim: rgba(52, 199, 89, 0.14);
+      --apple-indigo: #5856D6;
+      --apple-orange: #FF9500;
+
+      /* Liquid Glass Layer Tokens (Floating Controls Only) */
+      --glass-base: rgba(255, 255, 255, 0.68);
+      --glass-base-hover: rgba(255, 255, 255, 0.82);
+      --glass-tint-adaptive: rgba(255, 255, 255, 0.72);
+      --glass-ink: #1D1D1F;
+      --glass-border: rgba(255, 255, 255, 0.55);
+      --glass-refract-top: rgba(255, 255, 255, 0.90);
+      --glass-refract-bottom: rgba(0, 0, 0, 0.08);
+      --glass-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.10), 0 4px 14px -2px rgba(0, 0, 0, 0.05);
+      --glass-filter: blur(26px) saturate(190%) contrast(102%);
+      
+      /* Capsule Geometry & Radii */
+      --radius-capsule: 9999px;
+      --radius-card: 20px;
+      --radius-subcard: 14px;
+      --radius-tag: 9999px;
+      --max-width: 920px;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      background-color: var(--bg-canvas);
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 120px; /* space for floating dock */
+    }
+
+    /* Focus Rings conforming to Apple Human Interface Guidelines */
+    :focus-visible {
+      outline: 2px solid var(--apple-blue);
+      outline-offset: 3px;
+      border-radius: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       LIQUID GLASS FLOATING CONTROL LAYER
+       Strictly used for floating bars, floating buttons, and navigation capsules
+       ========================================================================== */
+    
+    .liquid-glass-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--glass-tint-adaptive);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      border-radius: var(--radius-capsule);
+      border: 1px solid var(--glass-border);
+      /* Dual refraction highlight: crisp specular rim at top, subtle occlusion below */
+      box-shadow: 
+        inset 0 1px 1.5px 0 var(--glass-refract-top),
+        inset 0 -1px 1px 0 var(--glass-refract-bottom),
+        var(--glass-shadow);
+      transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Top Floating Header Bar */
+    .top-toolbar-container {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .top-toolbar {
+      pointer-events: auto;
+      height: 52px;
+      padding: 5px 8px 5px 16px;
+      gap: 16px;
+      max-width: var(--max-width);
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    /* Brand in Glass Bar */
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-dot-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--apple-green);
+      box-shadow: 0 0 0 3px var(--apple-green-dim);
+      position: relative;
+    }
+
+    .status-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-color: var(--apple-green);
+      animation: pulse-ring 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.9; }
+      70% { transform: scale(2.6); opacity: 0; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .nav-links-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Concentric Glass Control Buttons */
+    .glass-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: var(--radius-capsule);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--glass-ink);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-pill-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--ink-primary);
+    }
+
+    .glass-pill-btn.active {
+      background: rgba(0, 0, 0, 0.08);
+      font-weight: 600;
+    }
+
+    .glass-pill-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-capsule);
+      background: var(--apple-blue);
+      color: #FFFFFF !important;
+      font-size: 13.5px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 2px 6px rgba(0, 113, 227, 0.25);
+      transition: all 0.18s ease;
+    }
+
+    .glass-pill-cta:hover {
+      background: var(--apple-blue-hover);
+      transform: translateY(-0.5px);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 4px 10px rgba(0, 113, 227, 0.35);
+    }
+
+    /* Bottom Floating Action Dock (Liquid Glass Capsule) */
+    .bottom-dock-container {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .bottom-dock {
+      pointer-events: auto;
+      height: 52px;
+      padding: 5px 8px;
+      gap: 6px;
+    }
+
+    .dock-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--glass-refract-bottom);
+      margin: 0 4px;
+    }
+
+    /* Floating Capsule Button on Content Cards */
+    .floating-glass-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-capsule);
+      background: var(--glass-base);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        inset 0 1px 1px 0 var(--glass-refract-top),
+        inset 0 -1px 1px 0 var(--glass-refract-bottom),
+        0 4px 12px rgba(0, 0, 0, 0.05);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--apple-blue);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .floating-glass-action:hover {
+      background: var(--glass-base-hover);
+      color: var(--apple-blue-hover);
+      transform: translateY(-1px);
+      box-shadow: 
+        inset 0 1px 1.5px 0 #FFFFFF,
+        0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ==========================================================================
+       OPAQUE CONTENT CANVAS (UNRESTRICTED CONTENT LAYER)
+       Content cards are deliberately solid opaque surfaces, never glass
+       ========================================================================== */
+
+    .page-wrapper {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 100px 24px 40px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 44px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: var(--surface-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-capsule);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow .dot-online {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--apple-green);
+    }
+
+    .hero-name {
+      font-size: clamp(34px, 4.8vw, 46px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--ink-primary);
+      margin-bottom: 14px;
+    }
+
+    .hero-title-sub {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--apple-blue);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-statement {
+      font-size: 17px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      max-width: 68ch;
+      margin-bottom: 28px;
+    }
+
+    .hero-statement strong {
+      color: var(--ink-primary);
+      font-weight: 600;
+    }
+
+    .hero-quick-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .meta-item svg {
+      color: var(--ink-tertiary);
+    }
+
+    .meta-item a {
+      color: var(--ink-primary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-opaque);
+      transition: border-color 0.15s ease;
+    }
+
+    .meta-item a:hover {
+      border-color: var(--apple-blue);
+      color: var(--apple-blue);
+    }
+
+    /* Section Scaffolding */
+    .content-section {
+      margin-bottom: 36px;
+    }
+
+    .section-header-block {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .section-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--apple-blue);
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink-primary);
+    }
+
+    .section-subtext {
+      font-size: 13.5px;
+      color: var(--ink-tertiary);
+    }
+
+    /* Production Project Cards */
+    .project-card {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 34px 36px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .project-card-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--ink-primary);
+    }
+
+    .live-badge-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: var(--radius-capsule);
+      background: #E8F7ED;
+      color: #1B8738;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(52, 199, 89, 0.25);
+    }
+
+    .live-badge-capsule::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--apple-green);
+    }
+
+    .project-problem-text {
+      font-size: 15.5px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      max-width: 72ch;
+    }
+
+    /* Two Column Spec Layout inside Card */
+    .project-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      background: var(--surface-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-subcard);
+      padding: 20px 22px;
+      margin-bottom: 24px;
+    }
+
+    .meta-group-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .meta-group-content {
+      font-size: 14.5px;
+      color: var(--ink-primary);
+    }
+
+    .tech-stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tech-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-opaque);
+      border-radius: var(--radius-tag);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-secondary);
+    }
+
+    /* What it does / Workflow Checklist */
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .feature-list li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 14.5px;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+    }
+
+    .feature-list li::before {
+      content: '\u2014';
+      position: absolute;
+      left: 4px;
+      color: var(--apple-blue);
+      font-weight: 700;
+    }
+
+    /* Numbered Workflow Sequence */
+    .workflow-sequence {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .workflow-step {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding: 10px 14px;
+      background: var(--surface-card-subtle);
+      border-radius: var(--radius-subcard);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .step-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--apple-blue);
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+
+    .design-note-box {
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: #F0F4FF;
+      border-left: 3px solid var(--apple-blue);
+      border-radius: 4px 10px 10px 4px;
+      font-size: 13.5px;
+      color: #243E78;
+      line-height: 1.5;
+    }
+
+    .design-note-box strong {
+      color: var(--apple-blue);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .card-footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .note-caption {
+      font-size: 13px;
+      color: var(--ink-tertiary);
+    }
+
+    /* Experience Timeline Cards */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .experience-card {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 28px 32px;
+      box-shadow: 0 3px 14px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    .experience-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .role-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .date-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-tertiary);
+      background: var(--surface-card-subtle);
+      border: 1px solid var(--border-subtle);
+      padding: 3px 10px;
+      border-radius: var(--radius-capsule);
+    }
+
+    .company-name {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--apple-blue);
+      margin-bottom: 14px;
+    }
+
+    /* Skills Grid */
+    .skills-layout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .skill-surface-card {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 26px;
+      box-shadow: 0 3px 14px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    .skill-card-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-card-heading::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--apple-blue);
+    }
+
+    .skill-bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skill-bullet-list li {
+      font-size: 14px;
+      color: var(--ink-secondary);
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .skill-bullet-list li::before {
+      content: '\u2022';
+      position: absolute;
+      left: 4px;
+      color: var(--ink-tertiary);
+    }
+
+    .education-banner {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 24px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 3px 14px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    .education-details h4 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin-bottom: 4px;
+    }
+
+    .education-details p {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+    }
+
+    .gpa-capsule {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: var(--radius-capsule);
+      background: var(--surface-card-subtle);
+      border: 1px solid var(--border-opaque);
+      color: var(--ink-primary);
+    }
+
+    /* Contact & Footer Section */
+    .contact-card {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-opaque);
+      padding: 38px 40px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+      text-align: center;
+    }
+
+    .contact-card h2 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--ink-primary);
+    }
+
+    .contact-card p {
+      font-size: 15.5px;
+      color: var(--ink-secondary);
+      max-width: 54ch;
+      margin: 0 auto 28px;
+    }
+
+    .contact-actions-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-tertiary);
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-opaque);
+    }
+
+    /* ==========================================================================
+       ACCESSIBILITY COMPLIANCE (CRITICAL FOR APPLE GUIDELINES)
+       - prefers-reduced-transparency: Disable blur/translucency, switch to opaque solid
+       - prefers-reduced-motion: Strip transitions, instant jump
+       ========================================================================== */
+
+    @media (prefers-reduced-transparency: reduce) {
+      .liquid-glass-bar,
+      .floating-glass-action {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #FFFFFF !important;
+        border: 1px solid #C7C7CC !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+      }
+      
+      .glass-pill-btn:hover {
+        background: #E5E5EA !important;
+      }
+      
+      .glass-pill-btn.active {
+        background: #D1D1D6 !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto !important;
+      }
+      
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      
+      .status-dot::after {
+        display: none !important;
+      }
+    }
+
+    /* Mobile Responsive Adaptation */
+    @media (max-width: 720px) {
+      .page-wrapper {
+        padding: 86px 16px 120px;
+      }
+      
+      .top-toolbar {
+        padding: 4px 6px 4px 12px;
+      }
+      
+      .nav-links-group {
+        display: none; /* Hide in top bar on small screens, bottom dock handles navigation */
+      }
+      
+      .hero-section, .project-card, .contact-card {
+        padding: 26px 20px;
+      }
+      
+      .bottom-dock {
+        width: calc(100% - 24px);
+        justify-content: space-around;
+      }
+
+      .dock-label-hide-mobile {
+        display: none;
+      }
+    }
+  
+    /* Liquid Glass Toast Notification */
+    .glass-toast {
+      position: fixed;
+      top: 82px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border-radius: var(--radius-capsule);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        inset 0 1px 1.5px 0 var(--glass-refract-top),
+        inset 0 -1px 1px 0 var(--glass-refract-bottom),
+        0 14px 32px -4px rgba(0, 0, 0, 0.15);
+      color: var(--ink-primary);
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10000;
+    }
+
+    .glass-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--apple-green);
+      color: #FFFFFF;
+      font-size: 11px;
+    }
+
+    .copy-chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-capsule);
+      background: var(--surface-card-subtle);
+      border: 1px solid var(--border-opaque);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--apple-blue);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .copy-chip-btn:hover {
+      background: #EBF2FE;
+      border-color: var(--apple-blue);
+    }
+
+    /* Collapsible expected-salary disclosure (hidden until clicked) */
+    .salary-disclosure {
+      display: block;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 22px;
+      color: #515154;
+      font-size: 13.5px;
+      text-align: center;
+    }
+
+    .salary-disclosure summary {
+      cursor: pointer;
+      display: list-item;
+      list-style-position: inside;
+      padding: 8px 14px;
+      border: 1px solid #E5E5EA;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      color: #0071E3;
+      font-weight: 600;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .salary-disclosure summary:hover {
+      background: #F5F8FF;
+      border-color: #0071E3;
+    }
+
+    .salary-disclosure summary:focus-visible {
+      outline: 2px solid #0071E3;
+      outline-offset: 3px;
+    }
+
+    .salary-disclosure .salary-range {
+      display: block;
+      margin: 10px auto 0;
+      padding: 10px 16px;
+      border: 1px solid #E5E5EA;
+      border-radius: 12px;
+      background: #FAFAFC;
+      color: #1D1D1F;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+  
+    /* Demo credential copy buttons */
+    .copy-credential-btn {
+      font: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .copy-credential-btn.is-copied {
+      color: #218838 !important;
+      border-color: #34C759 !important;
+    }
+
+    .copy-credential-btn:focus-visible {
+      outline: 2px solid #0071E3;
+      outline-offset: 3px;
+    }
+
+  
+
+    /* Project demo footer: keep launch details and credential controls in intentional groups */
+    .demo-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      width: 100%;
+    }
+    .demo-footer-top {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      width: 100%;
+    }
+    .demo-footer-domain {
+      color: var(--ink-tertiary);
+      font-size: 12.5px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .demo-credential-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .demo-credentials-label {
+      color: var(--ink-tertiary);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+    .demo-footer-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 5px 12px;
+      width: 100%;
+      min-height: 18px;
+    }
+    .demo-footer-note > * {
+      width: auto !important;
+      margin: 0;
+    }
+    .demo-footer .copy-credential-btn {
+      flex: 0 0 auto;
+      min-height: 40px;
+    }
+    .credential-copy-status {
+      font-size: 12px;
+      color: var(--apple-green);
+    }
+    @media (max-width: 520px) {
+      .demo-footer-top,
+      .demo-credential-controls {
+        align-items: stretch;
+      }
+      .demo-footer-top > a {
+        max-width: 100%;
+      }
+      .demo-credential-controls .copy-credential-btn {
+        flex: 1 1 140px;
+        justify-content: center;
+      }
+      .demo-footer-note {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       FLOATING CONTROL LAYER (APPLE LIQUID GLASS SPECIFICATION)
+       Floating top toolbar & bottom dock with lensing, edge highlights, & capsule radii
+       ========================================================================== -->
+
+  <!-- Top Floating Header Capsule Bar -->
+  <div class="top-toolbar-container" role="region" aria-label="Main floating toolbar">
+    <header class="liquid-glass-bar top-toolbar" id="topGlassBar">
+      <div class="brand-group">
+        <div class="status-dot-wrap">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Suwimon Sae-ung</span>
+        </div>
+      </div>
+
+      <nav class="nav-links-group" aria-label="Primary navigation">
+        <a href="#projects" class="glass-pill-btn" data-target="projects">Projects</a>
+        <a href="#experience" class="glass-pill-btn" data-target="experience">Experience</a>
+        <a href="#skills" class="glass-pill-btn" data-target="skills">Skills</a>
+        <a href="#contact" class="glass-pill-btn" data-target="contact">Contact</a>
+      </nav>
+
+      <a href="mailto:suwimonsaeung@gmail.com" class="glass-pill-cta" aria-label="Send email to Suwimon Sae-ung">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span>Get in Touch</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language / \u0E20\u0E32\u0E29\u0E32"><button type="button" data-lang="th" aria-pressed="false">TH</button><button type="button" data-lang="en" aria-pressed="true">EN</button></div>
+    </header>
+  </div>
+
+  <!-- Bottom Floating Quick Dock (Liquid Glass Capsule) -->
+  <div class="bottom-dock-container" role="region" aria-label="Floating quick dock">
+    <nav class="liquid-glass-bar bottom-dock" id="bottomDock">
+      <a href="#projects" class="glass-pill-btn" aria-label="Jump to Projects section">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Projects</span>
+      </a>
+      <a href="#experience" class="glass-pill-btn" aria-label="Jump to Experience section">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Experience</span>
+      </a>
+      <a href="#skills" class="glass-pill-btn" aria-label="Jump to Skills section">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+        <span>Skills</span>
+      </a>
+
+      <div class="dock-divider" aria-hidden="true"></div>
+
+      <button class="glass-pill-btn" id="copyEmailBtn" aria-label="Copy email address to clipboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <span id="copyEmailText">Copy Email</span>
+      </button>
+    </nav>
+  </div>
+
+
+  <!-- ==========================================================================
+       OPAQUE CONTENT CANVAS (UNRESTRICTED CONTENT LAYER)
+       All content, cards, and text live on solid, opaque, legible surfaces
+       ========================================================================== -->
+
+  <main class="page-wrapper">
+
+    <!-- HERO SECTION -->
+    <header class="hero-section">
+      <div class="hero-eyebrow">
+        <span class="dot-online" aria-hidden="true"></span>
+        <span>Thailand \u2014 Open to Remote Work (WFH)</span>
+      </div>
+
+      <h1 class="hero-name">Suwimon Sae-ung</h1>
+      <p class="hero-title-sub">Technical Hosting Support | AI-Assisted Web Application Projects</p>
+
+      <p class="hero-statement">
+        Hands-on experience in technical hosting support, website troubleshooting, and cloud operations. I use AI tools as my primary coding aid for personal web application projects, reviewing and modifying parts of the generated code. My strongest practical skills are diagnosing website, DNS, domain, SSL, email, WordPress, PHP-related, and basic Linux/server issues.
+      </p>
+
+      <div class="hero-quick-meta">
+        <div class="meta-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <a href="mailto:suwimonsaeung@gmail.com">suwimonsaeung@gmail.com</a>
+          <button type="button" class="copy-chip-btn trigger-copy-email" aria-label="\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25\u0E04\u0E25\u0E34\u0E01\u0E40\u0E14\u0E35\u0E22\u0E27" title="\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25\u0E04\u0E25\u0E34\u0E01\u0E40\u0E14\u0E35\u0E22\u0E27">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span class="copy-label">\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01</span>
+          </button>
+        </div>
+        <div class="meta-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:0800420045">080-042-0045</a>
+        </div>
+        <div class="meta-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Bangkok, Thailand</span>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- FEATURED PROJECTS IN PRODUCTION -->
+    <section id="projects" class="content-section">
+      <div class="section-header-block">
+        <div class="section-title-wrap">
+          <span class="section-tag">/projects</span>
+          <h2 class="section-title">Systems in Production</h2>
+        </div>
+        <span class="section-subtext">3 Live Production Deployments</span>
+      </div>
+
+      <!-- Project 2: Support Ops Hub -->
+      <article class="project-card">
+        <div class="project-card-header">
+          <div>
+            <h3 class="project-card-title">Support Ops Hub</h3>
+          </div>
+          <span class="live-badge-capsule">LIVE IN PROD</span>
+        </div>
+
+        <p class="project-problem-text">
+          An internal portal for a 24/7 support team's shift-based workflow \u2014 one consolidated surface to track SLAs, hand off shifts cleanly without dropped context, and instantly retrieve incident response scripts without hunting across disparate tools.
+        </p>
+        
+        <div class="project-gallery" data-project-gallery role="group" aria-label="Support Ops Hub screenshots">
+          <div class="project-gallery-stage">
+            <img class="project-gallery-main" data-gallery-main src="/portfolio-assets/ops-01-dashboard.jpg" alt="Support Ops Hub \u2014 ops 01 dashboard" loading="lazy" decoding="async">
+            <button class="project-gallery-control project-gallery-prev" type="button" data-gallery-prev aria-label="Previous screenshot">\u2039</button>
+            <button class="project-gallery-control project-gallery-next" type="button" data-gallery-next aria-label="Next screenshot">\u203A</button>
+          </div>
+          <div class="project-gallery-thumbs">
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-01-dashboard.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 01 dashboard" aria-current="true" aria-label="Show screenshot 1">
+            <img src="/portfolio-assets/ops-01-dashboard.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-02-ticket-queue.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 02 ticket queue" aria-current="false" aria-label="Show screenshot 2">
+            <img src="/portfolio-assets/ops-02-ticket-queue.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-03-dispatch-guide.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 03 dispatch guide" aria-current="false" aria-label="Show screenshot 3">
+            <img src="/portfolio-assets/ops-03-dispatch-guide.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-04-my-cases.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 04 my cases" aria-current="false" aria-label="Show screenshot 4">
+            <img src="/portfolio-assets/ops-04-my-cases.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-05-team-feed.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 05 team feed" aria-current="false" aria-label="Show screenshot 5">
+            <img src="/portfolio-assets/ops-05-team-feed.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-06-knowledge-hub.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 06 knowledge hub" aria-current="false" aria-label="Show screenshot 6">
+            <img src="/portfolio-assets/ops-06-knowledge-hub.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-07-manual-files.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 07 manual files" aria-current="false" aria-label="Show screenshot 7">
+            <img src="/portfolio-assets/ops-07-manual-files.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-08-reply-scripts.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 08 reply scripts" aria-current="false" aria-label="Show screenshot 8">
+            <img src="/portfolio-assets/ops-08-reply-scripts.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-09-attendance.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 09 attendance" aria-current="false" aria-label="Show screenshot 9">
+            <img src="/portfolio-assets/ops-09-attendance.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-10-shift-handover.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 10 shift handover" aria-current="false" aria-label="Show screenshot 10">
+            <img src="/portfolio-assets/ops-10-shift-handover.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-11-zabbix-report.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 11 zabbix report" aria-current="false" aria-label="Show screenshot 11">
+            <img src="/portfolio-assets/ops-11-zabbix-report.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-12-stin-report.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 12 stin report" aria-current="false" aria-label="Show screenshot 12">
+            <img src="/portfolio-assets/ops-12-stin-report.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-13-room-check-form.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 13 room check form" aria-current="false" aria-label="Show screenshot 13">
+            <img src="/portfolio-assets/ops-13-room-check-form.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-14-weekly-checklist.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 14 weekly checklist" aria-current="false" aria-label="Show screenshot 14">
+            <img src="/portfolio-assets/ops-14-weekly-checklist.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-15-backup-switch.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 15 backup switch" aria-current="false" aria-label="Show screenshot 15">
+            <img src="/portfolio-assets/ops-15-backup-switch.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-16-nvr-check.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 16 nvr check" aria-current="false" aria-label="Show screenshot 16">
+            <img src="/portfolio-assets/ops-16-nvr-check.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-17-room-power.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 17 room power" aria-current="false" aria-label="Show screenshot 17">
+            <img src="/portfolio-assets/ops-17-room-power.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-18-audit.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 18 audit" aria-current="false" aria-label="Show screenshot 18">
+            <img src="/portfolio-assets/ops-18-audit.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-19-guide.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 19 guide" aria-current="false" aria-label="Show screenshot 19">
+            <img src="/portfolio-assets/ops-19-guide.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-20-kpi.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 20 kpi" aria-current="false" aria-label="Show screenshot 20">
+            <img src="/portfolio-assets/ops-20-kpi.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-21-ticket-model.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 21 ticket model" aria-current="false" aria-label="Show screenshot 21">
+            <img src="/portfolio-assets/ops-21-ticket-model.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-22-dispatch-settings.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 22 dispatch settings" aria-current="false" aria-label="Show screenshot 22">
+            <img src="/portfolio-assets/ops-22-dispatch-settings.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/ops-23-user-management.jpg" data-gallery-alt="Support Ops Hub \u2014 ops 23 user management" aria-current="false" aria-label="Show screenshot 23">
+            <img src="/portfolio-assets/ops-23-user-management.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          </div>
+        </div>
+        
+        
+
+        <div class="project-meta-grid">
+          <div>
+            <div class="meta-group-title">Architecture & Role</div>
+            <div class="meta-group-content">
+              Development approach: I use AI-assisted coding to implement features based on the support team's workflow. I review generated code and make some adjustments; the project uses a JSON-based data store on a persistent Docker volume.
+            </div>
+          </div>
+          <div>
+            <div class="meta-group-title">Tech Stack</div>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Next.js (App Router)</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">Tailwind CSS</span>
+              <span class="tech-tag">Zustand</span>
+              <span class="tech-tag">JWT session cookies</span>
+              <span class="tech-tag">bcrypt</span>
+              <span class="tech-tag">Atomic JSON Store</span>
+              <span class="tech-tag">Docker Volume</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-group-title" style="margin-bottom:12px;">A shift, start to finish</div>
+        <div class="workflow-sequence">
+          <div class="workflow-step">
+            <span class="step-number">01</span>
+            <span class="step-text"><strong>Clock-in & punctuality audit:</strong> System automatically benchmarks agent clock-in times against shift rosters upon session start.</span>
+          </div>
+          <div class="workflow-step">
+            <span class="step-number">02</span>
+            <span class="step-text"><strong>Screen-lock case acknowledgment:</strong> If the outgoing shift left open cases, the screen locks until explicitly acknowledged into the audit trail.</span>
+          </div>
+          <div class="workflow-step">
+            <span class="step-number">03</span>
+            <span class="step-text"><strong>Fuzzy-match knowledge base:</strong> Instant procedural retrieval for incident response scripts without requiring exact keyword matches.</span>
+          </div>
+          <div class="workflow-step">
+            <span class="step-number">04</span>
+            <span class="step-text"><strong>Real-time case workbench:</strong> Take, reassign, or resolve incidents on the fly with live status counters.</span>
+          </div>
+          <div class="workflow-step">
+            <span class="step-number">05</span>
+            <span class="step-text"><strong>Structured handoff protocol:</strong> Formalize shift handoffs by tagging open items, assigning incoming owners, and capturing handover briefing notes.</span>
+          </div>
+        </div>
+
+        <div class="design-note-box">
+          <strong>Design Note: Standalone Reliability Architecture</strong><br>
+          Inbound webhook from ticketing tool only, zero outbound API calls. Data lives in atomic JSON datastores on persistent Docker volumes, designed to keep its data available without depending on an external database.
+        </div>
+
+        <div class="card-footer-actions demo-footer" style="margin-top:20px;">
+          <div class="demo-footer-top">
+            <a href="https://chronolier.xyz/login" target="_blank" rel="noopener noreferrer" class="floating-glass-action" aria-label="Open live demo of Support Ops Hub">
+              <span>Open Live Portal</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <span class="demo-footer-domain">chronolier.xyz \xB7 Source code available on request</span>
+          </div>
+          <div class="demo-credential-controls" aria-label="Support Ops Hub demo credentials">
+            <span class="demo-credentials-label">DEMO ACCESS</span>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="demo@chronolier.xyz" data-copy-kind="username" aria-label="Copy Support Ops Hub demo username">
+              <span class="credential-button-label">Copy Username</span>
+            </button>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="Demo@ChronolierView2026" data-copy-kind="password" aria-label="Copy Support Ops Hub demo password">
+              <span class="credential-button-label">Copy Password</span>
+            </button>
+          </div>
+          <div class="demo-footer-note">
+            <span class="note-caption">Demo account \xB7 Read-only, pre-filled login removed</span>
+            <span class="note-caption credential-copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3: POS & INVENTORY -->
+      <article class="project-card">
+        <div class="project-card-header">
+          <div>
+            <h3 class="project-card-title">POS & INVENTORY</h3>
+          </div>
+          <span class="live-badge-capsule">LIVE IN PROD</span>
+        </div>
+
+        <p class="project-problem-text">
+          A multi-tenant operations platform covering organization setup, member/role management, and audit history \u2014 the foundation layer point-of-sale and inventory modules build on.
+        </p>
+        
+        <div class="project-gallery" data-project-gallery role="group" aria-label="POS & INVENTORY screenshots">
+          <div class="project-gallery-stage">
+            <img class="project-gallery-main" data-gallery-main src="/portfolio-assets/pos-chronolier-dashboard.jpg" alt="POS &amp; INVENTORY \u2014 pos chronolier dashboard" loading="lazy" decoding="async">
+            <button class="project-gallery-control project-gallery-prev" type="button" data-gallery-prev aria-label="Previous screenshot">\u2039</button>
+            <button class="project-gallery-control project-gallery-next" type="button" data-gallery-next aria-label="Next screenshot">\u203A</button>
+          </div>
+          <div class="project-gallery-thumbs">
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-dashboard.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier dashboard" aria-current="true" aria-label="Show screenshot 1">
+            <img src="/portfolio-assets/pos-chronolier-dashboard.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-finance.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier finance" aria-current="false" aria-label="Show screenshot 2">
+            <img src="/portfolio-assets/pos-chronolier-finance.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-inventory.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier inventory" aria-current="false" aria-label="Show screenshot 3">
+            <img src="/portfolio-assets/pos-chronolier-inventory.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-organizations.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier organizations" aria-current="false" aria-label="Show screenshot 4">
+            <img src="/portfolio-assets/pos-chronolier-organizations.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-CHRONOLIER-POS-Inventory-Platform.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos CHRONOLIER POS Inventory Platform" aria-current="false" aria-label="Show screenshot 5">
+            <img src="/portfolio-assets/pos-CHRONOLIER-POS-Inventory-Platform.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-pos.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier pos" aria-current="false" aria-label="Show screenshot 6">
+            <img src="/portfolio-assets/pos-chronolier-pos.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-procurement.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier procurement" aria-current="false" aria-label="Show screenshot 7">
+            <img src="/portfolio-assets/pos-chronolier-procurement.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-products.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier products" aria-current="false" aria-label="Show screenshot 8">
+            <img src="/portfolio-assets/pos-chronolier-products.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/pos-chronolier-reports.jpg" data-gallery-alt="POS &amp; INVENTORY \u2014 pos chronolier reports" aria-current="false" aria-label="Show screenshot 9">
+            <img src="/portfolio-assets/pos-chronolier-reports.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          </div>
+        </div>
+        
+        
+
+        <div class="project-meta-grid">
+          <div>
+            <div class="meta-group-title">Architecture & Role</div>
+            <div class="meta-group-content">
+              Development approach: I use AI-assisted coding to build and refine the application's organization, membership, and audit-history features. I review generated code and modify parts I understand; the project explores multi-tenant data separation and role-based access.
+            </div>
+          </div>
+          <div>
+            <div class="meta-group-title">Tech Stack</div>
+            <div class="tech-stack-row">
+              <span class="tech-tag">NestJS</span>
+              <span class="tech-tag">Next.js</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">Row-Level Security</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-group-title" style="margin-bottom:12px;">What it does</div>
+        <ul class="feature-list">
+          <li><strong>Multi-tenant organizations:</strong> Isolated data per organization, enforced at the database layer with row-level security.</li>
+          <li><strong>Role-based membership:</strong> Owner, Admin, Staff, and Viewer roles with per-organization custom roles and permissions.</li>
+          <li><strong>Full audit trail:</strong> Append-only audit log of every sensitive action, scoped per tenant.</li>
+          <li><strong>Branch management:</strong> Multiple branches per organization for point-of-sale and inventory rollout.</li>
+        </ul>
+
+        <div class="card-footer-actions demo-footer">
+          <div class="demo-footer-top">
+            <a href="https://chronolier.monster/" target="_blank" rel="noopener noreferrer" class="floating-glass-action" aria-label="Open live portal of POS and Inventory platform">
+              <span>Open Live Portal</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <span class="demo-footer-domain">chronolier.monster \xB7 Source code available on request</span>
+          </div>
+          <div class="demo-credential-controls" aria-label="POS and Inventory demo credentials">
+            <span class="demo-credentials-label">DEMO ACCESS</span>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="guest@chronolier.monster" data-copy-kind="username" aria-label="Copy POS and Inventory demo username">
+              <span class="credential-button-label">Copy Username</span>
+            </button>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="GeBjWF4xGBSkVrD" data-copy-kind="password" aria-label="Copy POS and Inventory demo password">
+              <span class="credential-button-label">Copy Password</span>
+            </button>
+          </div>
+          <div class="demo-footer-note">
+            <span class="note-caption">POS &amp; Inventory demo account</span>
+            <span class="note-caption credential-copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4: Condo Management App -->
+      <article class="project-card">
+        <div class="project-card-header">
+          <div>
+            <h3 class="project-card-title">Condo Management App</h3>
+          </div>
+          <span class="live-badge-capsule">LIVE IN PROD</span>
+        </div>
+
+        <p class="project-problem-text">
+          A multi-condo management platform (Android app, web app, and API) that connects residents, office staff, technicians, the warehouse, and the building owner in one place. It is sold per condo, and each building only gets the features in its plan.
+        </p>
+        
+        <div class="project-gallery" data-project-gallery role="group" aria-label="Condo Management App screenshots">
+          <div class="project-gallery-stage">
+            <img class="project-gallery-main" data-gallery-main src="/portfolio-assets/condo-condo-dashboard.jpg" alt="Condo Management App \u2014 condo condo dashboard" loading="lazy" decoding="async">
+            <button class="project-gallery-control project-gallery-prev" type="button" data-gallery-prev aria-label="Previous screenshot">\u2039</button>
+            <button class="project-gallery-control project-gallery-next" type="button" data-gallery-next aria-label="Next screenshot">\u203A</button>
+          </div>
+          <div class="project-gallery-thumbs">
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-dashboard.jpg" data-gallery-alt="Condo Management App \u2014 condo condo dashboard" aria-current="true" aria-label="Show screenshot 1">
+            <img src="/portfolio-assets/condo-condo-dashboard.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-management.jpg" data-gallery-alt="Condo Management App \u2014 condo condo management" aria-current="false" aria-label="Show screenshot 2">
+            <img src="/portfolio-assets/condo-condo-management.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-operations.jpg" data-gallery-alt="Condo Management App \u2014 condo condo operations" aria-current="false" aria-label="Show screenshot 3">
+            <img src="/portfolio-assets/condo-condo-operations.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-reports.jpg" data-gallery-alt="Condo Management App \u2014 condo condo reports" aria-current="false" aria-label="Show screenshot 4">
+            <img src="/portfolio-assets/condo-condo-reports.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-reports-pdf.jpg" data-gallery-alt="Condo Management App \u2014 condo condo reports pdf" aria-current="false" aria-label="Show screenshot 5">
+            <img src="/portfolio-assets/condo-condo-reports-pdf.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-resident-bills.jpg" data-gallery-alt="Condo Management App \u2014 condo condo resident bills" aria-current="false" aria-label="Show screenshot 6">
+            <img src="/portfolio-assets/condo-condo-resident-bills.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-resident-menu-2.jpg" data-gallery-alt="Condo Management App \u2014 condo condo resident menu 2" aria-current="false" aria-label="Show screenshot 7">
+            <img src="/portfolio-assets/condo-condo-resident-menu-2.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-resident-menu-3.jpg" data-gallery-alt="Condo Management App \u2014 condo condo resident menu 3" aria-current="false" aria-label="Show screenshot 8">
+            <img src="/portfolio-assets/condo-condo-resident-menu-3.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          <button class="project-gallery-thumb" type="button" data-gallery-thumb data-gallery-src="/portfolio-assets/condo-condo-resident-menu.jpg" data-gallery-alt="Condo Management App \u2014 condo condo resident menu" aria-current="false" aria-label="Show screenshot 9">
+            <img src="/portfolio-assets/condo-condo-resident-menu.jpg" alt="" loading="lazy" decoding="async">
+          </button>
+          </div>
+        </div>
+        
+        
+
+        <div class="project-meta-grid">
+          <div>
+            <div class="meta-group-title">Architecture & Role</div>
+            <div class="meta-group-content">
+              Development approach: I used AI coding tools to generate most of the code. I defined the requirements and permission rules, tested every change on a real Android phone, and approved every production deployment, while learning to trace each screen through the API to the database.
+            </div>
+          </div>
+          <div>
+            <div class="meta-group-title">Tech Stack</div>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Flutter 3 (Dart)</span>
+              <span class="tech-tag">Android APK</span>
+              <span class="tech-tag">Web PWA</span>
+              <span class="tech-tag">NestJS 11</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">PostgreSQL 16</span>
+              <span class="tech-tag">Prisma ORM</span>
+              <span class="tech-tag">Argon2 + JWT</span>
+              <span class="tech-tag">Docker Compose</span>
+              <span class="tech-tag">Cloudflare Tunnel</span>
+              <span class="tech-tag">Cloudflare Workers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-group-title" style="margin-bottom:12px;">What it does</div>
+        <ul class="feature-list">
+          <li><strong>6-role access model:</strong> Owner, Manager, Office Admin, Warehouse, Technician, and Resident \u2014 every API request is checked for role and condo on the server.</li>
+          <li><strong>Per-condo plans & feature switches:</strong> The owner picks a plan or turns individual features on or off per building; switched-off features are blocked by the API while their data is kept.</li>
+          <li><strong>Repair requests end to end:</strong> Residents report with photos, the office assigns a technician, and everyone follows the job through in-ticket chat and status updates.</li>
+          <li><strong>Technician attendance:</strong> Selfie check-in with a liveness check (blink, turn, smile) and GPS location; selfies are deleted automatically after 30 days.</li>
+          <li><strong>Resident services:</strong> Parcels, visitor QR passes, facility booking, car and motorcycle registration, bills, complaints, and announcements.</li>
+          <li><strong>Reports & languages:</strong> Thai PDF reports for each department, with a Thai, English, and Chinese interface; PIN and fingerprint unlock on Android.</li>
+          <li><strong>Operations:</strong> Runs in production on Linux with Docker, with daily automatic database and photo backups and no open server ports \u2014 traffic reaches the API only through Cloudflare Tunnel.</li>
+          <li><strong>Try-it demo:</strong> A public demo owner account works on a sandbox copy, so visitors can try every feature without changing live data.</li>
+        </ul>
+
+        <div class="card-footer-actions demo-footer">
+          <div class="demo-footer-top">
+            <a href="https://staging-app.chewvy.shop/" target="_blank" rel="noopener noreferrer" class="floating-glass-action" aria-label="iOS: open the condo web app in Safari">
+              <span>iOS \xB7 Open Web App</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <a href="https://drive.google.com/file/d/1yKqmEKHGqOsnNaUdLhErocxgHrHp9dMT/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="floating-glass-action" aria-label="Android: download the condo app">
+              <span>Android \xB7 Download App</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </a>
+            <span class="demo-footer-domain">iOS: open the web app in Safari (Add to Home Screen works) \xB7 Android: APK download \xB7 Source code available on request</span>
+          </div>
+          <div class="demo-credential-controls" aria-label="Condo app demo credentials">
+            <span class="demo-credentials-label">DEMO ACCESS</span>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="owner@chewvy.shop" data-copy-kind="username" aria-label="Copy Condo app demo username">
+              <span class="credential-button-label">Copy Username</span>
+            </button>
+            <button type="button" class="floating-glass-action copy-credential-btn" data-copy-value="FX6xTpIdcNSdI2F3" data-copy-kind="password" aria-label="Copy Condo app demo password">
+              <span class="credential-button-label">Copy Password</span>
+            </button>
+          </div>
+          <div class="demo-footer-note">
+            <span class="note-caption">Owner demo account \xB7 Try every feature: changes go to a sandbox copy, real data never changes</span>
+            <span class="note-caption credential-copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+
+    <!-- WORK HISTORY / EXPERIENCE -->
+    <section id="experience" class="content-section">
+      <div class="section-header-block">
+        <div class="section-title-wrap">
+          <span class="section-tag">/experience</span>
+          <h2 class="section-title">Work History</h2>
+        </div>
+        <span class="section-subtext">Operational Track Record</span>
+      </div>
+
+      <div class="timeline-container">
+        <!-- NOC Role -->
+        <article class="experience-card">
+          <div class="experience-card-header">
+            <h3 class="role-name">Network & Security Operation Support</h3>
+            <span class="date-badge">Jan 2026 \u2014 Oct 2026</span>
+          </div>
+          <div class="company-name">Nipa Cloud Technology Co., Ltd. \u2022 Cloud Infrastructure Operations</div>
+          <ul class="feature-list">
+            <li><strong>Infrastructure & Service Monitoring:</strong> Monitor network infrastructure, security systems, cloud services, and related operational alerts for availability and stability.</li>
+            <li><strong>Incident Investigation & Troubleshooting:</strong> Investigate alerts and service issues, perform first-line technical checks using Linux tools and operational dashboards, and gather relevant findings for escalation.</li>
+            <li><strong>Operational Automation:</strong> Use scripts and AI-assisted workflows to reduce repetitive operational tasks, streamline daily status reporting, and improve troubleshooting workflows.</li>
+            <li><strong>Technical Documentation & Escalation:</strong> Document symptoms, impact, checks performed, and findings before escalating issues beyond assigned scope to the appropriate engineering team.</li>
+          </ul>
+        </article>
+
+        <!-- Technical Hosting Support -->
+        <article class="experience-card">
+          <div class="experience-card-header">
+            <h3 class="role-name">Technical Hosting Support Specialist</h3>
+            <span class="date-badge">2022 \u2014 2025 (3 Years)</span>
+          </div>
+          <div class="company-name">Ruk-Com Co., Ltd. \u2022 Web Hosting & Technical Support</div>
+          <ul class="feature-list">
+            <li><strong>Customer Technical Support:</strong> Supported customers through ticketing, LINE, and telephone channels for website and hosting issues.</li>
+            <li><strong>Website & Domain Troubleshooting:</strong> Investigated website errors and accessibility issues, DNS and domain configuration, SSL certificates, and website pointing settings.</li>
+            <li><strong>Website Platform & Email Support:</strong> Assisted with WordPress, PHP-related issues, plugin problems, and email configuration and troubleshooting.</li>
+            <li><strong>Basic Server Checks & Escalation:</strong> Performed initial Linux/server checks within assigned scope, documented findings, and escalated complex issues to the next technical tier.</li>
+          </ul>
+        </article>
+
+        <!-- UOB Role -->
+        <article class="experience-card">
+          <div class="experience-card-header">
+            <h3 class="role-name">Data Entry & Operations Officer</h3>
+            <span class="date-badge">2015 \u2014 2022 (7 Years)</span>
+          </div>
+          <div class="company-name">United Overseas Bank (UOB) \u2022 Banking Operations</div>
+          <ul class="feature-list">
+            <li><strong>Data Entry & Accuracy:</strong> Entered and maintained operational data with careful attention to accuracy, completeness, and required formats.</li>
+            <li><strong>Document & Data Verification:</strong> Checked records and supporting documents against required information and followed established internal procedures.</li>
+            <li><strong>Operational Support:</strong> Supported team workflows through organized record keeping, data validation, and timely completion of assigned tasks.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+
+    <!-- SKILLS & CAPABILITIES -->
+    <section id="skills" class="content-section">
+      <div class="section-header-block">
+        <div class="section-title-wrap">
+          <span class="section-tag">/skills</span>
+          <h2 class="section-title">What I Work With</h2>
+        </div>
+        <span class="section-subtext">Technical Capabilities</span>
+      </div>
+
+      <div class="skills-layout-grid">
+        <div class="skill-surface-card">
+          <h3 class="skill-card-heading">Hosting & Website Support</h3>
+          <ul class="skill-bullet-list">
+            <li>Website errors and website accessibility troubleshooting</li>
+            <li>DNS, domain, SSL certificate, and website pointing configuration</li>
+            <li>WordPress, PHP-related issues, and plugin troubleshooting</li>
+            <li>Email and mail configuration troubleshooting</li>
+            <li>Basic Linux and server checks</li>
+            <li>AI-assisted web application projects; review and modify parts of generated code</li>
+            <li>Exposure to Next.js, TypeScript, PostgreSQL, Docker, and related tools through projects</li>
+          </ul>
+        </div>
+
+        <div class="skill-surface-card">
+          <h3 class="skill-card-heading">Ways of Working</h3>
+          <ul class="skill-bullet-list">
+            <li>Incident triage & shift ticketing management</li>
+            <li>Structured technical runbooks & documentation</li>
+            <li>Analytical, adaptive root-cause problem solving</li>
+            <li>Cross-functional engineering & shift handoffs</li>
+            <li>Learning application permissions and access-control concepts through projects</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="education-banner">
+        <div class="education-details">
+          <h4>Bachelor's Degree in Business Computer</h4>
+          <p>Faculty of Management Science \u2014 Bansomdejchaopraya Rajabhat University</p>
+        </div>
+        <span class="gpa-capsule">GPA 3.00</span>
+      </div>
+    </section>
+
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="content-section">
+      <div class="contact-card">
+        <div class="section-tag" style="margin-bottom:8px; display:inline-block;">/contact</div>
+        <h2>Let's Connect</h2>
+        <p>
+          Open to remote opportunities in Technical Support, Application Support, and AI-assisted web application projects. My strongest hands-on experience is hosting and website troubleshooting, with ongoing development through personal projects.
+        </p>
+        <details class="salary-disclosure">
+          <summary>View Expected Salary</summary>
+          <span class="salary-range">THB 33,000\u201335,000 per month</span>
+        </details>
+
+        <div class="contact-actions-row">
+          <button type="button" class="floating-glass-action trigger-copy-email" aria-label="\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25 suwimonsaeung@gmail.com \u0E04\u0E25\u0E34\u0E01\u0E40\u0E14\u0E35\u0E22\u0E27">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span class="copy-label">\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25 (\u0E04\u0E25\u0E34\u0E01\u0E40\u0E14\u0E35\u0E22\u0E27)</span>
+          </button>
+
+          <a href="mailto:suwimonsaeung@gmail.com" class="floating-glass-action" aria-label="\u0E2A\u0E48\u0E07\u0E2D\u0E35\u0E40\u0E21\u0E25\u0E2B\u0E32 Suwimon Sae-ung">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>suwimonsaeung@gmail.com</span>
+          </a>
+
+          <a href="tel:0800420045" class="floating-glass-action" aria-label="Call Suwimon Sae-ung">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>080-042-0045</span>
+          </a>
+        </div>
+
+        <p class="footer-note">
+          The projects above demonstrate practical work with AI-assisted development and deployed web applications. Project implementation is AI-assisted, and I continue to build my ability to read and modify code.<br>
+          Surface crafted in the spirit of Apple's Liquid Glass \u2014 glass reserved for floating controls, with opaque unrestricted content.
+        </p>
+      </div>
+    </section>
+
+  
+  <!-- Toast Notification Capsule -->
+  <div id="copyToast" class="glass-toast" role="status" aria-live="polite">
+    <span class="toast-icon">\u2713</span>
+    <span id="toastMessage">\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25 suwimonsaeung@gmail.com \u0E40\u0E23\u0E35\u0E22\u0E1A\u0E23\u0E49\u0E2D\u0E22\u0E41\u0E25\u0E49\u0E27</span>
+  </div>
+
+  </main>
+
+
+  <!-- ==========================================================================
+       ADAPTIVE TINT SCRIPT & INTERACTIVE CONTROLS
+       Adapts floating glass tint dynamically to preserve maximum contrast & legibility
+       ========================================================================== -->
+  <script>
+    (function() {
+      // Dynamic scroll tint adaptation for floating glass bars
+      const topBar = document.getElementById('topGlassBar');
+      const bottomDock = document.getElementById('bottomDock');
+      const navButtons = document.querySelectorAll('.nav-links-group .glass-pill-btn');
+      const sections = document.querySelectorAll('section, header.hero-section');
+
+      function updateAdaptiveTint() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        
+        // As user scrolls over dense content vs hero, subtly adapt the glass density
+        if (scrollY > 60) {
+          topBar.style.setProperty('--glass-tint-adaptive', 'rgba(255, 255, 255, 0.78)');
+          topBar.style.setProperty('--glass-shadow', '0 20px 40px -8px rgba(0, 0, 0, 0.12), 0 6px 16px -2px rgba(0, 0, 0, 0.06)');
+        } else {
+          topBar.style.setProperty('--glass-tint-adaptive', 'rgba(255, 255, 255, 0.65)');
+          topBar.style.setProperty('--glass-shadow', '0 16px 36px -6px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04)');
+        }
+
+        // Active state spy for navigation items
+        let currentSection = '';
+        sections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= 140 && rect.bottom >= 140) {
+            currentSection = sec.id;
+          }
+        });
+
+        navButtons.forEach(btn => {
+          if (btn.getAttribute('data-target') === currentSection) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateAdaptiveTint, { passive: true });
+      updateAdaptiveTint();
+
+      
+      // Toast notification helper
+      const toast = document.getElementById('copyToast');
+      let toastTimer = null;
+
+      function showCopyToast(msg) {
+        if (!toast) return;
+        const msgEl = document.getElementById('toastMessage');
+        if (msgEl) msgEl.textContent = msg || '\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25 suwimonsaeung@gmail.com \u0E41\u0E25\u0E49\u0E27!';
+        toast.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2500);
+      }
+
+      function copyEmailToClipboard(btnEl, labelEl) {
+        const email = 'suwimonsaeung@gmail.com';
+        function onSuccess() {
+          if (labelEl) {
+            const original = labelEl.textContent;
+            labelEl.textContent = '\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E41\u0E25\u0E49\u0E27!';
+            if (btnEl) btnEl.style.color = '#34C759';
+            setTimeout(() => {
+              labelEl.textContent = original;
+              if (btnEl) btnEl.style.color = '';
+            }, 2000);
+          }
+          showCopyToast('\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25 suwimonsaeung@gmail.com \u0E40\u0E23\u0E35\u0E22\u0E1A\u0E23\u0E49\u0E2D\u0E22\u0E41\u0E25\u0E49\u0E27');
+      }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(onSuccess).catch(() => {
+            fallbackCopy(email, onSuccess);
+          });
+        } else {
+          fallbackCopy(email, onSuccess);
+        }
+      }
+
+      function fallbackCopy(text, cb) {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        try {
+          document.execCommand('copy');
+          if (cb) cb();
+        } catch (e) {
+          window.location.href = 'mailto:' + text;
+        }
+        document.body.removeChild(temp);
+      }
+
+      // Attach to all copy buttons
+      const copyBtn = document.getElementById('copyEmailBtn');
+      const copyText = document.getElementById('copyEmailText');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => copyEmailToClipboard(copyBtn, copyText));
+      }
+
+      document.querySelectorAll('.trigger-copy-email').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          copyEmailToClipboard(el, el.querySelector('.copy-label') || el);
+        });
+      });
+
+      // Copy demo username/password separately so visitors can paste them into the login form.
+      document.querySelectorAll('.copy-credential-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const value = button.getAttribute('data-copy-value') || '';
+          const kind = button.getAttribute('data-copy-kind') || 'credential';
+          const label = button.querySelector('.credential-button-label');
+          const originalLabel = label ? label.textContent : button.textContent.trim();
+
+          const onSuccess = () => {
+            button.classList.add('is-copied');
+            if (label) label.textContent = 'Copied!';
+            const currentCard = button.closest('.project-card');
+            const status = currentCard ? currentCard.querySelector('.credential-copy-status') : null;
+            if (status) status.textContent = kind === 'username' ? 'Username copied.' : 'Password copied.';
+            showCopyToast(kind === 'username' ? 'Demo username copied.' : 'Demo password copied.');
+            window.setTimeout(() => {
+              button.classList.remove('is-copied');
+              if (label) label.textContent = originalLabel;
+            }, 1800);
+          };
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(value).then(onSuccess).catch(() => {
+              fallbackCopy(value, onSuccess);
+            });
+          } else {
+            fallbackCopy(value, onSuccess);
+          }
+        });
+      });
+
+    })();
+  <\/script>
+  <!-- LANGUAGE SWITCH (TH / EN) -->
+  <style>
+    .lang-switch { display: inline-flex; flex-shrink: 0; gap: 2px; padding: 3px; border-radius: 9999px; background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.08); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+    .lang-switch button { border: 0; background: transparent; color: #515154; font: 600 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 8px 10px; border-radius: 9999px; cursor: pointer; }
+    .lang-switch button[aria-pressed="true"] { background: #0071E3; color: #FFFFFF; }
+    @media (max-width: 520px) {
+      .top-toolbar { gap: 8px; }
+      .top-toolbar .status-dot-wrap span, .top-toolbar .glass-pill-cta { white-space: nowrap; }
+      .top-toolbar .glass-pill-cta { padding: 0 12px; }
+      .top-toolbar .glass-pill-cta svg { display: none; }
+      .lang-switch button { padding: 7px 8px; }
+    }
+  
+
+    .project-gallery {
+      margin: 18px 0 24px;
+      min-width: 0;
+    }
+
+    .project-gallery-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 16px;
+      background: #111827;
+    }
+
+    .project-gallery-main {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 72vh;
+      object-fit: contain;
+    }
+
+    .project-gallery-control {
+      position: absolute;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 50%;
+      background: rgba(20, 27, 39, 0.66);
+      color: #fff;
+      font: inherit;
+      font-size: 27px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: background 160ms ease, transform 160ms ease;
+    }
+
+    .project-gallery-control:hover {
+      background: rgba(20, 27, 39, 0.9);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .project-gallery-prev { left: 12px; }
+    .project-gallery-next { right: 12px; }
+
+    .project-gallery-thumbs {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding: 10px 1px 3px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100, 116, 139, 0.42) transparent;
+    }
+
+    .project-gallery-thumb {
+      flex: 0 0 84px;
+      width: 84px;
+      height: 58px;
+      overflow: hidden;
+      padding: 2px;
+      border: 1px solid rgba(148, 163, 184, 0.42);
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      opacity: 0.76;
+      transition: border-color 160ms ease, opacity 160ms ease, transform 160ms ease;
+    }
+
+    .project-gallery-thumb:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .project-gallery-thumb[aria-current="true"] {
+      border: 2px solid var(--apple-blue, #2563eb);
+      opacity: 1;
+    }
+
+    .project-gallery-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      object-fit: contain;
+      background: #111827;
+    }
+
+    @media (max-width: 640px) {
+      .project-gallery-control { width: 34px; height: 34px; }
+      .project-gallery-prev { left: 8px; }
+      .project-gallery-next { right: 8px; }
+      .project-gallery-thumb { flex-basis: 72px; width: 72px; height: 50px; }
+    }
+</style>
+  <script>
+    (function() {
+      var TH = {"A multi-condo management platform (Android app, web app, and API) that connects residents, office staff, technicians, the warehouse, and the building owner in one place. It is sold per condo, and each building only gets the features in its plan.": "\u0E41\u0E1E\u0E25\u0E15\u0E1F\u0E2D\u0E23\u0E4C\u0E21\u0E1A\u0E23\u0E34\u0E2B\u0E32\u0E23\u0E04\u0E2D\u0E19\u0E42\u0E14\u0E2B\u0E25\u0E32\u0E22\u0E2D\u0E32\u0E04\u0E32\u0E23 (\u0E41\u0E2D\u0E1B Android \u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B \u0E41\u0E25\u0E30 API) \u0E17\u0E35\u0E48\u0E23\u0E27\u0E21\u0E17\u0E38\u0E01\u0E04\u0E19\u0E43\u0E19\u0E2D\u0E32\u0E04\u0E32\u0E23\u0E44\u0E27\u0E49\u0E17\u0E35\u0E48\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E17\u0E31\u0E49\u0E07\u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19 \u0E2A\u0E33\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E19\u0E34\u0E15\u0E34 \u0E0A\u0E48\u0E32\u0E07 \u0E04\u0E25\u0E31\u0E07\u0E27\u0E31\u0E2A\u0E14\u0E38 \u0E41\u0E25\u0E30\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E2D\u0E32\u0E04\u0E32\u0E23 \u0E02\u0E32\u0E22\u0E43\u0E2B\u0E49\u0E04\u0E2D\u0E19\u0E42\u0E14\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E32\u0E22\u0E2D\u0E32\u0E04\u0E32\u0E23 \u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E32\u0E04\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E44\u0E14\u0E49\u0E40\u0E09\u0E1E\u0E32\u0E30\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E15\u0E32\u0E21\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08", "Development approach: I used AI coding tools to generate most of the code. I defined the requirements and permission rules, tested every change on a real Android phone, and approved every production deployment, while learning to trace each screen through the API to the database.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI \u0E0A\u0E48\u0E27\u0E22\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E48\u0E27\u0E19\u0E43\u0E2B\u0E0D\u0E48 \u0E09\u0E31\u0E19\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E19\u0E01\u0E33\u0E2B\u0E19\u0E14\u0E04\u0E27\u0E32\u0E21\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E41\u0E25\u0E30\u0E01\u0E0E\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C \u0E17\u0E14\u0E2A\u0E2D\u0E1A\u0E17\u0E38\u0E01\u0E01\u0E32\u0E23\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E41\u0E1B\u0E25\u0E07\u0E1A\u0E19\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D Android \u0E08\u0E23\u0E34\u0E07 \u0E41\u0E25\u0E30\u0E2D\u0E19\u0E38\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07\u0E17\u0E35\u0E48\u0E02\u0E36\u0E49\u0E19\u0E23\u0E30\u0E1A\u0E1A\u0E08\u0E23\u0E34\u0E07 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E1D\u0E36\u0E01\u0E44\u0E25\u0E48\u0E42\u0E04\u0E49\u0E14\u0E08\u0E32\u0E01\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E1C\u0E48\u0E32\u0E19 API \u0E44\u0E1B\u0E08\u0E19\u0E16\u0E36\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25", "Runs in production on Linux with Docker, with daily automatic database and photo backups and no open server ports \u2014 traffic reaches the API only through Cloudflare Tunnel.": "\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07\u0E1A\u0E19 Linux \u0E14\u0E49\u0E27\u0E22 Docker \u0E2A\u0E33\u0E23\u0E2D\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E25\u0E30\u0E23\u0E39\u0E1B\u0E20\u0E32\u0E1E\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E27\u0E31\u0E19 \u0E44\u0E21\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C \u2014 \u0E01\u0E32\u0E23\u0E40\u0E02\u0E49\u0E32\u0E16\u0E36\u0E07 API \u0E1C\u0E48\u0E32\u0E19 Cloudflare Tunnel \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19", "Try-it demo:": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07:", "A public demo owner account works on a sandbox copy, so visitors can try every feature without changing live data.": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E17\u0E33\u0E07\u0E32\u0E19\u0E1A\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2A\u0E33\u0E40\u0E19\u0E32 \u0E1C\u0E39\u0E49\u0E40\u0E22\u0E35\u0E48\u0E22\u0E21\u0E0A\u0E21\u0E01\u0E14\u0E25\u0E2D\u0E07\u0E44\u0E14\u0E49\u0E17\u0E38\u0E01\u0E40\u0E21\u0E19\u0E39\u0E42\u0E14\u0E22\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E08\u0E23\u0E34\u0E07\u0E44\u0E21\u0E48\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19", "iOS: open the web app in Safari (Add to Home Screen works) \xB7 Android: APK download \xB7 Source code available on request": "iOS: \u0E40\u0E1B\u0E34\u0E14\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E43\u0E19 Safari (\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E44\u0E27\u0E49\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E42\u0E2E\u0E21\u0E44\u0E14\u0E49) \xB7 Android: \u0E14\u0E32\u0E27\u0E19\u0E4C\u0E42\u0E2B\u0E25\u0E14\u0E44\u0E1F\u0E25\u0E4C APK \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "Owner demo account \xB7 Try every feature: changes go to a sandbox copy, real data never changes": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \xB7 \u0E01\u0E14\u0E25\u0E2D\u0E07\u0E44\u0E14\u0E49\u0E17\u0E38\u0E01\u0E40\u0E21\u0E19\u0E39 \u0E01\u0E32\u0E23\u0E41\u0E01\u0E49\u0E44\u0E02\u0E44\u0E1B\u0E17\u0E35\u0E48\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2A\u0E33\u0E40\u0E19\u0E32 \u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E08\u0E23\u0E34\u0E07\u0E44\u0E21\u0E48\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19", "Projects": "\u0E1C\u0E25\u0E07\u0E32\u0E19", "Experience": "\u0E1B\u0E23\u0E30\u0E2A\u0E1A\u0E01\u0E32\u0E23\u0E13\u0E4C", "Skills": "\u0E17\u0E31\u0E01\u0E29\u0E30", "Contact": "\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D", "Get in Touch": "\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D\u0E09\u0E31\u0E19", "Copy Email": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E35\u0E40\u0E21\u0E25", "Thailand \u2014 Open to Remote Work (WFH)": "\u0E1B\u0E23\u0E30\u0E40\u0E17\u0E28\u0E44\u0E17\u0E22 \u2014 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E17\u0E33\u0E07\u0E32\u0E19\u0E41\u0E1A\u0E1A\u0E23\u0E35\u0E42\u0E21\u0E15 (WFH)", "Thailand \u2014 Open to remote work (WFH)": "\u0E1B\u0E23\u0E30\u0E40\u0E17\u0E28\u0E44\u0E17\u0E22 \u2014 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E17\u0E33\u0E07\u0E32\u0E19\u0E41\u0E1A\u0E1A\u0E23\u0E35\u0E42\u0E21\u0E15 (WFH)", "Technical Hosting Support | AI-Assisted Web Application Projects": "\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E14\u0E49\u0E32\u0E19\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07 | \u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E1E\u0E25\u0E34\u0E40\u0E04\u0E0A\u0E31\u0E19\u0E17\u0E35\u0E48\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E42\u0E14\u0E22\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22", "Hands-on experience in technical hosting support, website troubleshooting, and cloud operations. I use AI tools as my primary coding aid for personal web application projects, reviewing and modifying parts of the generated code. My strongest practical skills are diagnosing website, DNS, domain, SSL, email, WordPress, PHP-related, and basic Linux/server issues.": "\u0E21\u0E35\u0E1B\u0E23\u0E30\u0E2A\u0E1A\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E25\u0E07\u0E21\u0E37\u0E2D\u0E08\u0E23\u0E34\u0E07\u0E14\u0E49\u0E32\u0E19\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07 \u0E01\u0E32\u0E23\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C \u0E41\u0E25\u0E30\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E04\u0E25\u0E32\u0E27\u0E14\u0E4C \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI \u0E40\u0E1B\u0E47\u0E19\u0E15\u0E31\u0E27\u0E0A\u0E48\u0E27\u0E22\u0E2B\u0E25\u0E31\u0E01\u0E43\u0E19\u0E01\u0E32\u0E23\u0E40\u0E02\u0E35\u0E22\u0E19\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E2A\u0E48\u0E27\u0E19\u0E15\u0E31\u0E27 \u0E42\u0E14\u0E22\u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48 AI \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1A\u0E32\u0E07\u0E2A\u0E48\u0E27\u0E19 \u0E08\u0E38\u0E14\u0E41\u0E02\u0E47\u0E07\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14\u0E04\u0E37\u0E2D\u0E01\u0E32\u0E23\u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C DNS \u0E42\u0E14\u0E40\u0E21\u0E19 SSL \u0E2D\u0E35\u0E40\u0E21\u0E25 WordPress \u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E17\u0E35\u0E48\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E01\u0E31\u0E1A PHP \u0E41\u0E25\u0E30\u0E1B\u0E31\u0E0D\u0E2B\u0E32 Linux/\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19", "Bangkok, Thailand": "\u0E01\u0E23\u0E38\u0E07\u0E40\u0E17\u0E1E\u0E2F \u0E1B\u0E23\u0E30\u0E40\u0E17\u0E28\u0E44\u0E17\u0E22", "Systems in Production": "\u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07", "Systems in production": "\u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07", "3 Live Production Deployments": "3 \u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07", "Restaurant Stock & Inventory System": "\u0E23\u0E30\u0E1A\u0E1A\u0E2A\u0E15\u0E47\u0E2D\u0E01\u0E41\u0E25\u0E30\u0E04\u0E25\u0E31\u0E07\u0E27\u0E31\u0E15\u0E16\u0E38\u0E14\u0E34\u0E1A\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", "LIVE IN PROD": "\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07", "live": "\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07", "A commercial restaurant needed real-time control over ingredient stock across rapid kitchen shifts \u2014 who can adjust counts, who gets notified when something runs low, and a way to scan stock in with a phone camera instead of typing it by hand.": "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E04\u0E27\u0E1A\u0E04\u0E38\u0E21\u0E2A\u0E15\u0E47\u0E2D\u0E01\u0E27\u0E31\u0E15\u0E16\u0E38\u0E14\u0E34\u0E1A\u0E41\u0E1A\u0E1A\u0E40\u0E23\u0E35\u0E22\u0E25\u0E44\u0E17\u0E21\u0E4C\u0E43\u0E19\u0E17\u0E38\u0E01\u0E01\u0E30\u0E02\u0E2D\u0E07\u0E04\u0E23\u0E31\u0E27 \u0E17\u0E31\u0E49\u0E07\u0E01\u0E33\u0E2B\u0E19\u0E14\u0E27\u0E48\u0E32\u0E43\u0E04\u0E23\u0E1B\u0E23\u0E31\u0E1A\u0E22\u0E2D\u0E14\u0E44\u0E14\u0E49 \u0E43\u0E04\u0E23\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E02\u0E2D\u0E07\u0E43\u0E01\u0E25\u0E49\u0E2B\u0E21\u0E14 \u0E41\u0E25\u0E30\u0E2A\u0E41\u0E01\u0E19\u0E23\u0E31\u0E1A\u0E02\u0E2D\u0E07\u0E40\u0E02\u0E49\u0E32\u0E14\u0E49\u0E27\u0E22\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E41\u0E17\u0E19\u0E01\u0E32\u0E23\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E40\u0E2D\u0E07", "A restaurant needed real-time control over ingredient stock across shifts \u2014 who can adjust counts, who gets notified when something runs low, and a way to scan stock in with a phone instead of typing it in by hand.": "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E04\u0E27\u0E1A\u0E04\u0E38\u0E21\u0E2A\u0E15\u0E47\u0E2D\u0E01\u0E27\u0E31\u0E15\u0E16\u0E38\u0E14\u0E34\u0E1A\u0E41\u0E1A\u0E1A\u0E40\u0E23\u0E35\u0E22\u0E25\u0E44\u0E17\u0E21\u0E4C\u0E43\u0E19\u0E17\u0E38\u0E01\u0E01\u0E30 \u0E17\u0E31\u0E49\u0E07\u0E01\u0E33\u0E2B\u0E19\u0E14\u0E27\u0E48\u0E32\u0E43\u0E04\u0E23\u0E1B\u0E23\u0E31\u0E1A\u0E22\u0E2D\u0E14\u0E44\u0E14\u0E49 \u0E43\u0E04\u0E23\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E02\u0E2D\u0E07\u0E43\u0E01\u0E25\u0E49\u0E2B\u0E21\u0E14 \u0E41\u0E25\u0E30\u0E2A\u0E41\u0E01\u0E19\u0E23\u0E31\u0E1A\u0E02\u0E2D\u0E07\u0E40\u0E02\u0E49\u0E32\u0E14\u0E49\u0E27\u0E22\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E41\u0E17\u0E19\u0E01\u0E32\u0E23\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E40\u0E2D\u0E07", "Architecture & Role": "\u0E2A\u0E16\u0E32\u0E1B\u0E31\u0E15\u0E22\u0E01\u0E23\u0E23\u0E21\u0E41\u0E25\u0E30\u0E1A\u0E17\u0E1A\u0E32\u0E17", "role": "\u0E1A\u0E17\u0E1A\u0E32\u0E17", "Development approach: I use AI tools to generate much of the code, then review and modify parts I understand while working through features and troubleshooting. This project demonstrates my practical learning through an AI-assisted workflow.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E48\u0E27\u0E19\u0E43\u0E2B\u0E0D\u0E48 \u0E08\u0E32\u0E01\u0E19\u0E31\u0E49\u0E19\u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E2A\u0E48\u0E27\u0E19\u0E17\u0E35\u0E48\u0E40\u0E02\u0E49\u0E32\u0E43\u0E08\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32 \u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E19\u0E35\u0E49\u0E41\u0E2A\u0E14\u0E07\u0E01\u0E32\u0E23\u0E40\u0E23\u0E35\u0E22\u0E19\u0E23\u0E39\u0E49\u0E08\u0E32\u0E01\u0E01\u0E32\u0E23\u0E25\u0E07\u0E21\u0E37\u0E2D\u0E08\u0E23\u0E34\u0E07\u0E1C\u0E48\u0E32\u0E19\u0E01\u0E32\u0E23\u0E17\u0E33\u0E07\u0E32\u0E19\u0E23\u0E48\u0E27\u0E21\u0E01\u0E31\u0E1A AI", "Development approach: I use AI tools to generate much of the code, then review and modify parts I understand while working through features and troubleshooting.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E48\u0E27\u0E19\u0E43\u0E2B\u0E0D\u0E48 \u0E08\u0E32\u0E01\u0E19\u0E31\u0E49\u0E19\u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E2A\u0E48\u0E27\u0E19\u0E17\u0E35\u0E48\u0E40\u0E02\u0E49\u0E32\u0E43\u0E08\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32", "Tech Stack": "\u0E40\u0E17\u0E04\u0E42\u0E19\u0E42\u0E25\u0E22\u0E35\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49", "stack": "\u0E40\u0E17\u0E04\u0E42\u0E19\u0E42\u0E25\u0E22\u0E35\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49", "bcrypt sessions": "\u0E40\u0E0B\u0E2A\u0E0A\u0E31\u0E19\u0E14\u0E49\u0E27\u0E22 bcrypt", "zxing (barcode scan)": "zxing (\u0E2A\u0E41\u0E01\u0E19\u0E1A\u0E32\u0E23\u0E4C\u0E42\u0E04\u0E49\u0E14)", "What it does": "\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23\u0E44\u0E14\u0E49\u0E1A\u0E49\u0E32\u0E07", "what it does": "\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23\u0E44\u0E14\u0E49\u0E1A\u0E49\u0E32\u0E07", "4-tier RBAC permission model:": "\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C 4 \u0E23\u0E30\u0E14\u0E31\u0E1A\u0E15\u0E32\u0E21\u0E1A\u0E17\u0E1A\u0E32\u0E17 (RBAC):", "Owner, DevOps, Manager, Floor Staff \u2014 strictly defining authorized actions per role.": "\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07, DevOps, \u0E1C\u0E39\u0E49\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23, \u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E23\u0E49\u0E32\u0E19 \u2014 \u0E01\u0E33\u0E2B\u0E19\u0E14\u0E0A\u0E31\u0E14\u0E40\u0E08\u0E19\u0E27\u0E48\u0E32\u0E41\u0E15\u0E48\u0E25\u0E30\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23\u0E44\u0E14\u0E49\u0E1A\u0E49\u0E32\u0E07", "Mobile optical barcode scanning:": "\u0E2A\u0E41\u0E01\u0E19\u0E1A\u0E32\u0E23\u0E4C\u0E42\u0E04\u0E49\u0E14\u0E14\u0E49\u0E27\u0E22\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D:", "Scans barcodes directly via phone cameras using zxing for zero-latency check-in/out.": "\u0E2A\u0E41\u0E01\u0E19\u0E1A\u0E32\u0E23\u0E4C\u0E42\u0E04\u0E49\u0E14\u0E1C\u0E48\u0E32\u0E19\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E14\u0E49\u0E27\u0E22 zxing \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E23\u0E31\u0E1A\u0E40\u0E02\u0E49\u0E32/\u0E08\u0E48\u0E32\u0E22\u0E2D\u0E2D\u0E01\u0E44\u0E14\u0E49\u0E17\u0E31\u0E19\u0E17\u0E35", "Automated threshold alerts:": "\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E02\u0E2D\u0E07\u0E43\u0E01\u0E25\u0E49\u0E2B\u0E21\u0E14:", "Automatic email alerts dispatched whenever ingredient inventory breaches safety thresholds.": "\u0E2A\u0E48\u0E07\u0E2D\u0E35\u0E40\u0E21\u0E25\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E27\u0E31\u0E15\u0E16\u0E38\u0E14\u0E34\u0E1A\u0E15\u0E48\u0E33\u0E01\u0E27\u0E48\u0E32\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E17\u0E35\u0E48\u0E01\u0E33\u0E2B\u0E19\u0E14", "Shift scheduling & attendance:": "\u0E15\u0E32\u0E23\u0E32\u0E07\u0E01\u0E30\u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32:", "Daily attendance check-in / check-out with shift tracking.": "\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E40\u0E02\u0E49\u0E32/\u0E2D\u0E2D\u0E01\u0E07\u0E32\u0E19\u0E23\u0E32\u0E22\u0E27\u0E31\u0E19\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E15\u0E34\u0E14\u0E15\u0E32\u0E21\u0E01\u0E30", "Re-authentication guardrails:": "\u0E22\u0E37\u0E19\u0E22\u0E31\u0E19\u0E15\u0E31\u0E27\u0E15\u0E19\u0E0B\u0E49\u0E33\u0E01\u0E48\u0E2D\u0E19\u0E17\u0E33\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E2A\u0E33\u0E04\u0E31\u0E0D:", "Permanent-delete and critical flows are gated behind a password re-check.": "\u0E01\u0E32\u0E23\u0E25\u0E1A\u0E16\u0E32\u0E27\u0E23\u0E41\u0E25\u0E30\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E2A\u0E33\u0E04\u0E31\u0E0D\u0E15\u0E49\u0E2D\u0E07\u0E43\u0E2A\u0E48\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19\u0E22\u0E37\u0E19\u0E22\u0E31\u0E19\u0E2D\u0E35\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07", "Progressive Web App (PWA):": "\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E41\u0E1A\u0E1A PWA:", "Fully installable to floor staff mobile home screens for native-app convenience.": "\u0E15\u0E34\u0E14\u0E15\u0E31\u0E49\u0E07\u0E25\u0E07\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E2B\u0E25\u0E31\u0E01\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E02\u0E2D\u0E07\u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49 \u0E43\u0E0A\u0E49\u0E2A\u0E30\u0E14\u0E27\u0E01\u0E40\u0E2B\u0E21\u0E37\u0E2D\u0E19\u0E41\u0E2D\u0E1B\u0E08\u0E23\u0E34\u0E07", "Four-role permission model \u2014 Owner, DevOps, Manager, Staff \u2014 down to which actions each can take": "\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C 4 \u0E1A\u0E17\u0E1A\u0E32\u0E17 \u2014 \u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07, DevOps, \u0E1C\u0E39\u0E49\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23, \u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19 \u2014 \u0E01\u0E33\u0E2B\u0E19\u0E14\u0E25\u0E30\u0E40\u0E2D\u0E35\u0E22\u0E14\u0E16\u0E36\u0E07\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E27\u0E48\u0E32\u0E41\u0E15\u0E48\u0E25\u0E30\u0E04\u0E19\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23\u0E44\u0E14\u0E49", "Scan barcodes with a phone camera to log stock in or out": "\u0E2A\u0E41\u0E01\u0E19\u0E1A\u0E32\u0E23\u0E4C\u0E42\u0E04\u0E49\u0E14\u0E14\u0E49\u0E27\u0E22\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E23\u0E31\u0E1A\u0E40\u0E02\u0E49\u0E32\u0E2B\u0E23\u0E37\u0E2D\u0E08\u0E48\u0E32\u0E22\u0E2D\u0E2D\u0E01", "Automatic email alerts when an ingredient drops below its threshold": "\u0E2A\u0E48\u0E07\u0E2D\u0E35\u0E40\u0E21\u0E25\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E27\u0E31\u0E15\u0E16\u0E38\u0E14\u0E34\u0E1A\u0E15\u0E48\u0E33\u0E01\u0E27\u0E48\u0E32\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E17\u0E35\u0E48\u0E01\u0E33\u0E2B\u0E19\u0E14", "Shift scheduling and daily attendance check-in / check-out": "\u0E15\u0E32\u0E23\u0E32\u0E07\u0E01\u0E30 \u0E41\u0E25\u0E30\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E40\u0E02\u0E49\u0E32/\u0E2D\u0E2D\u0E01\u0E07\u0E32\u0E19\u0E23\u0E32\u0E22\u0E27\u0E31\u0E19", "Permanent-delete flows are gated behind a password re-check": "\u0E01\u0E32\u0E23\u0E25\u0E1A\u0E16\u0E32\u0E27\u0E23\u0E15\u0E49\u0E2D\u0E07\u0E43\u0E2A\u0E48\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19\u0E22\u0E37\u0E19\u0E22\u0E31\u0E19\u0E2D\u0E35\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07", "Installs to the home screen as a PWA for floor staff": "\u0E15\u0E34\u0E14\u0E15\u0E31\u0E49\u0E07\u0E25\u0E07\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E2B\u0E25\u0E31\u0E01\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D\u0E02\u0E2D\u0E07\u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49\u0E41\u0E1A\u0E1A PWA", "Open Live Demo": "\u0E40\u0E1B\u0E34\u0E14\u0E40\u0E14\u0E42\u0E21\u0E08\u0E23\u0E34\u0E07", "Open live demo": "\u0E40\u0E1B\u0E34\u0E14\u0E40\u0E14\u0E42\u0E21\u0E08\u0E23\u0E34\u0E07", "Open Live Portal": "\u0E40\u0E1B\u0E34\u0E14\u0E23\u0E30\u0E1A\u0E1A\u0E08\u0E23\u0E34\u0E07", "stock.chronolier.xyz \xB7 Source code available on request": "stock.chronolier.xyz \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "stock.chronolier.xyz \xB7 Source available on request": "stock.chronolier.xyz \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "chronolier.xyz \xB7 Source code available on request": "chronolier.xyz \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "chronolier.xyz \xB7 Source available on request": "chronolier.xyz \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "chronolier.monster \xB7 Source code available on request": "chronolier.monster \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "chronolier.monster \xB7 Source available on request": "chronolier.monster \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "DEMO ACCESS": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07", "Copy Username": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E0A\u0E37\u0E48\u0E2D\u0E1C\u0E39\u0E49\u0E43\u0E0A\u0E49", "Copy Password": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19", "Guest demo account \xB7 Read-only access": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E1C\u0E39\u0E49\u0E40\u0E22\u0E35\u0E48\u0E22\u0E21\u0E0A\u0E21 \xB7 \u0E14\u0E39\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27", "An internal portal for a 24/7 support team's shift-based workflow \u2014 one consolidated surface to track SLAs, hand off shifts cleanly without dropped context, and instantly retrieve incident response scripts without hunting across disparate tools.": "\u0E1E\u0E2D\u0E23\u0E4C\u0E17\u0E31\u0E25\u0E20\u0E32\u0E22\u0E43\u0E19\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E17\u0E35\u0E21\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15 24/7 \u0E17\u0E35\u0E48\u0E17\u0E33\u0E07\u0E32\u0E19\u0E40\u0E1B\u0E47\u0E19\u0E01\u0E30 \u0E23\u0E27\u0E21\u0E17\u0E38\u0E01\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E27\u0E49\u0E17\u0E35\u0E48\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E17\u0E31\u0E49\u0E07\u0E15\u0E34\u0E14\u0E15\u0E32\u0E21 SLA \u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E30\u0E44\u0E14\u0E49\u0E04\u0E23\u0E1A\u0E44\u0E21\u0E48\u0E15\u0E01\u0E2B\u0E25\u0E48\u0E19 \u0E41\u0E25\u0E30\u0E04\u0E49\u0E19\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E21\u0E37\u0E2D\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E44\u0E14\u0E49\u0E17\u0E31\u0E19\u0E17\u0E35\u0E42\u0E14\u0E22\u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E2A\u0E25\u0E31\u0E1A\u0E2B\u0E25\u0E32\u0E22\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D", "An internal portal for a support team's shift-based workflow \u2014 one place to track SLAs, hand off a shift cleanly, and find the right script or article without hunting across tools.": "\u0E1E\u0E2D\u0E23\u0E4C\u0E17\u0E31\u0E25\u0E20\u0E32\u0E22\u0E43\u0E19\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E17\u0E35\u0E21\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E17\u0E35\u0E48\u0E17\u0E33\u0E07\u0E32\u0E19\u0E40\u0E1B\u0E47\u0E19\u0E01\u0E30 \u0E17\u0E35\u0E48\u0E40\u0E14\u0E35\u0E22\u0E27\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E15\u0E34\u0E14\u0E15\u0E32\u0E21 SLA \u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E30\u0E43\u0E2B\u0E49\u0E40\u0E23\u0E35\u0E22\u0E1A\u0E23\u0E49\u0E2D\u0E22 \u0E41\u0E25\u0E30\u0E2B\u0E32\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E2B\u0E23\u0E37\u0E2D\u0E1A\u0E17\u0E04\u0E27\u0E32\u0E21\u0E17\u0E35\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E43\u0E0A\u0E49\u0E42\u0E14\u0E22\u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E2A\u0E25\u0E31\u0E1A\u0E2B\u0E25\u0E32\u0E22\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D", "Development approach: I use AI-assisted coding to implement features based on the support team's workflow. I review generated code and make some adjustments; the project uses a JSON-based data store on a persistent Docker volume.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E40\u0E02\u0E35\u0E22\u0E19\u0E42\u0E04\u0E49\u0E14\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E15\u0E32\u0E21\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07\u0E02\u0E2D\u0E07\u0E17\u0E35\u0E21\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15 \u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E41\u0E25\u0E30\u0E1B\u0E23\u0E31\u0E1A\u0E41\u0E01\u0E49\u0E1A\u0E32\u0E07\u0E2A\u0E48\u0E27\u0E19 \u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E01\u0E47\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E1A\u0E1A JSON \u0E1A\u0E19 Docker volume \u0E17\u0E35\u0E48\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E44\u0E21\u0E48\u0E2B\u0E32\u0E22", "Development approach: I use AI-assisted coding to implement features based on the support team's workflow. I review generated code and make some adjustments.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E40\u0E02\u0E35\u0E22\u0E19\u0E42\u0E04\u0E49\u0E14\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E15\u0E32\u0E21\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07\u0E02\u0E2D\u0E07\u0E17\u0E35\u0E21\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15 \u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E41\u0E25\u0E30\u0E1B\u0E23\u0E31\u0E1A\u0E41\u0E01\u0E49\u0E1A\u0E32\u0E07\u0E2A\u0E48\u0E27\u0E19", "JWT session cookies": "\u0E04\u0E38\u0E01\u0E01\u0E35\u0E49\u0E40\u0E0B\u0E2A\u0E0A\u0E31\u0E19 JWT", "A shift, start to finish": "\u0E2B\u0E19\u0E36\u0E48\u0E07\u0E01\u0E30 \u0E15\u0E31\u0E49\u0E07\u0E41\u0E15\u0E48\u0E40\u0E23\u0E34\u0E48\u0E21\u0E08\u0E19\u0E08\u0E1A", "a shift, start to finish": "\u0E2B\u0E19\u0E36\u0E48\u0E07\u0E01\u0E30 \u0E15\u0E31\u0E49\u0E07\u0E41\u0E15\u0E48\u0E40\u0E23\u0E34\u0E48\u0E21\u0E08\u0E19\u0E08\u0E1A", "Clock-in & punctuality audit:": "\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E41\u0E25\u0E30\u0E15\u0E23\u0E27\u0E08\u0E01\u0E32\u0E23\u0E21\u0E32\u0E2A\u0E32\u0E22:", "System automatically benchmarks agent clock-in times against shift rosters upon session start.": "\u0E23\u0E30\u0E1A\u0E1A\u0E40\u0E17\u0E35\u0E22\u0E1A\u0E40\u0E27\u0E25\u0E32\u0E40\u0E02\u0E49\u0E32\u0E07\u0E32\u0E19\u0E01\u0E31\u0E1A\u0E15\u0E32\u0E23\u0E32\u0E07\u0E01\u0E30\u0E43\u0E2B\u0E49\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E40\u0E23\u0E34\u0E48\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19", "Screen-lock case acknowledgment:": "\u0E25\u0E47\u0E2D\u0E01\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E08\u0E19\u0E01\u0E27\u0E48\u0E32\u0E08\u0E30\u0E23\u0E31\u0E1A\u0E17\u0E23\u0E32\u0E1A\u0E40\u0E04\u0E2A:", "If the outgoing shift left open cases, the screen locks until explicitly acknowledged into the audit trail.": "\u0E16\u0E49\u0E32\u0E01\u0E30\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E17\u0E34\u0E49\u0E07\u0E40\u0E04\u0E2A\u0E04\u0E49\u0E32\u0E07\u0E44\u0E27\u0E49 \u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E08\u0E30\u0E25\u0E47\u0E2D\u0E01\u0E08\u0E19\u0E01\u0E27\u0E48\u0E32\u0E08\u0E30\u0E01\u0E14\u0E23\u0E31\u0E1A\u0E17\u0E23\u0E32\u0E1A \u0E41\u0E25\u0E30\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E25\u0E07\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A", "Fuzzy-match knowledge base:": "\u0E04\u0E25\u0E31\u0E07\u0E04\u0E27\u0E32\u0E21\u0E23\u0E39\u0E49\u0E04\u0E49\u0E19\u0E41\u0E1A\u0E1A\u0E43\u0E01\u0E25\u0E49\u0E40\u0E04\u0E35\u0E22\u0E07:", "Instant procedural retrieval for incident response scripts without requiring exact keyword matches.": "\u0E04\u0E49\u0E19\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E21\u0E37\u0E2D\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E44\u0E14\u0E49\u0E17\u0E31\u0E19\u0E17\u0E35 \u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E04\u0E33\u0E04\u0E49\u0E19\u0E43\u0E2B\u0E49\u0E15\u0E23\u0E07\u0E40\u0E1B\u0E4A\u0E30", "Real-time case workbench:": "\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E40\u0E04\u0E2A\u0E41\u0E1A\u0E1A\u0E40\u0E23\u0E35\u0E22\u0E25\u0E44\u0E17\u0E21\u0E4C:", "Take, reassign, or resolve incidents on the fly with live status counters.": "\u0E23\u0E31\u0E1A \u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D \u0E2B\u0E23\u0E37\u0E2D\u0E1B\u0E34\u0E14\u0E40\u0E04\u0E2A\u0E44\u0E14\u0E49\u0E17\u0E31\u0E19\u0E17\u0E35 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E15\u0E31\u0E27\u0E19\u0E31\u0E1A\u0E2A\u0E16\u0E32\u0E19\u0E30\u0E2A\u0E14", "Structured handoff protocol:": "\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E30\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E30\u0E1A\u0E1A:", "Formalize shift handoffs by tagging open items, assigning incoming owners, and capturing handover briefing notes.": "\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E30\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E30\u0E1A\u0E1A \u0E14\u0E49\u0E27\u0E22\u0E01\u0E32\u0E23\u0E15\u0E34\u0E14\u0E41\u0E17\u0E47\u0E01\u0E07\u0E32\u0E19\u0E04\u0E49\u0E32\u0E07 \u0E01\u0E33\u0E2B\u0E19\u0E14\u0E1C\u0E39\u0E49\u0E23\u0E31\u0E1A\u0E1C\u0E34\u0E14\u0E0A\u0E2D\u0E1A\u0E01\u0E30\u0E16\u0E31\u0E14\u0E44\u0E1B \u0E41\u0E25\u0E30\u0E40\u0E02\u0E35\u0E22\u0E19\u0E2A\u0E23\u0E38\u0E1B\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D", "Design Note: Standalone Reliability Architecture": "\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E2D\u0E2D\u0E01\u0E41\u0E1A\u0E1A: \u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E17\u0E33\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49\u0E14\u0E49\u0E27\u0E22\u0E15\u0E31\u0E27\u0E40\u0E2D\u0E07", "Inbound webhook from ticketing tool only, zero outbound API calls. Data lives in atomic JSON datastores on persistent Docker volumes, designed to keep its data available without depending on an external database.": "\u0E23\u0E31\u0E1A webhook \u0E08\u0E32\u0E01\u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E34\u0E01\u0E40\u0E01\u0E47\u0E15\u0E02\u0E32\u0E40\u0E02\u0E49\u0E32\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E44\u0E21\u0E48\u0E40\u0E23\u0E35\u0E22\u0E01 API \u0E20\u0E32\u0E22\u0E19\u0E2D\u0E01\u0E40\u0E25\u0E22 \u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E40\u0E01\u0E47\u0E1A\u0E40\u0E1B\u0E47\u0E19 JSON \u0E41\u0E1A\u0E1A\u0E40\u0E02\u0E35\u0E22\u0E19\u0E04\u0E23\u0E31\u0E49\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27\u0E08\u0E1A\u0E1A\u0E19 Docker volume \u0E17\u0E35\u0E48\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E44\u0E21\u0E48\u0E2B\u0E32\u0E22 \u0E2D\u0E2D\u0E01\u0E41\u0E1A\u0E1A\u0E43\u0E2B\u0E49\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E42\u0E14\u0E22\u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E1E\u0E36\u0E48\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E20\u0E32\u0E22\u0E19\u0E2D\u0E01", "Log in and clock in \u2014 the system checks lateness against the shift schedule automatically.": "\u0E40\u0E02\u0E49\u0E32\u0E2A\u0E39\u0E48\u0E23\u0E30\u0E1A\u0E1A\u0E41\u0E25\u0E30\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32 \u2014 \u0E23\u0E30\u0E1A\u0E1A\u0E15\u0E23\u0E27\u0E08\u0E01\u0E32\u0E23\u0E21\u0E32\u0E2A\u0E32\u0E22\u0E40\u0E17\u0E35\u0E22\u0E1A\u0E01\u0E31\u0E1A\u0E15\u0E32\u0E23\u0E32\u0E07\u0E01\u0E30\u0E43\u0E2B\u0E49\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34", "If the previous shift left open cases, the screen locks until they're acknowledged \u2014 logged straight to the audit trail.": "\u0E16\u0E49\u0E32\u0E01\u0E30\u0E01\u0E48\u0E2D\u0E19\u0E17\u0E34\u0E49\u0E07\u0E40\u0E04\u0E2A\u0E04\u0E49\u0E32\u0E07\u0E44\u0E27\u0E49 \u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E08\u0E30\u0E25\u0E47\u0E2D\u0E01\u0E08\u0E19\u0E01\u0E27\u0E48\u0E32\u0E08\u0E30\u0E01\u0E14\u0E23\u0E31\u0E1A\u0E17\u0E23\u0E32\u0E1A \u2014 \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E25\u0E07\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E17\u0E31\u0E19\u0E17\u0E35", "Search scripts and knowledge articles with fuzzy matching, no need to type the exact keyword.": "\u0E04\u0E49\u0E19\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E1A\u0E17\u0E04\u0E27\u0E32\u0E21\u0E04\u0E27\u0E32\u0E21\u0E23\u0E39\u0E49\u0E41\u0E1A\u0E1A\u0E43\u0E01\u0E25\u0E49\u0E40\u0E04\u0E35\u0E22\u0E07 \u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E04\u0E33\u0E04\u0E49\u0E19\u0E43\u0E2B\u0E49\u0E15\u0E23\u0E07\u0E40\u0E1B\u0E4A\u0E30", "Work the dashboard \u2014 take, reassign, or resolve cases in real time.": "\u0E17\u0E33\u0E07\u0E32\u0E19\u0E1A\u0E19\u0E41\u0E14\u0E0A\u0E1A\u0E2D\u0E23\u0E4C\u0E14 \u2014 \u0E23\u0E31\u0E1A \u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D \u0E2B\u0E23\u0E37\u0E2D\u0E1B\u0E34\u0E14\u0E40\u0E04\u0E2A\u0E44\u0E14\u0E49\u0E41\u0E1A\u0E1A\u0E40\u0E23\u0E35\u0E22\u0E25\u0E44\u0E17\u0E21\u0E4C", "Hand the shift off: flag open cases, assign an owner, and leave a summary for the next agent.": "\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E30: \u0E15\u0E34\u0E14\u0E18\u0E07\u0E40\u0E04\u0E2A\u0E04\u0E49\u0E32\u0E07 \u0E01\u0E33\u0E2B\u0E19\u0E14\u0E1C\u0E39\u0E49\u0E23\u0E31\u0E1A\u0E1C\u0E34\u0E14\u0E0A\u0E2D\u0E1A \u0E41\u0E25\u0E30\u0E40\u0E02\u0E35\u0E22\u0E19\u0E2A\u0E23\u0E38\u0E1B\u0E43\u0E2B\u0E49\u0E04\u0E19\u0E01\u0E30\u0E16\u0E31\u0E14\u0E44\u0E1B", "design note": "\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E2D\u0E2D\u0E01\u0E41\u0E1A\u0E1A", "Standalone design using a JSON-based data store on a persistent Docker volume, without an external database dependency.": "\u0E2D\u0E2D\u0E01\u0E41\u0E1A\u0E1A\u0E43\u0E2B\u0E49\u0E17\u0E33\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49\u0E14\u0E49\u0E27\u0E22\u0E15\u0E31\u0E27\u0E40\u0E2D\u0E07 \u0E40\u0E01\u0E47\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E1A\u0E1A JSON \u0E1A\u0E19 Docker volume \u0E17\u0E35\u0E48\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E44\u0E21\u0E48\u0E2B\u0E32\u0E22 \u0E44\u0E21\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E1E\u0E36\u0E48\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E20\u0E32\u0E22\u0E19\u0E2D\u0E01", "Demo account \xB7 Read-only, pre-filled login removed": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07 \xB7 \u0E14\u0E39\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E44\u0E21\u0E48\u0E21\u0E35\u0E01\u0E32\u0E23\u0E01\u0E23\u0E2D\u0E01\u0E23\u0E2B\u0E31\u0E2A\u0E43\u0E2B\u0E49\u0E25\u0E48\u0E27\u0E07\u0E2B\u0E19\u0E49\u0E32", "Demo account \xB7 Read-only access": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07 \xB7 \u0E14\u0E39\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27", "A multi-tenant operations platform covering organization setup, member/role management, and audit history \u2014 the foundation layer point-of-sale and inventory modules build on.": "\u0E41\u0E1E\u0E25\u0E15\u0E1F\u0E2D\u0E23\u0E4C\u0E21\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E17\u0E35\u0E48\u0E23\u0E2D\u0E07\u0E23\u0E31\u0E1A\u0E2B\u0E25\u0E32\u0E22\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23 \u0E04\u0E23\u0E2D\u0E1A\u0E04\u0E25\u0E38\u0E21\u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23 \u0E01\u0E32\u0E23\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E2A\u0E21\u0E32\u0E0A\u0E34\u0E01\u0E41\u0E25\u0E30\u0E1A\u0E17\u0E1A\u0E32\u0E17 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A \u2014 \u0E40\u0E1B\u0E47\u0E19\u0E10\u0E32\u0E19\u0E17\u0E35\u0E48\u0E23\u0E30\u0E1A\u0E1A\u0E02\u0E32\u0E22\u0E2B\u0E19\u0E49\u0E32\u0E23\u0E49\u0E32\u0E19\u0E41\u0E25\u0E30\u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32\u0E15\u0E48\u0E2D\u0E22\u0E2D\u0E14\u0E02\u0E36\u0E49\u0E19\u0E44\u0E1B", "Development approach: I use AI-assisted coding to build and refine the application's organization, membership, and audit-history features. I review generated code and modify parts I understand; the project explores multi-tenant data separation and role-based access.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E40\u0E02\u0E35\u0E22\u0E19\u0E41\u0E25\u0E30\u0E1B\u0E23\u0E31\u0E1A\u0E1B\u0E23\u0E38\u0E07\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23 \u0E2A\u0E21\u0E32\u0E0A\u0E34\u0E01 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A \u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E2A\u0E48\u0E27\u0E19\u0E17\u0E35\u0E48\u0E40\u0E02\u0E49\u0E32\u0E43\u0E08 \u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E19\u0E35\u0E49\u0E28\u0E36\u0E01\u0E29\u0E32\u0E01\u0E32\u0E23\u0E41\u0E22\u0E01\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23\u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E08\u0E33\u0E01\u0E31\u0E14\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E15\u0E32\u0E21\u0E1A\u0E17\u0E1A\u0E32\u0E17", "Development approach: I use AI-assisted coding to build and refine organization, membership, and audit-history features. I review generated code and modify parts I understand.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E40\u0E02\u0E35\u0E22\u0E19\u0E41\u0E25\u0E30\u0E1B\u0E23\u0E31\u0E1A\u0E1B\u0E23\u0E38\u0E07\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23 \u0E2A\u0E21\u0E32\u0E0A\u0E34\u0E01 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A \u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E2A\u0E48\u0E27\u0E19\u0E17\u0E35\u0E48\u0E40\u0E02\u0E49\u0E32\u0E43\u0E08", "Multi-tenant organizations:": "\u0E23\u0E2D\u0E07\u0E23\u0E31\u0E1A\u0E2B\u0E25\u0E32\u0E22\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23:", "Isolated data per organization, enforced at the database layer with row-level security.": "\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23\u0E41\u0E22\u0E01\u0E01\u0E31\u0E19 \u0E1A\u0E31\u0E07\u0E04\u0E31\u0E1A\u0E17\u0E35\u0E48\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E14\u0E49\u0E27\u0E22 row-level security", "Role-based membership:": "\u0E2A\u0E21\u0E32\u0E0A\u0E34\u0E01\u0E15\u0E32\u0E21\u0E1A\u0E17\u0E1A\u0E32\u0E17:", "Owner, Admin, Staff, and Viewer roles with per-organization custom roles and permissions.": "\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \u0E41\u0E2D\u0E14\u0E21\u0E34\u0E19 \u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19 \u0E41\u0E25\u0E30\u0E1C\u0E39\u0E49\u0E14\u0E39 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E41\u0E25\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E40\u0E2D\u0E07\u0E44\u0E14\u0E49\u0E43\u0E19\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23", "Full audit trail:": "\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E04\u0E23\u0E1A\u0E16\u0E49\u0E27\u0E19:", "Append-only audit log of every sensitive action, scoped per tenant.": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E17\u0E38\u0E01\u0E01\u0E32\u0E23\u0E01\u0E23\u0E30\u0E17\u0E33\u0E2A\u0E33\u0E04\u0E31\u0E0D\u0E41\u0E1A\u0E1A\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E41\u0E22\u0E01\u0E15\u0E32\u0E21\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23", "Branch management:": "\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E2A\u0E32\u0E02\u0E32:", "Multiple branches per organization for point-of-sale and inventory rollout.": "\u0E2B\u0E19\u0E36\u0E48\u0E07\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23\u0E21\u0E35\u0E44\u0E14\u0E49\u0E2B\u0E25\u0E32\u0E22\u0E2A\u0E32\u0E02\u0E32 \u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E02\u0E22\u0E32\u0E22\u0E23\u0E30\u0E1A\u0E1A\u0E02\u0E32\u0E22\u0E2B\u0E19\u0E49\u0E32\u0E23\u0E49\u0E32\u0E19\u0E41\u0E25\u0E30\u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32", "Multi-tenant organizations, isolated at the database layer with row-level security": "\u0E23\u0E2D\u0E07\u0E23\u0E31\u0E1A\u0E2B\u0E25\u0E32\u0E22\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23 \u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E22\u0E01\u0E01\u0E31\u0E19\u0E17\u0E35\u0E48\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E14\u0E49\u0E27\u0E22 row-level security", "Owner, Admin, Staff, and Viewer roles with per-organization custom roles and permissions": "\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \u0E41\u0E2D\u0E14\u0E21\u0E34\u0E19 \u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19 \u0E41\u0E25\u0E30\u0E1C\u0E39\u0E49\u0E14\u0E39 \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E41\u0E25\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E40\u0E2D\u0E07\u0E44\u0E14\u0E49\u0E43\u0E19\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23", "Append-only audit log of every sensitive action, scoped per tenant": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E17\u0E38\u0E01\u0E01\u0E32\u0E23\u0E01\u0E23\u0E30\u0E17\u0E33\u0E2A\u0E33\u0E04\u0E31\u0E0D\u0E41\u0E1A\u0E1A\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E41\u0E22\u0E01\u0E15\u0E32\u0E21\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23", "Multiple branches per organization for point-of-sale and inventory rollout": "\u0E2B\u0E19\u0E36\u0E48\u0E07\u0E2D\u0E07\u0E04\u0E4C\u0E01\u0E23\u0E21\u0E35\u0E44\u0E14\u0E49\u0E2B\u0E25\u0E32\u0E22\u0E2A\u0E32\u0E02\u0E32 \u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E02\u0E22\u0E32\u0E22\u0E23\u0E30\u0E1A\u0E1A\u0E02\u0E32\u0E22\u0E2B\u0E19\u0E49\u0E32\u0E23\u0E49\u0E32\u0E19\u0E41\u0E25\u0E30\u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32", "POS & Inventory demo account": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E23\u0E30\u0E1A\u0E1A POS \u0E41\u0E25\u0E30\u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32", "Condo Management App": "\u0E41\u0E2D\u0E1B\u0E1A\u0E23\u0E34\u0E2B\u0E32\u0E23\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E04\u0E2D\u0E19\u0E42\u0E14", "A condo management office needs one place for residents, office staff, technicians, and the building owner \u2014 repair requests, parcels, visitors, bills, and technician attendance \u2014 and because the app is sold per condo, each building should only get the features in its plan.": "\u0E2A\u0E33\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E19\u0E34\u0E15\u0E34\u0E1A\u0E38\u0E04\u0E04\u0E25\u0E04\u0E2D\u0E19\u0E42\u0E14\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E17\u0E35\u0E48\u0E40\u0E14\u0E35\u0E22\u0E27\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19 \u0E40\u0E08\u0E49\u0E32\u0E2B\u0E19\u0E49\u0E32\u0E17\u0E35\u0E48 \u0E0A\u0E48\u0E32\u0E07 \u0E41\u0E25\u0E30\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E2D\u0E32\u0E04\u0E32\u0E23 \u2014 \u0E17\u0E31\u0E49\u0E07\u0E41\u0E08\u0E49\u0E07\u0E0B\u0E48\u0E2D\u0E21 \u0E1E\u0E31\u0E2A\u0E14\u0E38 \u0E1C\u0E39\u0E49\u0E21\u0E32\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D \u0E1A\u0E34\u0E25 \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E02\u0E2D\u0E07\u0E0A\u0E48\u0E32\u0E07 \u2014 \u0E41\u0E25\u0E30\u0E40\u0E1E\u0E23\u0E32\u0E30\u0E41\u0E2D\u0E1B\u0E02\u0E32\u0E22\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E32\u0E22\u0E04\u0E2D\u0E19\u0E42\u0E14 \u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E32\u0E04\u0E32\u0E23\u0E08\u0E36\u0E07\u0E44\u0E14\u0E49\u0E40\u0E09\u0E1E\u0E32\u0E30\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E15\u0E32\u0E21\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08\u0E17\u0E35\u0E48\u0E0B\u0E37\u0E49\u0E2D", "Development approach: I use AI tools (Claude and Codex) to generate most of the code. I define the requirements and permission rules, test changes on a real Android phone, and approve every deployment, while learning to trace code from a screen through the API to the database. The API is being moved to a Clean Architecture layout (controller, use case, policy), completed so far for the repair-request module.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI (Claude \u0E41\u0E25\u0E30 Codex) \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E48\u0E27\u0E19\u0E43\u0E2B\u0E0D\u0E48 \u0E09\u0E31\u0E19\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E19\u0E01\u0E33\u0E2B\u0E19\u0E14\u0E04\u0E27\u0E32\u0E21\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E41\u0E25\u0E30\u0E01\u0E0E\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C \u0E17\u0E14\u0E2A\u0E2D\u0E1A\u0E1A\u0E19\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D Android \u0E08\u0E23\u0E34\u0E07 \u0E41\u0E25\u0E30\u0E2D\u0E19\u0E38\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07\u0E17\u0E35\u0E48\u0E02\u0E36\u0E49\u0E19\u0E23\u0E30\u0E1A\u0E1A \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E1D\u0E36\u0E01\u0E44\u0E25\u0E48\u0E42\u0E04\u0E49\u0E14\u0E08\u0E32\u0E01\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E1C\u0E48\u0E32\u0E19 API \u0E44\u0E1B\u0E08\u0E19\u0E16\u0E36\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 \u0E15\u0E2D\u0E19\u0E19\u0E35\u0E49\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1B\u0E23\u0E31\u0E1A\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07 API \u0E40\u0E1B\u0E47\u0E19\u0E41\u0E1A\u0E1A Clean Architecture (controller, use case, policy) \u0E0B\u0E36\u0E48\u0E07\u0E40\u0E2A\u0E23\u0E47\u0E08\u0E41\u0E25\u0E49\u0E27\u0E43\u0E19\u0E2A\u0E48\u0E27\u0E19\u0E41\u0E08\u0E49\u0E07\u0E0B\u0E48\u0E2D\u0E21", "Development approach: I use AI tools (Claude and Codex) to generate most of the code. I define the requirements and permission rules, test changes on a real Android phone, and approve every deployment, while learning to trace code from a screen through the API to the database.": "\u0E27\u0E34\u0E18\u0E35\u0E1E\u0E31\u0E12\u0E19\u0E32: \u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D AI (Claude \u0E41\u0E25\u0E30 Codex) \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E42\u0E04\u0E49\u0E14\u0E2A\u0E48\u0E27\u0E19\u0E43\u0E2B\u0E0D\u0E48 \u0E09\u0E31\u0E19\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E19\u0E01\u0E33\u0E2B\u0E19\u0E14\u0E04\u0E27\u0E32\u0E21\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E41\u0E25\u0E30\u0E01\u0E0E\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C \u0E17\u0E14\u0E2A\u0E2D\u0E1A\u0E1A\u0E19\u0E21\u0E37\u0E2D\u0E16\u0E37\u0E2D Android \u0E08\u0E23\u0E34\u0E07 \u0E41\u0E25\u0E30\u0E2D\u0E19\u0E38\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07\u0E17\u0E35\u0E48\u0E02\u0E36\u0E49\u0E19\u0E23\u0E30\u0E1A\u0E1A \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E1D\u0E36\u0E01\u0E44\u0E25\u0E48\u0E42\u0E04\u0E49\u0E14\u0E08\u0E32\u0E01\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E1C\u0E48\u0E32\u0E19 API \u0E44\u0E1B\u0E08\u0E19\u0E16\u0E36\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25", "6-role access model:": "\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C 6 \u0E1A\u0E17\u0E1A\u0E32\u0E17:", "Owner, Manager, Office Admin, Warehouse, Technician, and Resident \u2014 every API request is checked for role and condo on the server.": "\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \u0E1C\u0E39\u0E49\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23 \u0E18\u0E38\u0E23\u0E01\u0E32\u0E23 \u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32 \u0E0A\u0E48\u0E32\u0E07 \u0E41\u0E25\u0E30\u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19 \u2014 \u0E17\u0E38\u0E01\u0E04\u0E33\u0E02\u0E2D\u0E16\u0E39\u0E01\u0E15\u0E23\u0E27\u0E08\u0E1A\u0E17\u0E1A\u0E32\u0E17\u0E41\u0E25\u0E30\u0E04\u0E2D\u0E19\u0E42\u0E14\u0E17\u0E35\u0E48\u0E1D\u0E31\u0E48\u0E07\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C", "Per-condo plans & feature switches:": "\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08\u0E23\u0E32\u0E22\u0E04\u0E2D\u0E19\u0E42\u0E14\u0E41\u0E25\u0E30\u0E40\u0E1B\u0E34\u0E14/\u0E1B\u0E34\u0E14\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C:", "The owner picks a plan or turns individual features on or off per building; switched-off features are blocked by the API while their data is kept.": "\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08 \u0E2B\u0E23\u0E37\u0E2D\u0E40\u0E1B\u0E34\u0E14/\u0E1B\u0E34\u0E14\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E17\u0E35\u0E25\u0E30\u0E15\u0E31\u0E27\u0E43\u0E2B\u0E49\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E32\u0E04\u0E32\u0E23 \u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E17\u0E35\u0E48\u0E1B\u0E34\u0E14\u0E08\u0E30\u0E16\u0E39\u0E01 API \u0E1A\u0E25\u0E47\u0E2D\u0E01 \u0E41\u0E15\u0E48\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E22\u0E31\u0E07\u0E40\u0E01\u0E47\u0E1A\u0E44\u0E27\u0E49\u0E04\u0E23\u0E1A", "Repair requests end to end:": "\u0E41\u0E08\u0E49\u0E07\u0E0B\u0E48\u0E2D\u0E21\u0E04\u0E23\u0E1A\u0E27\u0E07\u0E08\u0E23:", "Residents report with photos, the office assigns a technician, and everyone follows the job through in-ticket chat and status updates.": "\u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19\u0E41\u0E08\u0E49\u0E07\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E23\u0E39\u0E1B \u0E18\u0E38\u0E23\u0E01\u0E32\u0E23\u0E21\u0E2D\u0E1A\u0E07\u0E32\u0E19\u0E43\u0E2B\u0E49\u0E0A\u0E48\u0E32\u0E07 \u0E41\u0E25\u0E30\u0E17\u0E38\u0E01\u0E04\u0E19\u0E15\u0E34\u0E14\u0E15\u0E32\u0E21\u0E07\u0E32\u0E19\u0E1C\u0E48\u0E32\u0E19\u0E41\u0E0A\u0E17\u0E43\u0E19\u0E43\u0E1A\u0E07\u0E32\u0E19\u0E41\u0E25\u0E30\u0E2A\u0E16\u0E32\u0E19\u0E30\u0E17\u0E35\u0E48\u0E2D\u0E31\u0E1B\u0E40\u0E14\u0E15", "Technician attendance:": "\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E0A\u0E48\u0E32\u0E07:", "Selfie check-in with a liveness check (blink, turn, smile) and GPS location; selfies are deleted automatically after 30 days.": "\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E14\u0E49\u0E27\u0E22\u0E40\u0E0B\u0E25\u0E1F\u0E35\u0E48\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E15\u0E23\u0E27\u0E08\u0E27\u0E48\u0E32\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E19\u0E08\u0E23\u0E34\u0E07 (\u0E01\u0E30\u0E1E\u0E23\u0E34\u0E1A\u0E15\u0E32 \u0E2B\u0E31\u0E19\u0E2B\u0E19\u0E49\u0E32 \u0E22\u0E34\u0E49\u0E21) \u0E41\u0E25\u0E30\u0E15\u0E33\u0E41\u0E2B\u0E19\u0E48\u0E07 GPS \u0E23\u0E39\u0E1B\u0E40\u0E0B\u0E25\u0E1F\u0E35\u0E48\u0E16\u0E39\u0E01\u0E25\u0E1A\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E2B\u0E25\u0E31\u0E07 30 \u0E27\u0E31\u0E19", "Resident services:": "\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19:", "Parcels, visitor QR passes, facility booking, car and motorcycle registration, bills, complaints, and announcements.": "\u0E1E\u0E31\u0E2A\u0E14\u0E38 \u0E1A\u0E31\u0E15\u0E23 QR \u0E1C\u0E39\u0E49\u0E21\u0E32\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D \u0E08\u0E2D\u0E07\u0E1E\u0E37\u0E49\u0E19\u0E17\u0E35\u0E48\u0E2A\u0E48\u0E27\u0E19\u0E01\u0E25\u0E32\u0E07 \u0E25\u0E07\u0E17\u0E30\u0E40\u0E1A\u0E35\u0E22\u0E19\u0E23\u0E16\u0E22\u0E19\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E21\u0E2D\u0E40\u0E15\u0E2D\u0E23\u0E4C\u0E44\u0E0B\u0E04\u0E4C \u0E1A\u0E34\u0E25 \u0E23\u0E49\u0E2D\u0E07\u0E40\u0E23\u0E35\u0E22\u0E19 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E30\u0E01\u0E32\u0E28", "Reports & languages:": "\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19\u0E41\u0E25\u0E30\u0E20\u0E32\u0E29\u0E32:", "Thai PDF reports for each department, with a Thai, English, and Chinese interface; PIN and fingerprint unlock on Android.": "\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19 PDF \u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22\u0E02\u0E2D\u0E07\u0E17\u0E38\u0E01\u0E41\u0E1C\u0E19\u0E01 \u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E23\u0E2D\u0E07\u0E23\u0E31\u0E1A\u0E44\u0E17\u0E22 \u0E2D\u0E31\u0E07\u0E01\u0E24\u0E29 \u0E41\u0E25\u0E30\u0E08\u0E35\u0E19 \u0E1B\u0E25\u0E14\u0E25\u0E47\u0E2D\u0E01\u0E14\u0E49\u0E27\u0E22 PIN \u0E41\u0E25\u0E30\u0E25\u0E32\u0E22\u0E19\u0E34\u0E49\u0E27\u0E21\u0E37\u0E2D\u0E1A\u0E19 Android", "Operations:": "\u0E01\u0E32\u0E23\u0E14\u0E39\u0E41\u0E25\u0E23\u0E30\u0E1A\u0E1A:", "Daily automatic database and photo backups, and no open server ports \u2014 traffic reaches the API only through Cloudflare Tunnel.": "\u0E2A\u0E33\u0E23\u0E2D\u0E07\u0E10\u0E32\u0E19\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E25\u0E30\u0E23\u0E39\u0E1B\u0E20\u0E32\u0E1E\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E27\u0E31\u0E19 \u0E41\u0E25\u0E30\u0E44\u0E21\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E1A\u0E19\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C \u2014 \u0E01\u0E32\u0E23\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E21\u0E15\u0E48\u0E2D\u0E40\u0E02\u0E49\u0E32\u0E16\u0E36\u0E07 API \u0E1C\u0E48\u0E32\u0E19 Cloudflare Tunnel \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19", "Six roles \u2014 Owner, Manager, Office Admin, Warehouse, Technician, Resident \u2014 checked on the server for every request": "6 \u0E1A\u0E17\u0E1A\u0E32\u0E17 \u2014 \u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \u0E1C\u0E39\u0E49\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23 \u0E18\u0E38\u0E23\u0E01\u0E32\u0E23 \u0E04\u0E25\u0E31\u0E07\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32 \u0E0A\u0E48\u0E32\u0E07 \u0E25\u0E39\u0E01\u0E1A\u0E49\u0E32\u0E19 \u2014 \u0E15\u0E23\u0E27\u0E08\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E17\u0E35\u0E48\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E17\u0E38\u0E01\u0E04\u0E33\u0E02\u0E2D", "Plans per condo: the owner picks a plan or switches single features on or off for each building": "\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08\u0E23\u0E32\u0E22\u0E04\u0E2D\u0E19\u0E42\u0E14: \u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E41\u0E1E\u0E47\u0E01\u0E40\u0E01\u0E08\u0E2B\u0E23\u0E37\u0E2D\u0E40\u0E1B\u0E34\u0E14/\u0E1B\u0E34\u0E14\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E17\u0E35\u0E25\u0E30\u0E15\u0E31\u0E27\u0E43\u0E2B\u0E49\u0E41\u0E15\u0E48\u0E25\u0E30\u0E2D\u0E32\u0E04\u0E32\u0E23", "Repair requests with photos, technician assignment, in-ticket chat, and status tracking": "\u0E41\u0E08\u0E49\u0E07\u0E0B\u0E48\u0E2D\u0E21\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E23\u0E39\u0E1B \u0E21\u0E2D\u0E1A\u0E07\u0E32\u0E19\u0E43\u0E2B\u0E49\u0E0A\u0E48\u0E32\u0E07 \u0E41\u0E0A\u0E17\u0E43\u0E19\u0E43\u0E1A\u0E07\u0E32\u0E19 \u0E41\u0E25\u0E30\u0E15\u0E34\u0E14\u0E15\u0E32\u0E21\u0E2A\u0E16\u0E32\u0E19\u0E30", "Technician attendance with a selfie liveness check and GPS; selfies are deleted after 30 days": "\u0E25\u0E07\u0E40\u0E27\u0E25\u0E32\u0E0A\u0E48\u0E32\u0E07\u0E14\u0E49\u0E27\u0E22\u0E40\u0E0B\u0E25\u0E1F\u0E35\u0E48\u0E15\u0E23\u0E27\u0E08\u0E04\u0E19\u0E08\u0E23\u0E34\u0E07\u0E41\u0E25\u0E30 GPS \u0E23\u0E39\u0E1B\u0E40\u0E0B\u0E25\u0E1F\u0E35\u0E48\u0E16\u0E39\u0E01\u0E25\u0E1A\u0E2B\u0E25\u0E31\u0E07 30 \u0E27\u0E31\u0E19", "Parcels, visitor QR passes, facility booking, vehicle registration, bills, complaints, and announcements": "\u0E1E\u0E31\u0E2A\u0E14\u0E38 \u0E1A\u0E31\u0E15\u0E23 QR \u0E1C\u0E39\u0E49\u0E21\u0E32\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D \u0E08\u0E2D\u0E07\u0E1E\u0E37\u0E49\u0E19\u0E17\u0E35\u0E48\u0E2A\u0E48\u0E27\u0E19\u0E01\u0E25\u0E32\u0E07 \u0E25\u0E07\u0E17\u0E30\u0E40\u0E1A\u0E35\u0E22\u0E19\u0E23\u0E16 \u0E1A\u0E34\u0E25 \u0E23\u0E49\u0E2D\u0E07\u0E40\u0E23\u0E35\u0E22\u0E19 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E30\u0E01\u0E32\u0E28", "Thai PDF reports, a Thai / English / Chinese interface, and PIN or fingerprint unlock on Android": "\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19 PDF \u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22 \u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E44\u0E17\u0E22 / \u0E2D\u0E31\u0E07\u0E01\u0E24\u0E29 / \u0E08\u0E35\u0E19 \u0E41\u0E25\u0E30\u0E1B\u0E25\u0E14\u0E25\u0E47\u0E2D\u0E01\u0E14\u0E49\u0E27\u0E22 PIN \u0E2B\u0E23\u0E37\u0E2D\u0E25\u0E32\u0E22\u0E19\u0E34\u0E49\u0E27\u0E21\u0E37\u0E2D\u0E1A\u0E19 Android", "Daily automatic backups, with the API reachable only through Cloudflare Tunnel": "\u0E2A\u0E33\u0E23\u0E2D\u0E07\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E17\u0E38\u0E01\u0E27\u0E31\u0E19 \u0E41\u0E25\u0E30\u0E40\u0E02\u0E49\u0E32\u0E16\u0E36\u0E07 API \u0E44\u0E14\u0E49\u0E1C\u0E48\u0E32\u0E19 Cloudflare Tunnel \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19", "iOS \xB7 Open Web App": "iOS \xB7 \u0E40\u0E1B\u0E34\u0E14\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B", "iOS \xB7 Open web app": "iOS \xB7 \u0E40\u0E1B\u0E34\u0E14\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B", "Android \xB7 Download App": "Android \xB7 \u0E14\u0E32\u0E27\u0E19\u0E4C\u0E42\u0E2B\u0E25\u0E14\u0E41\u0E2D\u0E1B", "Android \xB7 Download app": "Android \xB7 \u0E14\u0E32\u0E27\u0E19\u0E4C\u0E42\u0E2B\u0E25\u0E14\u0E41\u0E2D\u0E1B", "iOS: web app at staging-app.chewvy.shop \xB7 Android: APK download \xB7 Source code available on request": "iOS: \u0E43\u0E0A\u0E49\u0E1C\u0E48\u0E32\u0E19\u0E40\u0E27\u0E47\u0E1A\u0E17\u0E35\u0E48 staging-app.chewvy.shop \xB7 Android: \u0E14\u0E32\u0E27\u0E19\u0E4C\u0E42\u0E2B\u0E25\u0E14\u0E44\u0E1F\u0E25\u0E4C APK \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "iOS: web app at staging-app.chewvy.shop \xB7 Android: APK download \xB7 Source available on request": "iOS: \u0E43\u0E0A\u0E49\u0E1C\u0E48\u0E32\u0E19\u0E40\u0E27\u0E47\u0E1A\u0E17\u0E35\u0E48 staging-app.chewvy.shop \xB7 Android: \u0E14\u0E32\u0E27\u0E19\u0E4C\u0E42\u0E2B\u0E25\u0E14\u0E44\u0E1F\u0E25\u0E4C APK \xB7 \u0E02\u0E2D\u0E14\u0E39\u0E0B\u0E2D\u0E23\u0E4C\u0E2A\u0E42\u0E04\u0E49\u0E14\u0E44\u0E14\u0E49", "Owner demo account \xB7 Read-only, changes are blocked by the server": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \xB7 \u0E14\u0E39\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27 \u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E44\u0E21\u0E48\u0E43\u0E2B\u0E49\u0E41\u0E01\u0E49\u0E44\u0E02\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25", "Owner demo account \xB7 Read-only access": "\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E40\u0E08\u0E49\u0E32\u0E02\u0E2D\u0E07 \xB7 \u0E14\u0E39\u0E44\u0E14\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27", "Work History": "\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E17\u0E33\u0E07\u0E32\u0E19", "Work history": "\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E17\u0E33\u0E07\u0E32\u0E19", "Operational Track Record": "\u0E1C\u0E25\u0E07\u0E32\u0E19\u0E14\u0E49\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23", "Jan 2026 \u2014 Oct 2026": "\u0E21.\u0E04. 2026 \u2014 \u0E15.\u0E04. 2026", "Nipa Cloud Technology Co., Ltd. \u2022 Cloud Infrastructure Operations": "\u0E1A\u0E23\u0E34\u0E29\u0E31\u0E17 \u0E19\u0E34\u0E1E\u0E32 \u0E04\u0E25\u0E32\u0E27\u0E14\u0E4C \u0E40\u0E17\u0E04\u0E42\u0E19\u0E42\u0E25\u0E22\u0E35 \u0E08\u0E33\u0E01\u0E31\u0E14 \u2022 \u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1E\u0E37\u0E49\u0E19\u0E10\u0E32\u0E19\u0E04\u0E25\u0E32\u0E27\u0E14\u0E4C", "Infrastructure & Service Monitoring:": "\u0E40\u0E1D\u0E49\u0E32\u0E23\u0E30\u0E27\u0E31\u0E07\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1E\u0E37\u0E49\u0E19\u0E10\u0E32\u0E19\u0E41\u0E25\u0E30\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23:", "Monitor network infrastructure, security systems, cloud services, and related operational alerts for availability and stability.": "\u0E40\u0E1D\u0E49\u0E32\u0E23\u0E30\u0E27\u0E31\u0E07\u0E42\u0E04\u0E23\u0E07\u0E02\u0E48\u0E32\u0E22 \u0E23\u0E30\u0E1A\u0E1A\u0E04\u0E27\u0E32\u0E21\u0E1B\u0E25\u0E2D\u0E14\u0E20\u0E31\u0E22 \u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E04\u0E25\u0E32\u0E27\u0E14\u0E4C \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E17\u0E35\u0E48\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E02\u0E49\u0E2D\u0E07 \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E43\u0E2B\u0E49\u0E23\u0E30\u0E1A\u0E1A\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E41\u0E25\u0E30\u0E40\u0E2A\u0E16\u0E35\u0E22\u0E23", "Incident Investigation & Troubleshooting:": "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32:", "Investigate alerts and service issues, perform first-line technical checks using Linux tools and operational dashboards, and gather relevant findings for escalation.": "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E01\u0E32\u0E23\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E41\u0E25\u0E30\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23 \u0E15\u0E23\u0E27\u0E08\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19\u0E14\u0E49\u0E27\u0E22\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D Linux \u0E41\u0E25\u0E30\u0E41\u0E14\u0E0A\u0E1A\u0E2D\u0E23\u0E4C\u0E14 \u0E41\u0E25\u0E49\u0E27\u0E23\u0E27\u0E1A\u0E23\u0E27\u0E21\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D", "Operational Automation:": "\u0E17\u0E33\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E43\u0E2B\u0E49\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34:", "Use scripts and AI-assisted workflows to reduce repetitive operational tasks, streamline daily status reporting, and improve troubleshooting workflows.": "\u0E43\u0E0A\u0E49\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E41\u0E25\u0E30 AI \u0E0A\u0E48\u0E27\u0E22\u0E25\u0E14\u0E07\u0E32\u0E19\u0E0B\u0E49\u0E33 \u0E46 \u0E17\u0E33\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19\u0E2A\u0E16\u0E32\u0E19\u0E30\u0E1B\u0E23\u0E30\u0E08\u0E33\u0E27\u0E31\u0E19\u0E43\u0E2B\u0E49\u0E07\u0E48\u0E32\u0E22\u0E02\u0E36\u0E49\u0E19 \u0E41\u0E25\u0E30\u0E1B\u0E23\u0E31\u0E1A\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E01\u0E32\u0E23\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E43\u0E2B\u0E49\u0E14\u0E35\u0E02\u0E36\u0E49\u0E19", "Technical Documentation & Escalation:": "\u0E08\u0E31\u0E14\u0E17\u0E33\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32:", "Document symptoms, impact, checks performed, and findings before escalating issues beyond assigned scope to the appropriate engineering team.": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E2D\u0E32\u0E01\u0E32\u0E23 \u0E1C\u0E25\u0E01\u0E23\u0E30\u0E17\u0E1A \u0E2A\u0E34\u0E48\u0E07\u0E17\u0E35\u0E48\u0E15\u0E23\u0E27\u0E08\u0E41\u0E25\u0E49\u0E27 \u0E41\u0E25\u0E30\u0E02\u0E49\u0E2D\u0E04\u0E49\u0E19\u0E1E\u0E1A \u0E01\u0E48\u0E2D\u0E19\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E17\u0E35\u0E48\u0E40\u0E01\u0E34\u0E19\u0E02\u0E2D\u0E1A\u0E40\u0E02\u0E15\u0E43\u0E2B\u0E49\u0E17\u0E35\u0E21\u0E27\u0E34\u0E28\u0E27\u0E01\u0E23\u0E17\u0E35\u0E48\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E02\u0E49\u0E2D\u0E07", "2022 \u2014 2025 (3 Years)": "2022 \u2014 2025 (3 \u0E1B\u0E35)", "Ruk-Com Co., Ltd. \u2022 Web Hosting & Technical Support": "\u0E1A\u0E23\u0E34\u0E29\u0E31\u0E17 \u0E23\u0E31\u0E01\u0E04\u0E2D\u0E21 \u0E08\u0E33\u0E01\u0E31\u0E14 \u2022 \u0E40\u0E27\u0E47\u0E1A\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07\u0E41\u0E25\u0E30\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04", "Customer Technical Support:": "\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E43\u0E2B\u0E49\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32:", "Supported customers through ticketing, LINE, and telephone channels for website and hosting issues.": "\u0E14\u0E39\u0E41\u0E25\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1C\u0E48\u0E32\u0E19\u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E34\u0E01\u0E40\u0E01\u0E47\u0E15 LINE \u0E41\u0E25\u0E30\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C \u0E43\u0E19\u0E40\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07", "Website & Domain Troubleshooting:": "\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E42\u0E14\u0E40\u0E21\u0E19:", "Investigated website errors and accessibility issues, DNS and domain configuration, SSL certificates, and website pointing settings.": "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E17\u0E35\u0E48 error \u0E2B\u0E23\u0E37\u0E2D\u0E40\u0E02\u0E49\u0E32\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49 \u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32 DNS \u0E41\u0E25\u0E30\u0E42\u0E14\u0E40\u0E21\u0E19 \u0E43\u0E1A\u0E23\u0E31\u0E1A\u0E23\u0E2D\u0E07 SSL \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E0A\u0E35\u0E49\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C", "Website Platform & Email Support:": "\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E41\u0E1E\u0E25\u0E15\u0E1F\u0E2D\u0E23\u0E4C\u0E21\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E2D\u0E35\u0E40\u0E21\u0E25:", "Assisted with WordPress, PHP-related issues, plugin problems, and email configuration and troubleshooting.": "\u0E0A\u0E48\u0E27\u0E22\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32 WordPress \u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E01\u0E31\u0E1A PHP \u0E1B\u0E25\u0E31\u0E4A\u0E01\u0E2D\u0E34\u0E19 \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E2D\u0E35\u0E40\u0E21\u0E25", "Basic Server Checks & Escalation:": "\u0E15\u0E23\u0E27\u0E08\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19\u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D:", "Performed initial Linux/server checks within assigned scope, documented findings, and escalated complex issues to the next technical tier.": "\u0E15\u0E23\u0E27\u0E08 Linux/\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19\u0E15\u0E32\u0E21\u0E02\u0E2D\u0E1A\u0E40\u0E02\u0E15\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E04\u0E49\u0E19\u0E1E\u0E1A \u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E0B\u0E31\u0E1A\u0E0B\u0E49\u0E2D\u0E19\u0E43\u0E2B\u0E49\u0E17\u0E35\u0E21\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E16\u0E31\u0E14\u0E44\u0E1B", "Data Entry & Operations Officer": "\u0E40\u0E08\u0E49\u0E32\u0E2B\u0E19\u0E49\u0E32\u0E17\u0E35\u0E48\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E41\u0E25\u0E30\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23", "2015 \u2014 2022 (7 Years)": "2015 \u2014 2022 (7 \u0E1B\u0E35)", "United Overseas Bank (UOB) \u2022 Banking Operations": "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E22\u0E39\u0E42\u0E2D\u0E1A\u0E35 (UOB) \u2022 \u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23", "Data Entry & Accuracy:": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E41\u0E21\u0E48\u0E19\u0E22\u0E33:", "Entered and maintained operational data with careful attention to accuracy, completeness, and required formats.": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E41\u0E25\u0E30\u0E14\u0E39\u0E41\u0E25\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23 \u0E42\u0E14\u0E22\u0E43\u0E2A\u0E48\u0E43\u0E08\u0E04\u0E27\u0E32\u0E21\u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07 \u0E04\u0E23\u0E1A\u0E16\u0E49\u0E27\u0E19 \u0E41\u0E25\u0E30\u0E23\u0E39\u0E1B\u0E41\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E01\u0E33\u0E2B\u0E19\u0E14", "Document & Data Verification:": "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E41\u0E25\u0E30\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25:", "Checked records and supporting documents against required information and followed established internal procedures.": "\u0E15\u0E23\u0E27\u0E08\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E41\u0E25\u0E30\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E1B\u0E23\u0E30\u0E01\u0E2D\u0E1A\u0E40\u0E17\u0E35\u0E22\u0E1A\u0E01\u0E31\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E17\u0E35\u0E48\u0E01\u0E33\u0E2B\u0E19\u0E14 \u0E41\u0E25\u0E30\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E15\u0E32\u0E21\u0E02\u0E31\u0E49\u0E19\u0E15\u0E2D\u0E19\u0E20\u0E32\u0E22\u0E43\u0E19\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E04\u0E23\u0E48\u0E07\u0E04\u0E23\u0E31\u0E14", "Operational Support:": "\u0E2A\u0E19\u0E31\u0E1A\u0E2A\u0E19\u0E38\u0E19\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23:", "Supported team workflows through organized record keeping, data validation, and timely completion of assigned tasks.": "\u0E2A\u0E19\u0E31\u0E1A\u0E2A\u0E19\u0E38\u0E19\u0E07\u0E32\u0E19\u0E02\u0E2D\u0E07\u0E17\u0E35\u0E21\u0E14\u0E49\u0E27\u0E22\u0E01\u0E32\u0E23\u0E08\u0E31\u0E14\u0E40\u0E01\u0E47\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E30\u0E40\u0E1A\u0E35\u0E22\u0E1A \u0E15\u0E23\u0E27\u0E08\u0E04\u0E27\u0E32\u0E21\u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07\u0E02\u0E2D\u0E07\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 \u0E41\u0E25\u0E30\u0E17\u0E33\u0E07\u0E32\u0E19\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A\u0E21\u0E2D\u0E1A\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E2A\u0E23\u0E47\u0E08\u0E15\u0E23\u0E07\u0E40\u0E27\u0E25\u0E32", "Monitor network infrastructure, security systems, cloud services, and operational alerts": "\u0E40\u0E1D\u0E49\u0E32\u0E23\u0E30\u0E27\u0E31\u0E07\u0E42\u0E04\u0E23\u0E07\u0E02\u0E48\u0E32\u0E22 \u0E23\u0E30\u0E1A\u0E1A\u0E04\u0E27\u0E32\u0E21\u0E1B\u0E25\u0E2D\u0E14\u0E20\u0E31\u0E22 \u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E04\u0E25\u0E32\u0E27\u0E14\u0E4C \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E41\u0E08\u0E49\u0E07\u0E40\u0E15\u0E37\u0E2D\u0E19\u0E14\u0E49\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23", "Investigate incidents and perform first-line technical checks using Linux tools and operational dashboards": "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E41\u0E25\u0E30\u0E15\u0E23\u0E27\u0E08\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19\u0E14\u0E49\u0E27\u0E22\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D Linux \u0E41\u0E25\u0E30\u0E41\u0E14\u0E0A\u0E1A\u0E2D\u0E23\u0E4C\u0E14", "Use scripts and AI-assisted workflows to reduce repetitive tasks and streamline daily status reporting": "\u0E43\u0E0A\u0E49\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E41\u0E25\u0E30 AI \u0E0A\u0E48\u0E27\u0E22\u0E25\u0E14\u0E07\u0E32\u0E19\u0E0B\u0E49\u0E33 \u0E46 \u0E41\u0E25\u0E30\u0E17\u0E33\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19\u0E2A\u0E16\u0E32\u0E19\u0E30\u0E1B\u0E23\u0E30\u0E08\u0E33\u0E27\u0E31\u0E19\u0E43\u0E2B\u0E49\u0E07\u0E48\u0E32\u0E22\u0E02\u0E36\u0E49\u0E19", "Document findings and escalate issues beyond assigned scope to the appropriate engineering team": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E04\u0E49\u0E19\u0E1E\u0E1A \u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E17\u0E35\u0E48\u0E40\u0E01\u0E34\u0E19\u0E02\u0E2D\u0E1A\u0E40\u0E02\u0E15\u0E43\u0E2B\u0E49\u0E17\u0E35\u0E21\u0E27\u0E34\u0E28\u0E27\u0E01\u0E23\u0E17\u0E35\u0E48\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E02\u0E49\u0E2D\u0E07", "Technical Hosting Support (Customer Support)": "\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E14\u0E49\u0E32\u0E19\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07 (\u0E14\u0E39\u0E41\u0E25\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32)", "Supported customers through ticketing, LINE, and telephone for website and hosting issues": "\u0E14\u0E39\u0E41\u0E25\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1C\u0E48\u0E32\u0E19\u0E23\u0E30\u0E1A\u0E1A\u0E17\u0E34\u0E01\u0E40\u0E01\u0E47\u0E15 LINE \u0E41\u0E25\u0E30\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C \u0E43\u0E19\u0E40\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E41\u0E25\u0E30\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07", "Troubleshot website errors and accessibility issues, DNS/domain configuration, SSL certificates, and website pointing settings": "\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C error \u0E2B\u0E23\u0E37\u0E2D\u0E40\u0E02\u0E49\u0E32\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49 \u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32 DNS/\u0E42\u0E14\u0E40\u0E21\u0E19 \u0E43\u0E1A\u0E23\u0E31\u0E1A\u0E23\u0E2D\u0E07 SSL \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E0A\u0E35\u0E49\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C", "Assisted with WordPress, PHP-related issues, plugin problems, and email configuration": "\u0E0A\u0E48\u0E27\u0E22\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32 WordPress \u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E01\u0E31\u0E1A PHP \u0E1B\u0E25\u0E31\u0E4A\u0E01\u0E2D\u0E34\u0E19 \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32\u0E2D\u0E35\u0E40\u0E21\u0E25", "Performed basic Linux/server checks, documented findings, and escalated complex issues to the next technical tier": "\u0E15\u0E23\u0E27\u0E08 Linux/\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19 \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E04\u0E49\u0E19\u0E1E\u0E1A \u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E0B\u0E31\u0E1A\u0E0B\u0E49\u0E2D\u0E19\u0E43\u0E2B\u0E49\u0E17\u0E35\u0E21\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E16\u0E31\u0E14\u0E44\u0E1B", "Data Entry Officer": "\u0E40\u0E08\u0E49\u0E32\u0E2B\u0E19\u0E49\u0E32\u0E17\u0E35\u0E48\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25", "United Overseas Bank (UOB)": "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E22\u0E39\u0E42\u0E2D\u0E1A\u0E35 (UOB)", "Entered and maintained operational data with attention to accuracy and completeness": "\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E41\u0E25\u0E30\u0E14\u0E39\u0E41\u0E25\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E07\u0E32\u0E19\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23 \u0E42\u0E14\u0E22\u0E43\u0E2A\u0E48\u0E43\u0E08\u0E04\u0E27\u0E32\u0E21\u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07\u0E41\u0E25\u0E30\u0E04\u0E23\u0E1A\u0E16\u0E49\u0E27\u0E19", "Verified records and supporting documents against required information": "\u0E15\u0E23\u0E27\u0E08\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E41\u0E25\u0E30\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E1B\u0E23\u0E30\u0E01\u0E2D\u0E1A\u0E40\u0E17\u0E35\u0E22\u0E1A\u0E01\u0E31\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E17\u0E35\u0E48\u0E01\u0E33\u0E2B\u0E19\u0E14", "Supported team workflows through organized record keeping and data validation": "\u0E2A\u0E19\u0E31\u0E1A\u0E2A\u0E19\u0E38\u0E19\u0E07\u0E32\u0E19\u0E02\u0E2D\u0E07\u0E17\u0E35\u0E21\u0E14\u0E49\u0E27\u0E22\u0E01\u0E32\u0E23\u0E08\u0E31\u0E14\u0E40\u0E01\u0E47\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E30\u0E40\u0E1A\u0E35\u0E22\u0E1A\u0E41\u0E25\u0E30\u0E15\u0E23\u0E27\u0E08\u0E04\u0E27\u0E32\u0E21\u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07\u0E02\u0E2D\u0E07\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25", "What I Work With": "\u0E2A\u0E34\u0E48\u0E07\u0E17\u0E35\u0E48\u0E09\u0E31\u0E19\u0E17\u0E33\u0E44\u0E14\u0E49", "What I work with": "\u0E2A\u0E34\u0E48\u0E07\u0E17\u0E35\u0E48\u0E09\u0E31\u0E19\u0E17\u0E33\u0E44\u0E14\u0E49", "Technical Capabilities": "\u0E04\u0E27\u0E32\u0E21\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E14\u0E49\u0E32\u0E19\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04", "Hosting & Website Support": "\u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07\u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C", "Website errors and website accessibility troubleshooting": "\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C error \u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C\u0E40\u0E02\u0E49\u0E32\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49", "DNS, domain, SSL certificate, and website pointing configuration": "\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32 DNS \u0E42\u0E14\u0E40\u0E21\u0E19 \u0E43\u0E1A\u0E23\u0E31\u0E1A\u0E23\u0E2D\u0E07 SSL \u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E0A\u0E35\u0E49\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C", "WordPress, PHP-related issues, and plugin troubleshooting": "\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32 WordPress \u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E01\u0E31\u0E1A PHP \u0E41\u0E25\u0E30\u0E1B\u0E25\u0E31\u0E4A\u0E01\u0E2D\u0E34\u0E19", "Email and mail configuration troubleshooting": "\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32\u0E2D\u0E35\u0E40\u0E21\u0E25", "Basic Linux and server checks": "\u0E15\u0E23\u0E27\u0E08 Linux \u0E41\u0E25\u0E30\u0E40\u0E0B\u0E34\u0E23\u0E4C\u0E1F\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E40\u0E1A\u0E37\u0E49\u0E2D\u0E07\u0E15\u0E49\u0E19", "AI-assisted web application projects; review and modify parts of generated code": "\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E1E\u0E31\u0E12\u0E19\u0E32 \u0E15\u0E23\u0E27\u0E08\u0E17\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E42\u0E04\u0E49\u0E14\u0E17\u0E35\u0E48 AI \u0E2A\u0E23\u0E49\u0E32\u0E07\u0E1A\u0E32\u0E07\u0E2A\u0E48\u0E27\u0E19", "Exposure to Next.js, TypeScript, PostgreSQL, Docker, and related tools through projects": "\u0E44\u0E14\u0E49\u0E43\u0E0A\u0E49 Next.js, TypeScript, PostgreSQL, Docker \u0E41\u0E25\u0E30\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D\u0E17\u0E35\u0E48\u0E40\u0E01\u0E35\u0E48\u0E22\u0E27\u0E02\u0E49\u0E2D\u0E07\u0E1C\u0E48\u0E32\u0E19\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C", "Ways of Working": "\u0E27\u0E34\u0E18\u0E35\u0E01\u0E32\u0E23\u0E17\u0E33\u0E07\u0E32\u0E19", "Incident triage & shift ticketing management": "\u0E04\u0E31\u0E14\u0E41\u0E22\u0E01\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E41\u0E25\u0E30\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E17\u0E34\u0E01\u0E40\u0E01\u0E47\u0E15\u0E15\u0E32\u0E21\u0E01\u0E30", "Structured technical runbooks & documentation": "\u0E04\u0E39\u0E48\u0E21\u0E37\u0E2D\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E07\u0E32\u0E19\u0E41\u0E25\u0E30\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E30\u0E1A\u0E1A", "Analytical, adaptive root-cause problem solving": "\u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C\u0E2B\u0E32\u0E15\u0E49\u0E19\u0E40\u0E2B\u0E15\u0E38\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E22\u0E37\u0E14\u0E2B\u0E22\u0E38\u0E48\u0E19", "Cross-functional engineering & shift handoffs": "\u0E17\u0E33\u0E07\u0E32\u0E19\u0E23\u0E48\u0E27\u0E21\u0E01\u0E31\u0E1A\u0E17\u0E35\u0E21\u0E2D\u0E37\u0E48\u0E19\u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E07\u0E32\u0E19\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E01\u0E30", "Learning application permissions and access-control concepts through projects": "\u0E40\u0E23\u0E35\u0E22\u0E19\u0E23\u0E39\u0E49\u0E41\u0E19\u0E27\u0E04\u0E34\u0E14\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E04\u0E27\u0E1A\u0E04\u0E38\u0E21\u0E01\u0E32\u0E23\u0E40\u0E02\u0E49\u0E32\u0E16\u0E36\u0E07\u0E02\u0E2D\u0E07\u0E41\u0E2D\u0E1B\u0E1C\u0E48\u0E32\u0E19\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C", "Bachelor's Degree in Business Computer": "\u0E1B\u0E23\u0E34\u0E0D\u0E0D\u0E32\u0E15\u0E23\u0E35 \u0E2A\u0E32\u0E02\u0E32\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C\u0E18\u0E38\u0E23\u0E01\u0E34\u0E08", "Faculty of Management Science \u2014 Bansomdejchaopraya Rajabhat University": "\u0E04\u0E13\u0E30\u0E27\u0E34\u0E17\u0E22\u0E32\u0E01\u0E32\u0E23\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23 \u2014 \u0E21\u0E2B\u0E32\u0E27\u0E34\u0E17\u0E22\u0E32\u0E25\u0E31\u0E22\u0E23\u0E32\u0E0A\u0E20\u0E31\u0E0F\u0E1A\u0E49\u0E32\u0E19\u0E2A\u0E21\u0E40\u0E14\u0E47\u0E08\u0E40\u0E08\u0E49\u0E32\u0E1E\u0E23\u0E30\u0E22\u0E32", "GPA 3.00": "\u0E40\u0E01\u0E23\u0E14\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 3.00", ", Faculty of Management Science \u2014 Bansomdejchaopraya Rajabhat University (GPA 3.00)": " \u0E04\u0E13\u0E30\u0E27\u0E34\u0E17\u0E22\u0E32\u0E01\u0E32\u0E23\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23 \u2014 \u0E21\u0E2B\u0E32\u0E27\u0E34\u0E17\u0E22\u0E32\u0E25\u0E31\u0E22\u0E23\u0E32\u0E0A\u0E20\u0E31\u0E0F\u0E1A\u0E49\u0E32\u0E19\u0E2A\u0E21\u0E40\u0E14\u0E47\u0E08\u0E40\u0E08\u0E49\u0E32\u0E1E\u0E23\u0E30\u0E22\u0E32 (\u0E40\u0E01\u0E23\u0E14\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 3.00)", "24/7 Incident handling & ticketing triage": "\u0E23\u0E31\u0E1A\u0E21\u0E37\u0E2D\u0E40\u0E2B\u0E15\u0E38\u0E01\u0E32\u0E23\u0E13\u0E4C 24/7 \u0E41\u0E25\u0E30\u0E04\u0E31\u0E14\u0E41\u0E22\u0E01\u0E17\u0E34\u0E01\u0E40\u0E01\u0E47\u0E15", "SLA compliance & operational runbooks": "\u0E17\u0E33\u0E07\u0E32\u0E19\u0E15\u0E32\u0E21 SLA \u0E41\u0E25\u0E30\u0E04\u0E39\u0E48\u0E21\u0E37\u0E2D\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E07\u0E32\u0E19", "Technical documentation & escalation briefs": "\u0E40\u0E2D\u0E01\u0E2A\u0E32\u0E23\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E41\u0E25\u0E30\u0E2A\u0E23\u0E38\u0E1B\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E1B\u0E31\u0E0D\u0E2B\u0E32", "Analytical, adaptive problem solving": "\u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E22\u0E37\u0E14\u0E2B\u0E22\u0E38\u0E48\u0E19", "Cross-team collaboration & shift handovers": "\u0E17\u0E33\u0E07\u0E32\u0E19\u0E23\u0E48\u0E27\u0E21\u0E01\u0E31\u0E1A\u0E17\u0E35\u0E21\u0E2D\u0E37\u0E48\u0E19\u0E41\u0E25\u0E30\u0E2A\u0E48\u0E07\u0E15\u0E48\u0E2D\u0E07\u0E32\u0E19\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E01\u0E30", "Education": "\u0E01\u0E32\u0E23\u0E28\u0E36\u0E01\u0E29\u0E32", "Let's Connect": "\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D\u0E01\u0E31\u0E19\u0E44\u0E14\u0E49", "Get in touch": "\u0E15\u0E34\u0E14\u0E15\u0E48\u0E2D\u0E09\u0E31\u0E19", "Open to remote opportunities in Technical Support, Application Support, and AI-assisted web application projects. My strongest hands-on experience is hosting and website troubleshooting, with ongoing development through personal projects.": "\u0E2A\u0E19\u0E43\u0E08\u0E07\u0E32\u0E19\u0E23\u0E35\u0E42\u0E21\u0E15\u0E14\u0E49\u0E32\u0E19 Technical Support, Application Support \u0E41\u0E25\u0E30\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E1E\u0E31\u0E12\u0E19\u0E32 \u0E1B\u0E23\u0E30\u0E2A\u0E1A\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E17\u0E35\u0E48\u0E41\u0E02\u0E47\u0E07\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14\u0E04\u0E37\u0E2D\u0E01\u0E32\u0E23\u0E41\u0E01\u0E49\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07\u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E44\u0E0B\u0E15\u0E4C \u0E41\u0E25\u0E30\u0E22\u0E31\u0E07\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E15\u0E31\u0E27\u0E40\u0E2D\u0E07\u0E15\u0E48\u0E2D\u0E40\u0E19\u0E37\u0E48\u0E2D\u0E07\u0E1C\u0E48\u0E32\u0E19\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E2A\u0E48\u0E27\u0E19\u0E15\u0E31\u0E27", "View Expected Salary": "\u0E14\u0E39\u0E40\u0E07\u0E34\u0E19\u0E40\u0E14\u0E37\u0E2D\u0E19\u0E17\u0E35\u0E48\u0E04\u0E32\u0E14\u0E2B\u0E27\u0E31\u0E07", "THB 33,000\u201335,000 per month": "33,000\u201335,000 \u0E1A\u0E32\u0E17\u0E15\u0E48\u0E2D\u0E40\u0E14\u0E37\u0E2D\u0E19", "The projects above demonstrate practical work with AI-assisted development and deployed web applications. Project implementation is AI-assisted, and I continue to build my ability to read and modify code.": "\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E02\u0E49\u0E32\u0E07\u0E15\u0E49\u0E19\u0E41\u0E2A\u0E14\u0E07\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07\u0E14\u0E49\u0E32\u0E19\u0E01\u0E32\u0E23\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E42\u0E14\u0E22\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22 \u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E17\u0E35\u0E48\u0E02\u0E36\u0E49\u0E19\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07 \u0E01\u0E32\u0E23\u0E40\u0E02\u0E35\u0E22\u0E19\u0E42\u0E04\u0E49\u0E14\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22 \u0E41\u0E25\u0E30\u0E09\u0E31\u0E19\u0E22\u0E31\u0E07\u0E1D\u0E36\u0E01\u0E2D\u0E48\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E42\u0E04\u0E49\u0E14\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E15\u0E48\u0E2D\u0E40\u0E19\u0E37\u0E48\u0E2D\u0E07", "Surface crafted in the spirit of Apple's Liquid Glass \u2014 glass reserved for floating controls, with opaque unrestricted content.": "\u0E2D\u0E2D\u0E01\u0E41\u0E1A\u0E1A\u0E15\u0E32\u0E21\u0E41\u0E19\u0E27\u0E04\u0E34\u0E14 Liquid Glass \u0E02\u0E2D\u0E07 Apple \u2014 \u0E43\u0E0A\u0E49\u0E40\u0E2D\u0E1F\u0E40\u0E1F\u0E01\u0E15\u0E4C\u0E01\u0E23\u0E30\u0E08\u0E01\u0E40\u0E09\u0E1E\u0E32\u0E30\u0E1B\u0E38\u0E48\u0E21\u0E25\u0E2D\u0E22 \u0E2A\u0E48\u0E27\u0E19\u0E40\u0E19\u0E37\u0E49\u0E2D\u0E2B\u0E32\u0E40\u0E1B\u0E47\u0E19\u0E1E\u0E37\u0E49\u0E19\u0E17\u0E36\u0E1A\u0E2D\u0E48\u0E32\u0E19\u0E07\u0E48\u0E32\u0E22", "\u2709 Send Email (suwimonsaeung@gmail.com)": "\u2709 \u0E2A\u0E48\u0E07\u0E2D\u0E35\u0E40\u0E21\u0E25 (suwimonsaeung@gmail.com)", "\u{1F4DE} Call 080-042-0045": "\u{1F4DE} \u0E42\u0E17\u0E23 080-042-0045", "These projects demonstrate AI-assisted implementation and deployed web application work. I continue to develop my ability to read and modify code.": "\u0E42\u0E1B\u0E23\u0E40\u0E08\u0E01\u0E15\u0E4C\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E35\u0E49\u0E41\u0E2A\u0E14\u0E07\u0E07\u0E32\u0E19\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E42\u0E14\u0E22\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E17\u0E35\u0E48\u0E02\u0E36\u0E49\u0E19\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E08\u0E23\u0E34\u0E07 \u0E09\u0E31\u0E19\u0E22\u0E31\u0E07\u0E1D\u0E36\u0E01\u0E2D\u0E48\u0E32\u0E19\u0E41\u0E25\u0E30\u0E41\u0E01\u0E49\u0E44\u0E02\u0E42\u0E04\u0E49\u0E14\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E15\u0E48\u0E2D\u0E40\u0E19\u0E37\u0E48\u0E2D\u0E07", "Copied!": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E41\u0E25\u0E49\u0E27!", "Username copied.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E0A\u0E37\u0E48\u0E2D\u0E1C\u0E39\u0E49\u0E43\u0E0A\u0E49\u0E41\u0E25\u0E49\u0E27", "Password copied.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19\u0E41\u0E25\u0E49\u0E27", "Demo username copied.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E0A\u0E37\u0E48\u0E2D\u0E1C\u0E39\u0E49\u0E43\u0E0A\u0E49\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27", "Demo password copied.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27", "Demo password copied to clipboard.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E23\u0E2B\u0E31\u0E2A\u0E1C\u0E48\u0E32\u0E19\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27", "Demo username copied to clipboard.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E0A\u0E37\u0E48\u0E2D\u0E1C\u0E39\u0E49\u0E43\u0E0A\u0E49\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27", "Unable to copy automatically. Please select and copy the demo credential manually.": "\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49 \u0E01\u0E23\u0E38\u0E13\u0E32\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E41\u0E25\u0E30\u0E04\u0E31\u0E14\u0E25\u0E2D\u0E01\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E1A\u0E31\u0E0D\u0E0A\u0E35\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E40\u0E2D\u0E07"};
+      var TITLE_TH = 'Suwimon Sae-ung \u2014 \u0E0B\u0E31\u0E1E\u0E1E\u0E2D\u0E23\u0E4C\u0E15\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04\u0E14\u0E49\u0E32\u0E19\u0E42\u0E2E\u0E2A\u0E15\u0E34\u0E49\u0E07 \u0E41\u0E25\u0E30\u0E40\u0E27\u0E47\u0E1A\u0E41\u0E2D\u0E1B\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49 AI \u0E0A\u0E48\u0E27\u0E22\u0E1E\u0E31\u0E12\u0E19\u0E32';
+      var titleEn = document.title;
+      var EN = {};
+      function norm(s) { return s.replace(/\\s+/g, ' ').trim(); }
+      Object.keys(TH).forEach(function(k) { var v = norm(TH[k]); if (!EN[v]) EN[v] = k; });
+      var originals = new Map();
+      var lang = 'en';
+      var observer = null;
+      function translateNode(node) {
+        if (!node.parentElement || node.parentElement.closest('script, style, .lang-switch')) return;
+        var th = TH[norm(node.nodeValue)];
+        if (!th) return;
+        var lead = node.nodeValue.match(/^\\s*/)[0], trail = node.nodeValue.match(/\\s*$/)[0];
+        originals.set(node, node.nodeValue);
+        node.nodeValue = lead + th + trail;
+      }
+      function translateTree(root) {
+        if (root.nodeType === 3) { translateNode(root); return; }
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), list = [], n;
+        while ((n = walker.nextNode())) list.push(n);
+        list.forEach(translateNode);
+      }
+      function setLang(next) {
+        if (observer) observer.disconnect();
+        lang = next;
+        if (lang === 'th') {
+          translateTree(document.body);
+          document.title = TITLE_TH;
+          observer = new MutationObserver(function(muts) {
+            observer.disconnect();
+            muts.forEach(function(m) {
+              if (m.type === 'characterData') translateNode(m.target);
+              else m.addedNodes.forEach(translateTree);
+            });
+            observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+          });
+          observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+        } else {
+          var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+          while ((n = walker.nextNode())) {
+            var current = norm(n.nodeValue), orig = originals.get(n);
+            if (orig !== undefined && TH[norm(orig)] && norm(TH[norm(orig)]) === current) n.nodeValue = orig;
+            else if (EN[current]) n.nodeValue = n.nodeValue.replace(current, EN[current]);
+          }
+          originals.clear();
+          document.title = titleEn;
+        }
+        document.documentElement.lang = lang;
+        document.querySelectorAll('.lang-switch button').forEach(function(b) {
+          b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+        });
+        try { localStorage.setItem('portfolio-lang', lang); } catch (e) {}
+      }
+      document.querySelectorAll('.lang-switch button').forEach(function(b) {
+        b.addEventListener('click', function() { if (b.getAttribute('data-lang') !== lang) setLang(b.getAttribute('data-lang')); });
+      });
+      // Always open in English; visitors can switch to TH with the button.
+    })();
+  <\/script>
+
+<script data-project-gallery-script>
+  (() => {
+    document.querySelectorAll("[data-project-gallery]").forEach((gallery) => {
+      const main = gallery.querySelector("[data-gallery-main]");
+      const thumbs = Array.from(gallery.querySelectorAll("[data-gallery-thumb]"));
+      const previous = gallery.querySelector("[data-gallery-prev]");
+      const next = gallery.querySelector("[data-gallery-next]");
+      if (!main || thumbs.length === 0) return;
+
+      let activeIndex = 0;
+      const show = (index) => {
+        activeIndex = (index + thumbs.length) % thumbs.length;
+        const active = thumbs[activeIndex];
+        main.src = active.dataset.gallerySrc;
+        main.alt = active.dataset.galleryAlt || "Project screenshot";
+        thumbs.forEach((thumb, thumbIndex) => {
+          thumb.setAttribute("aria-current", thumbIndex === activeIndex ? "true" : "false");
+        });
+        active.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+      };
+
+      thumbs.forEach((thumb, index) => thumb.addEventListener("click", () => show(index)));
+      previous?.addEventListener("click", () => show(activeIndex - 1));
+      next?.addEventListener("click", () => show(activeIndex + 1));
+      if (thumbs.length < 2) {
+        if (previous) previous.hidden = true;
+        if (next) next.hidden = true;
+      }
+    });
+  })();
+<\/script>
+</body>
+</html>
