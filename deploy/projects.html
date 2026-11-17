@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Projects | Suwimon Sae-ung</title>
+<meta name="description" content="Resume and portfolio of Suwimon Sae-ung, IT & Technology Professional in Bangkok, Thailand. Technical support, web hosting operations, and AI-assisted web applications.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid #e5e7eb}
+*{font-family:'Nunito','Noto Sans Thai',sans-serif}
+h1,h2,h3,h4,nav a,.mobile-nav a,.badge,.lang-btn,.date,.viewall,.copy{font-family:'Nunito','Noto Sans Thai',sans-serif}
+html{scroll-behavior:smooth;line-height:1.5;-webkit-text-size-adjust:100%}
+body{min-height:100vh;color:#0B1325;position:relative;overflow-x:hidden;background:#F7F7F7}
+::selection{background:rgba(249,168,212,.5)}
+a{color:inherit;text-decoration:inherit}
+ul{list-style:none}
+button{background:none;color:inherit;cursor:pointer;font-size:100%}
+h1,h2,h3,h4{font-size:inherit;font-weight:inherit}
+strong{font-weight:700}
+.ic{display:block;flex-shrink:0}
+[hidden]{display:none!important}
+.aurora-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(160deg,#eef0f7 0%,#f6f1f8 45%,#eef4fb 100%);z-index:-2;overflow:hidden}
+.blob{position:absolute;filter:blur(90px);opacity:.8;border-radius:50%;animation:floatBlob 20s infinite alternate ease-in-out;z-index:-1;mix-blend-mode:multiply}
+.b1{background:#f9a8d4;width:40vw;height:40vw;top:-10%;left:-10%}
+.b2{background:#93c5fd;width:50vw;height:50vw;top:10%;right:-15%;animation-delay:-5s}
+.b3{background:#fde68a;width:35vw;height:35vw;bottom:10%;left:15%;animation-delay:-10s}
+.b4{background:#d8b4fe;width:45vw;height:45vw;bottom:-20%;right:10%;animation-delay:-15s}
+@keyframes floatBlob{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}100%{transform:translate(40px,30px) scale(1.05)}}
+.glass-panel{position:relative;isolation:isolate;background:radial-gradient(120% 80% at var(--mx,15%) var(--my,0%),rgba(255,255,255,.35),rgba(255,255,255,0) 55%),linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.08));backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.18),inset 0 0 0 .5px rgba(255,255,255,.25),0 24px 60px -18px rgba(40,44,120,.22),0 4px 14px -6px rgba(11,19,37,.08);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease}
+.glass-panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(255,255,255,.95),rgba(255,255,255,.15) 40%,rgba(255,255,255,.05) 60%,rgba(255,255,255,.7));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:-1}
+.glass-panel:hover{transform:translateY(-4px) scale(1.008);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.2),inset 0 0 0 .5px rgba(255,255,255,.3),0 34px 70px -20px rgba(40,44,120,.28),0 6px 18px -6px rgba(11,19,37,.1)}
+.glass-tag{background:linear-gradient(145deg,rgba(255,255,255,.38),rgba(255,255,255,.14));backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 16px -8px rgba(40,44,120,.18)}
+.c-black{color:#000}.c-amber700{color:#b45309}.c-slate400{color:#94a3b8}.c-yellow600{color:#ca8a04}
+.c-pink500{color:#ec4899}.c-purple500{color:#a855f7}.c-blue500{color:#3b82f6}.c-blue600{color:#2563eb}
+.c-blue700{color:#1d4ed8}.c-purple600{color:#9333ea}.c-purple700{color:#7e22ce}.c-pink600{color:#db2777}
+nav{position:fixed;width:100%;z-index:50;transition:all .3s cubic-bezier(.4,0,.2,1);background:transparent;padding:1.5rem 0;top:0;left:0}
+nav.scrolled{padding:.75rem 0}
+.nav-in{max-width:72rem;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:center}
+.cats{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:9999px}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.nav-links{display:none;gap:2rem;align-items:center;padding:.625rem 2rem;border-radius:9999px}
+.nav-links a{font-size:.95rem;font-weight:500;color:rgba(11,19,37,.8);letter-spacing:.025em;transition:color .15s cubic-bezier(.4,0,.2,1)}
+.nav-links a:hover{color:#2563eb}
+.lang-btn{display:flex;align-items:center;gap:.4rem;padding:.55rem 1rem;border-radius:9999px;font-size:.9rem;font-weight:600;color:#0B1325;letter-spacing:.025em}
+.lang-btn:hover{color:#2563eb}
+.menu-btn{width:2.75rem;height:2.75rem;border-radius:9999px;color:#0B1325;display:flex;align-items:center;justify-content:center;position:relative;z-index:60}
+.burger{position:relative;width:20px;height:14px;display:block}
+.burger i{position:absolute;left:0;height:2px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.68,-.4,.27,1.4),opacity .2s ease,width .3s ease,top .35s ease}
+.burger i:nth-child(1){top:0;width:20px}.burger i:nth-child(2){top:6px;width:14px}.burger i:nth-child(3){top:12px;width:20px}
+.menu-btn.open .burger i:nth-child(1){top:6px;transform:rotate(45deg)}
+.menu-btn.open .burger i:nth-child(2){opacity:0;width:0}
+.menu-btn.open .burger i:nth-child(3){top:6px;transform:rotate(-45deg)}
+.mobile-nav{position:fixed;inset:0;z-index:45;background:rgba(247,247,247,.72);backdrop-filter:blur(28px) saturate(1.4);-webkit-backdrop-filter:blur(28px) saturate(1.4);display:flex;align-items:center;justify-content:center;padding:6rem 1.5rem 2rem;opacity:0;visibility:hidden;clip-path:circle(0% at calc(100% - 2.9rem) 2.9rem);transition:clip-path .6s cubic-bezier(.77,0,.18,1),opacity .4s ease,visibility 0s linear .6s;overflow:hidden}
+.mobile-nav.open{opacity:1;visibility:visible;clip-path:circle(150% at calc(100% - 2.9rem) 2.9rem);transition:clip-path .7s cubic-bezier(.77,0,.18,1),opacity .3s ease,visibility 0s}
+.mn-blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;animation:floatBlob 14s infinite alternate ease-in-out}
+.mb1{width:70vw;height:70vw;background:#f9a8d4;top:-15%;left:-20%}.mb2{width:70vw;height:70vw;background:#93c5fd;bottom:-15%;right:-25%;animation-delay:-6s}
+.mn-inner{position:relative;width:100%;max-width:22rem}
+.mn-eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.25em;color:#9333ea;margin:0 0 1rem .5rem;opacity:0;transform:translateY(10px);transition:all .4s ease}
+.mn-links{display:flex;flex-direction:column;gap:.75rem}
+.mn-link{display:flex;align-items:center;gap:1rem;padding:.9rem 1.1rem;border-radius:1.5rem;background:linear-gradient(145deg,rgba(255,255,255,.4),rgba(255,255,255,.14));backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 14px 30px -14px rgba(40,44,120,.25);font-size:1.15rem;font-weight:700;color:#0B1325;opacity:0;transform:translateX(40px) scale(.96);transition:transform .5s cubic-bezier(.2,.9,.3,1.2),opacity .4s ease,background .2s ease}
+.mn-link:active{transform:scale(.97)!important;background:rgba(255,255,255,.9)}
+.mn-ic{width:2.4rem;height:2.4rem;border-radius:.9rem;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.85);box-shadow:inset 0 0 0 1px rgba(11,19,37,.05)}
+.mn-t{flex:1}
+.mn-n{font-size:.75rem;font-weight:800;color:rgba(11,19,37,.3);letter-spacing:.1em}
+.mn-foot{display:flex;gap:.6rem;justify-content:center;margin-top:1.5rem;opacity:0;transform:translateY(16px);transition:all .45s ease}
+.mn-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:9999px;font-size:.9rem;font-weight:700;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 6px 16px -4px rgba(168,85,247,.45)}
+.mobile-nav.open .mn-eyebrow{opacity:1;transform:none;transition-delay:.2s}
+.mobile-nav.open .mn-link,.mobile-nav.open .mn-foot{opacity:1;transform:none;transition-delay:calc(.25s + var(--i)*.06s)}
+body.menu-open{overflow:hidden}
+html.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+html.js .reveal.in{opacity:1;transform:none}
+main{padding:8rem 1.5rem 5rem;max-width:64rem;margin:0 auto}
+main>section+section{margin-top:8rem}
+section,.summary{scroll-margin-top:8rem}
+.hero{display:flex;flex-direction:column;align-items:center;padding-top:3rem}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.25rem;border-radius:9999px;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);color:#fff;font-size:.875rem;line-height:1.25rem;font-weight:600;letter-spacing:.05em;box-shadow:0 10px 15px -3px rgba(168,85,247,.3),0 4px 6px -4px rgba(168,85,247,.3);margin-bottom:2rem;animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite;text-align:center}
+@keyframes pulse{50%{opacity:.5}}
+@keyframes ping{75%,100%{transform:scale(2);opacity:0}}
+.dot{position:relative;display:flex;height:.625rem;width:.625rem;flex-shrink:0}
+.ping{animation:ping 1s cubic-bezier(0,0,.2,1) infinite;position:absolute;display:inline-flex;height:100%;width:100%;border-radius:9999px;background:#fff;opacity:.75}
+.core{position:relative;display:inline-flex;border-radius:9999px;height:.625rem;width:.625rem;background:#fff}
+h1{font-size:3rem;font-weight:700;color:#0B1325;line-height:1.25;margin-bottom:1rem;text-align:center;text-shadow:0 1px 1px rgba(0,0,0,.05);padding-top:.12em}
+.role{font-size:1.25rem;line-height:1.75rem;font-weight:500;background-image:linear-gradient(to right,#1d4ed8,#9333ea);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:2rem;letter-spacing:.025em;text-align:center}
+.contact{display:flex;flex-direction:column;gap:1rem;color:rgba(11,19,37,.8);font-size:.95rem;font-weight:500;margin-bottom:3rem;padding:.75rem 1.5rem;border-radius:1.75rem}
+.contact>div{display:flex;align-items:center;gap:.5rem}
+.contact a:hover{color:#2563eb}
+.summary{padding:2rem;border-radius:2rem;width:100%}
+.eyebrow{font-size:.875rem;line-height:1.25rem;font-weight:700;color:#9333ea;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.summary p{color:rgba(11,19,37,.8);line-height:1.625;font-size:1.125rem;font-weight:500}
+.sec-head{margin-bottom:2.5rem;text-align:center}
+.center-m{text-align:center}
+.h-sec{font-size:1.875rem;line-height:2.25rem;font-weight:700;color:#0B1325}
+.up{text-transform:uppercase}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:1.5rem}
+.card{padding:2rem;border-radius:2rem}
+.card-h{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.card-h h3,.pcard>h3{font-size:1.25rem;line-height:1.75rem;font-weight:700}
+.card-h h3{color:#0B1325}
+.dots>li+li{margin-top:.75rem}
+.dots li{display:flex;align-items:flex-start;gap:.5rem;color:rgba(11,19,37,.8);font-weight:500}
+.dot-b{margin-top:.25rem;line-height:1.25}
+.tags{display:flex;flex-wrap:wrap;gap:.75rem}
+.tag{padding:.5rem 1rem;border-radius:9999px;font-size:.95rem;font-weight:600;color:#0B1325}
+.stack>*+*{margin-top:2rem}
+.xp{padding:2rem;border-radius:2rem;position:relative;overflow:hidden}
+.bar{position:absolute;left:0;top:0;bottom:0;width:.5rem}
+.g-blue-purple{background-image:linear-gradient(to bottom,#3b82f6,#a855f7)}
+.g-purple-pink{background-image:linear-gradient(to bottom,#a855f7,#ec4899)}
+.g-pink-yellow{background-image:linear-gradient(to bottom,#ec4899,#facc15)}
+.g-yellow-blue{background-image:linear-gradient(to bottom,#facc15,#3b82f6)}
+.xp-h{display:flex;flex-direction:column;margin-bottom:1.5rem;gap:.5rem}
+#education .xp-h{margin-bottom:0}
+.xp h3{font-size:1.5rem;line-height:2rem;font-weight:700;color:#0B1325}
+.xp h4{font-weight:600;font-size:1.125rem;line-height:1.75rem;margin-top:.25rem}
+.date{padding:.375rem 1rem;border-radius:9999px;font-size:.875rem;line-height:1.25rem;font-weight:700;color:#0B1325;white-space:nowrap;align-self:flex-start}
+.xp ul{color:rgba(11,19,37,.8);font-weight:500;line-height:1.625}
+.xp ul>li+li{margin-top:.75rem}
+.edu-t{display:flex;align-items:flex-start;gap:.75rem}
+.edu-t .ic{margin-top:.2rem}
+.proj-head{display:flex;align-items:center;justify-content:center;text-align:center;margin-bottom:2.5rem;gap:1rem}
+.viewall{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:9999px;font-size:.875rem;line-height:1.25rem;color:#0B1325;font-weight:700;transition:color .15s;white-space:nowrap}
+.viewall:hover{color:#2563eb}
+.d-only{display:none}
+.viewall-m{margin-top:2rem;text-align:center}
+.viewall-m .viewall{padding:.75rem 1.5rem}
+.gridp{display:grid;grid-template-columns:minmax(0,1fr);gap:1.5rem}
+.pcard{padding:2rem;border-radius:2rem;display:flex;flex-direction:column;height:100%}
+.pcard>h3{margin-bottom:1rem;color:#0B1325}
+.pcard>h3.c-blue700{color:#1d4ed8}.pcard>h3.c-purple700{color:#7e22ce}.pcard>h3.c-pink600{color:#db2777}.pcard>h3.c-yellow600{color:#ca8a04}
+.pcard p{color:rgba(11,19,37,.8);font-weight:500;margin-bottom:.75rem}
+.pcard p.last{margin-bottom:1.25rem;flex:1 1 0%}
+.pcard p.nomb{margin-bottom:0}
+.inv{padding:1rem;border-radius:1rem;font-size:.9rem;color:#0B1325;font-weight:500}
+.bd-blue{border-color:rgba(191,219,254,.5)}.bd-purple{border-color:rgba(233,213,255,.5)}.bd-pink{border-color:rgba(251,207,232,.5)}.bd-yellow{border-color:rgba(254,240,138,.5)}
+.tech{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1rem;font-size:.9rem;color:#0B1325}
+.tech strong{margin-right:.25rem}
+.tech-tag{padding:.25rem .75rem;border-radius:9999px;font-size:.8rem;font-weight:600}
+.p5{display:grid;gap:1.5rem}
+.inv5{padding:1.5rem;font-size:.95rem;display:flex;align-items:center;box-shadow:inset 0 2px 4px 0 rgba(0,0,0,.05)}
+.nw{white-space:nowrap}
+.demo{margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(11,19,37,.08)}
+.demo-links{display:flex;flex-wrap:wrap;gap:.5rem}
+.demo-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:9999px;font-size:.85rem;font-weight:700;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 4px 6px -1px rgba(168,85,247,.3);transition:transform .2s ease,box-shadow .2s ease}
+.demo-btn:hover{transform:translateY(-1px);box-shadow:0 10px 15px -3px rgba(168,85,247,.35)}
+.creds{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.75rem}
+.demo-lab{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#9333ea;width:100%}
+.cred{display:inline-flex;align-items:center;gap:.4rem;max-width:100%;padding:.3rem .7rem;border-radius:9999px;font-size:.8rem;color:#0B1325;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);box-shadow:0 2px 10px rgba(0,0,0,.03);transition:color .15s}
+.cred:hover{color:#2563eb}
+.cred-l{font-weight:700}
+.cred code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;overflow-wrap:anywhere;text-align:left}
+.cred.ok{color:#16a34a}
+.cred.ok .cred-l::after{content:" ✓"}
+.pcard p.demo-note{font-size:.8rem;color:rgba(11,19,37,.6);margin:.6rem 0 0}
+#hobbies{padding:2.5rem 0;overflow:hidden}
+.hob-head{margin-bottom:3.5rem}
+.hob-head h2{font-size:1.5rem;line-height:2rem;font-weight:700;color:#0B1325;text-transform:uppercase;letter-spacing:.1em;text-shadow:0 1px 1px rgba(0,0,0,.05)}
+.vinyls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem 1.25rem;padding-right:.5rem}
+.track{position:relative;display:block;width:100%;max-width:150px;aspect-ratio:1/1;margin:0 auto;cursor:pointer}
+.vinyl{position:absolute;inset:0;background:#111;border-radius:9999px;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);transition:all .7s cubic-bezier(0,0,.2,1);display:flex;align-items:center;justify-content:center;border:1px solid #333;z-index:0}
+.track:hover .vinyl,.track:focus-visible .vinyl{transform:translateX(45%) rotate(180deg)}
+.gr{position:absolute;border-radius:9999px;border:1px solid #2a2a2a}
+.g80{width:80%;height:80%}.g60{width:60%;height:60%;border-color:#222}.g40{width:40%;height:40%}
+.label{width:30%;height:30%;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 4px 0 rgba(0,0,0,.05);position:relative;z-index:10}
+.hole{width:20%;height:20%;border-radius:9999px;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+.cover{position:absolute;inset:0;z-index:10;border-radius:.75rem;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;transition:transform .5s cubic-bezier(0,0,.2,1);overflow:hidden;border:1px solid rgba(255,255,255,.3)}
+.track:hover .cover,.track:focus-visible .cover{transform:translateX(-1rem)}
+.shine{position:absolute;top:0;left:0;width:100%;height:50%;background-image:linear-gradient(to bottom,rgba(255,255,255,.2),transparent);transform:skewY(-12deg);transform-origin:top left}
+.meta{color:#fff;position:relative;z-index:10;filter:drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06))}
+.meta h3{font-weight:700;font-size:.875rem;line-height:1.25;margin-bottom:.25rem}
+.meta p{font-size:.75rem;line-height:1rem;color:rgba(255,255,255,.9);font-weight:500}
+footer{margin-top:5rem;padding-bottom:2.5rem}
+.foot{max-width:56rem;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.fcats{margin-bottom:1rem}
+.copy{font-size:.875rem;line-height:1.25rem;font-weight:600;color:rgba(11,19,37,.5);letter-spacing:.05em}
+@media (min-width:640px){
+.contact{flex-direction:row;gap:2rem;border-radius:9999px;flex-wrap:wrap;justify-content:center}
+.vinyls{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;padding-right:1rem}
+.track{max-width:200px}
+}
+@media (min-width:768px){
+.nav-links{display:flex}.menu-btn{display:none}.mobile-nav{display:none!important}
+.hero{align-items:flex-start}
+h1{font-size:4.5rem;text-align:left}
+.role{font-size:1.5rem;line-height:2rem;text-align:left}
+.summary,.xp{padding:2.5rem}
+.center-m,.sec-head{text-align:left}
+.proj-head{justify-content:space-between;text-align:left}
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.span2{grid-column:span 2/span 2}
+.xp-h{flex-direction:row;justify-content:space-between;align-items:flex-start}
+.d-only{display:inline-flex}.m-only{display:none}
+.meta h3{font-size:1rem}
+}
+@media (min-width:1024px){
+.gridp{grid-template-columns:repeat(2,minmax(0,1fr))}
+.span2l{grid-column:span 2/span 2}
+.p5{grid-template-columns:repeat(2,minmax(0,1fr))}
+.inv5{display:flex}
+.vinyls{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:420px){.badge{font-size:.72rem;letter-spacing:.03em;padding:.5rem 1rem}h1{font-size:2.4rem}.nav-in{padding:0 1rem}.cats{padding:.5rem .75rem;gap:.35rem}}
+@media (prefers-reduced-motion:reduce){.blob,.badge,.ping,.mn-blob{animation:none}html{scroll-behavior:auto}html.js .reveal{opacity:1;transform:none}.mobile-nav,.mn-link,.mn-foot,.mn-eyebrow{transition:none!important}}
+html[lang=th] .hob-head h2,html[lang=th] .eyebrow,html[lang=th] .demo-lab,html[lang=th] .mn-eyebrow{letter-spacing:.02em}
+html[lang=th] h1{line-height:1.45}
+html[lang=th] h2,html[lang=th] h3,html[lang=th] h4{line-height:1.5}
+
+.demo-btn,.mn-chip,.badge{position:relative;overflow:hidden}
+.demo-btn::after,.mn-chip::after,.badge::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 55%);pointer-events:none}
+.cred{background:linear-gradient(145deg,rgba(255,255,255,.4),rgba(255,255,255,.16));backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 14px -8px rgba(40,44,120,.2)}
+.inv{border-radius:1.25rem}
+.mn-ic{box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 4px 10px -4px rgba(40,44,120,.2)}
+.cover{box-shadow:0 30px 50px -20px rgba(40,44,120,.45),inset 0 1px 0 rgba(255,255,255,.45)}
+@media (hover:hover){.glass-panel{--mx:15%;--my:0%}}
+
+/* ---- project screenshot gallery ---- */
+.gal{margin:-.5rem -.5rem 1.5rem;position:relative}
+.seg{position:relative;display:inline-flex;margin:0 auto 1rem;padding:4px;border-radius:9999px;background:linear-gradient(145deg,rgba(255,255,255,.4),rgba(255,255,255,.14));backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 16px -8px rgba(40,44,120,.2);left:50%;transform:translateX(-50%)}
+.seg-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:9999px;background:#fff;box-shadow:0 4px 12px -4px rgba(40,44,120,.3),inset 0 1px 0 #fff;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.gal[data-mode="mobile"] .seg-ind{transform:translateX(100%)}
+.seg-b{position:relative;z-index:1;display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:9999px;font-size:.8rem;font-weight:800;color:rgba(11,19,37,.5);transition:color .3s;min-width:6.2rem;justify-content:center}
+.seg-b.on{color:#0B1325}
+.seg.one .seg-b{background:#fff;color:#0B1325;box-shadow:0 4px 12px -4px rgba(40,44,120,.3)}
+.view{animation:viewIn .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.dev{position:relative;margin:0 auto;overflow:hidden;box-shadow:0 30px 60px -24px rgba(40,44,120,.45),0 0 0 1px rgba(255,255,255,.7),inset 0 1px 0 rgba(255,255,255,.9)}
+.dsk{border-radius:1.1rem;background:rgba(255,255,255,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bar3{display:flex;align-items:center;gap:6px;padding:.55rem .8rem;border-bottom:1px solid rgba(11,19,37,.06)}
+.bar3>i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.bar3>i:nth-child(2){background:#febc2e}.bar3>i:nth-child(3){background:#28c840}
+.url{margin:0 auto;display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;color:rgba(11,19,37,.55);padding:.2rem .8rem;border-radius:9999px;background:rgba(11,19,37,.05);transform:translateX(-18px);max-width:70%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dsk .gtrack{aspect-ratio:16/10}
+.mob{width:min(230px,62%);border-radius:2.2rem;padding:8px;background:linear-gradient(145deg,#1d1f2b,#0b0c12);box-shadow:0 30px 60px -22px rgba(40,44,120,.55),0 0 0 1px rgba(255,255,255,.2),inset 0 0 0 2px rgba(255,255,255,.08)}
+.mob .gtrack{border-radius:1.7rem}
+.mob .gtrack{aspect-ratio:9/19.5}
+.island{position:absolute;z-index:3;top:16px;left:50%;transform:translateX(-50%);width:34%;height:18px;border-radius:12px;background:#000}
+.gtrack{overscroll-behavior-x:contain;display:flex;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;background:#f3f4f8}
+.gtrack::-webkit-scrollbar{display:none}
+.sl{flex:0 0 100%;width:100%;height:100%;min-width:100%;margin:0;scroll-snap-align:center;cursor:zoom-in;overflow:hidden}
+.sl img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover){.sl:hover img{transform:scale(1.03)}}
+.nav-a{position:absolute;z-index:4;top:55%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0B1325;background:rgba(255,255,255,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 16px -6px rgba(11,19,37,.35),inset 0 1px 0 #fff;opacity:0;transition:opacity .3s,transform .3s}
+.nav-a.prev{left:10px}.nav-a.next{right:10px}
+.dev:hover .nav-a{opacity:1}
+.nav-a:active{transform:translateY(-50%) scale(.9)}
+@media (hover:none){.nav-a{display:none}}
+.gdots{display:flex;justify-content:center;gap:6px;margin-top:.9rem}
+.gdots i{width:6px;height:6px;border-radius:9999px;background:rgba(11,19,37,.18);transition:all .35s cubic-bezier(.3,1.3,.5,1)}
+.gdots i.on{width:20px;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6)}
+.gcap{display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.5rem 0 0!important;font-size:.8rem!important;font-weight:700!important;color:rgba(11,19,37,.65)!important}
+.gcap b{font-size:.7rem;color:rgba(11,19,37,.35);letter-spacing:.05em}
+.lb{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:4rem 1rem 2rem;background:rgba(15,17,30,.55);backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.lb.open{opacity:1;visibility:visible;transition:opacity .35s ease}
+.lb-f{margin:0;display:flex;flex-direction:column;align-items:center;gap:.9rem;max-width:min(1100px,100%);transform:scale(.94);transition:transform .45s cubic-bezier(.2,.9,.3,1.2)}
+.lb.open .lb-f{transform:none}
+.lb-f img{max-width:100%;max-height:78vh;border-radius:1.25rem;box-shadow:0 40px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.25);background:#fff}
+.lb-f figcaption{color:#fff;font-weight:700;font-size:.9rem;padding:.35rem 1rem;border-radius:9999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25)}
+.lb-x,.lb-n{position:absolute;display:flex;align-items:center;justify-content:center;color:#fff;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.lb-x{top:1rem;right:1rem;width:44px;height:44px}
+.lb-n{top:50%;transform:translateY(-50%);width:48px;height:48px}
+.lb-p{left:1rem}.lb-nx{right:1rem}
+@media (max-width:640px){.lb-n{top:auto;bottom:1rem;transform:none}.lb{padding-bottom:5rem}}
+.span2l .gal{max-width:36rem;margin-left:auto;margin-right:auto}
+
+.soon{position:relative;flex:0 0 100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:rgba(11,19,37,.4);background:linear-gradient(145deg,#f4f5fa,#eceef6);overflow:hidden;text-align:center;padding:1rem}
+.mob .soon{background:linear-gradient(160deg,#20222e,#11121a);color:rgba(255,255,255,.45)}
+.soon b{font-size:.8rem;font-weight:800}
+.sh{position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-100%);animation:shim 2.2s infinite}
+.mob .sh{background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%)}
+@keyframes shim{to{transform:translateX(100%)}}
+
+/* ---- details toggle (mobile), projects carousel, back to top ---- */
+.more{display:grid;grid-template-rows:1fr}
+.more-in{min-height:0}
+.more-b{display:none}
+.demo-links{margin-top:1rem}
+.demo{margin-top:1rem}
+.pdots,.phint{display:none}
+.to-top{position:fixed;z-index:48;right:1.25rem;bottom:calc(1.25rem + env(safe-area-inset-bottom));width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0B1325;background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.2));backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid rgba(255,255,255,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 12px 28px -10px rgba(40,44,120,.35);opacity:0;transform:translateY(16px) scale(.85);pointer-events:none;transition:opacity .35s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:active{transform:scale(.9)}
+body.menu-open .to-top{opacity:0;pointer-events:none}
+@media (max-width:767px){
+.more{grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1)}
+.more-in{overflow:hidden}
+.pcard.open .more{grid-template-rows:1fr}
+.pcard:not(.open) .mhide{display:none}
+.pcard p.ovw{margin-bottom:0}
+.more-in>:first-child{margin-top:1rem}
+.more-b{display:inline-flex;align-items:center;gap:.35rem;align-self:center;margin-top:1rem;padding:.5rem 1.1rem;border-radius:9999px;font-size:.85rem;font-weight:800;color:#0B1325;background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.2));border:1px solid rgba(255,255,255,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 14px -8px rgba(40,44,120,.25)}
+.more-b .ic{transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
+.pcard.open .more-b .ic{transform:rotate(180deg)}
+.pcard .demo-links{justify-content:center}
+.gridp{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -1.5rem;padding:.5rem 1.5rem 1.5rem;scroll-padding:0 1.5rem;align-items:flex-start;-webkit-overflow-scrolling:touch}
+.gridp::-webkit-scrollbar{display:none}
+.gridp>.pcard{flex:0 0 calc(100% - 1.5rem);scroll-snap-align:center;height:auto}
+.gridp>.pcard:hover{transform:none}
+.p5{gap:0}
+.pdots{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:.25rem}
+.pdots i{width:7px;height:7px;border-radius:9999px;background:rgba(11,19,37,.2);transition:all .35s cubic-bezier(.3,1.3,.5,1)}
+.pdots i.on{width:22px;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6)}
+.pcount{margin-left:.5rem;font-size:.75rem;font-weight:800;color:rgba(11,19,37,.4)}
+.phint{display:block;text-align:center;font-size:.75rem;font-weight:700;color:rgba(11,19,37,.4);margin-top:.4rem}
+.viewall-m{margin-top:1.25rem}
+}
+
+/* name on one line, equal project cards, fixed gallery stage */
+h1{white-space:nowrap}
+@media (max-width:767px){h1{font-size:clamp(1.5rem,8.4vw,3rem)}}
+html[lang=th] h1{white-space:normal}
+.gal .view{height:440px;display:flex;flex-direction:column;justify-content:center}
+.gal .view[hidden]{display:none}
+.mob{width:180px}
+.pcard .more-b{margin-top:auto}
+@media (min-width:768px){.pcard>.demo-links{margin-top:auto;padding-top:1rem}}
+@media (max-width:767px){.gridp{align-items:stretch}.pcard .more-b{margin-top:auto}.pcard p.ovw{margin-bottom:1rem}}
+@media (min-width:1024px){.gridp{grid-auto-rows:1fr}}
+
+/* section headings always on one line */
+.h-sec,.hob-head h2{white-space:nowrap}
+.proj-head{flex-wrap:nowrap}
+.proj-head .h-sec{min-width:0}
+
+/* section heading pills */
+.sec-head,.proj-head{text-align:center}
+.sh-pill{display:inline-flex;align-items:center;gap:.75rem;padding:.6rem 1.4rem .6rem .6rem;border-radius:9999px;max-width:100%}
+.sh-pill:hover{transform:none}
+.sh-ic{flex:none;width:2.4rem;height:2.4rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background-image:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6);box-shadow:0 6px 14px -6px rgba(168,85,247,.6),inset 0 1px 0 rgba(255,255,255,.5)}
+.sh-pill .h-sec{font-size:1.5rem;line-height:1.3;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase}
+html[lang=th] .sh-pill .h-sec{letter-spacing:0;line-height:1.5}
+.proj-head{flex-direction:column;gap:1rem}
+@media (min-width:768px){.sec-head,.proj-head{text-align:left}.proj-head{flex-direction:row;justify-content:space-between}}
+@media (max-width:767px){.sh-pill{gap:.55rem;padding:.45rem 1.05rem .45rem .45rem}.sh-ic{width:2rem;height:2rem}.sh-ic .ic{width:15px;height:15px}}
+.hob-head{display:none}
+/* contact copy buttons */
+.contact>div{gap:.5rem}
+.cp{position:relative;flex:none;width:30px;height:30px;margin-left:.15rem;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:rgba(11,19,37,.55);background:linear-gradient(145deg,rgba(255,255,255,.6),rgba(255,255,255,.25));border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 #fff,0 4px 10px -6px rgba(40,44,120,.35);transition:color .2s,transform .2s}
+.cp:hover{color:#7c3aed}.cp:active{transform:scale(.9)}
+.cp .i-ok{display:none}.cp.ok{color:#16a34a}.cp.ok .i-cp{display:none}.cp.ok .i-ok{display:block}
+.toast{position:fixed;z-index:120;left:50%;bottom:calc(5.5rem + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:.6rem 1.2rem;border-radius:9999px;font-size:.85rem;font-weight:800;color:#fff;background:rgba(15,17,30,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px -10px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s cubic-bezier(.3,1.4,.5,1)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.dsk .gtrack{aspect-ratio:16/9}
+.dsk .sl img{object-position:top left}
+
+.pcard p.gnote{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:.6rem auto 0;padding:.4rem .9rem;border-radius:1rem;width:fit-content;max-width:100%;min-width:0;line-height:1.4;font-size:.75rem;font-weight:800;color:#7c3aed;background:rgba(237,233,254,.7);border:1px solid rgba(196,181,253,.6);text-align:center}
+.pcard p.gnote .ic{flex:none}
+.gal .view{min-width:0;max-width:100%}
+/* feature list */
+.fx{display:block;padding:1rem 1.1rem;border-radius:1.25rem;font-size:.9rem;color:#0B1325;font-weight:500;flex:1 1 auto}
+.fx-h{display:block;margin-bottom:.5rem;font-weight:800}
+.fx-l{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.fx-l li{position:relative;padding-left:1.4rem;line-height:1.5;color:rgba(11,19,37,.82)}
+.fx-l li::before{content:"";position:absolute;left:0;top:.42em;width:.8rem;height:.8rem;border-radius:9999px;background:linear-gradient(135deg,#ec4899,#a855f7 55%,#3b82f6);box-shadow:0 0 0 3px rgba(168,85,247,.12)}
+.fx-l li::after{content:"";position:absolute;left:.26rem;top:.6em;width:.28rem;height:.16rem;border:solid #fff;border-width:0 0 2px 2px;transform:rotate(-45deg)}
+.pcard p.devr{margin:.9rem 0 0;font-size:.9rem}
+/* role summary card */
+.rolecard{padding:1.5rem 1.75rem;border-radius:2rem;margin-bottom:1.75rem}
+.rc-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.rc-h h3{font-size:1.2rem;font-weight:800;color:#0B1325}
+.rc-p{color:rgba(11,19,37,.8);font-weight:500;line-height:1.65;margin-bottom:1rem}
+.rc-l{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.rc-l li{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .85rem .4rem .45rem;border-radius:9999px;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.7);font-size:.85rem;font-weight:700;color:#0B1325;box-shadow:0 2px 8px rgba(124,58,237,.08)}
+.rc-n{display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:9999px;font-size:.72rem;color:#fff;background:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6)}
+@media (max-width:767px){.rolecard{padding:1.25rem;border-radius:1.5rem}.rc-l li{font-size:.8rem}.fx{font-size:.86rem}}
+@media (max-width:767px){.rc-h h3{font-size:1.05rem}.rc-p{font-size:.9rem;line-height:1.6;margin-bottom:.8rem}.rc-l{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}.rc-l li{font-size:.74rem;padding:.35rem .5rem .35rem .35rem;gap:.35rem;line-height:1.25}.rc-n{flex:none;width:1.2rem;height:1.2rem;font-size:.65rem}}
+/* expected salary */
+.sal-wrap{display:flex;justify-content:center;padding-top:0}
+.salary{display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:.75rem 1rem;padding:1rem 1.25rem 1rem 1.5rem;border-radius:9999px;max-width:100%}
+.sal-ic{color:#7e22ce;flex:none}
+.sal-l{font-weight:800;color:#0B1325;letter-spacing:.01em}
+.sal-v{font-weight:800;font-size:1.05rem;padding:.35rem .9rem;border-radius:9999px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.75);color:#0B1325;min-width:11rem;text-align:center;transition:filter .3s,color .3s;font-variant-numeric:tabular-nums}
+.salary:not(.shown) .sal-v{color:rgba(11,19,37,.45);letter-spacing:.08em}
+.sal-b{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .9rem;border-radius:9999px;border:0;cursor:pointer;font:inherit;font-size:.82rem;font-weight:700;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 4px 10px -2px rgba(168,85,247,.35);transition:transform .2s}
+.sal-b:hover{transform:translateY(-1px)}
+@media (max-width:767px){.salary{border-radius:1.5rem;padding:1rem;flex-direction:column;gap:.6rem}.sal-v{font-size:1rem}}
+/* resume download */
+.dl-cv{display:inline-flex;align-items:center;gap:.5rem;margin:-1.75rem auto 2.5rem;padding:.7rem 1.4rem;border-radius:9999px;font-weight:800;font-size:.95rem;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 8px 20px -6px rgba(168,85,247,.45);transition:transform .2s,box-shadow .2s}
+.dl-cv:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(168,85,247,.55)}
+.hero{display:flex;flex-direction:column;align-items:center}
+/* phone reveal */
+.ph-v{font-variant-numeric:tabular-nums}
+.ph:not(.shown) .ph-v{color:rgba(11,19,37,.55);letter-spacing:.03em;cursor:default}
+.ph-b{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .65rem;border-radius:9999px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.55);font:inherit;font-size:.75rem;font-weight:700;color:#7e22ce;cursor:pointer}
+.ph-b:hover{background:rgba(255,255,255,.85)}
+.ph.shown .ph-b{display:none}
+/* music intro */
+.music{padding:1.75rem 2rem;border-radius:2rem;margin-bottom:1rem}
+.mu-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.9rem}
+.mu-eb{display:inline-flex;align-items:center;gap:.45rem;font-size:.8rem;font-weight:800;letter-spacing:.08em;color:#be185d}
+.mu-yt{display:inline-flex;align-items:center;gap:.45rem;padding:.5rem 1rem;border-radius:9999px;font-size:.85rem;font-weight:800;color:#fff;background:linear-gradient(to right,#ef4444,#db2777);box-shadow:0 6px 14px -4px rgba(219,39,119,.45);transition:transform .2s}
+.mu-yt:hover{transform:translateY(-1px)}
+.mu-p{color:rgba(11,19,37,.82);font-weight:500;line-height:1.7;margin-bottom:1.1rem}
+.mu-pr{list-style:none;margin:0 0 1rem;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+.mu-pr li{display:grid;grid-template-columns:auto 1fr;column-gap:.65rem;align-items:center;padding:.8rem 1rem;border-radius:1.25rem;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.75)}
+.mu-k{grid-row:span 2;display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:9999px;font-size:.75rem;color:#fff;background:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6)}
+.mu-t{font-weight:800;color:#0B1325;font-size:.95rem}
+.mu-d{font-size:.8rem;color:rgba(11,19,37,.7);font-weight:600}
+.mu-tag{font-weight:800;font-size:.9rem;color:#7e22ce;margin:0}
+.mu-hint{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.8rem;font-weight:700;color:rgba(11,19,37,.55);margin:.25rem 0 0}
+@media (max-width:767px){.music{padding:1.25rem;border-radius:1.5rem}.mu-pr{grid-template-columns:1fr;gap:.5rem}.mu-top{flex-direction:column;align-items:flex-start}.dl-cv{margin:-1.5rem auto 2rem;font-size:.9rem}}
+/* experience metrics */
+.xp-m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:-.5rem 0 1.25rem}
+.xm{padding:.7rem .9rem;border-radius:1rem;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.7);box-shadow:0 2px 10px rgba(124,58,237,.06);min-width:0}
+.xm b{display:block;font-size:1.35rem;line-height:1.2;font-weight:800;background-image:linear-gradient(90deg,#db2777,#7c3aed 60%,#2563eb);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.xm span{display:block;font-size:.78rem;font-weight:600;color:rgba(11,19,37,.65);line-height:1.35;margin-top:.15rem}
+@media (max-width:767px){.xp-m{gap:.4rem}.xm{padding:.55rem .6rem;border-radius:.85rem}.xm b{font-size:1.1rem}.xm span{font-size:.7rem}}
+/* view all (mobile) */
+.va-b{border:0;cursor:pointer;font:inherit;gap:.5rem}
+@media (max-width:767px){
+#pgrid.all{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible;margin:0;padding:0;gap:1.25rem;scroll-snap-type:none}
+#pgrid.all>.pcard{flex:none;width:100%}
+.pall .pdots,.pall .phint{display:none}}
+/* youtube confirm */
+.ytc{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:1.25rem;background:rgba(15,10,40,.38);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:ytcIn .2s ease}
+.ytc[hidden]{display:none}
+.ytc-card{width:min(400px,100%);padding:1.6rem 1.5rem 1.4rem;border-radius:1.75rem;text-align:center;background:rgba(255,255,255,.82)}
+.ytc-ic{width:3.25rem;height:3.25rem;margin:0 auto .8rem;border-radius:1rem;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#ef4444,#db2777)}
+.ytc-card h3{font-size:1.2rem;font-weight:800;color:#0B1325;margin-bottom:.4rem}
+.ytc-p{color:rgba(11,19,37,.75);font-weight:500;line-height:1.55;margin-bottom:1.2rem}
+.ytc-p b{color:#0B1325}
+.ytc-a{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+.ytc-no,.ytc-go{display:inline-flex;align-items:center;justify-content:center;min-width:8rem;padding:.65rem 1.2rem;border-radius:9999px;font:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
+.ytc-no{border:1px solid rgba(11,19,37,.12);background:rgba(255,255,255,.7);color:#0B1325}
+.ytc-go{border:0;color:#fff;background-image:linear-gradient(to right,#ec4899,#a855f7,#3b82f6);box-shadow:0 4px 10px -2px rgba(168,85,247,.35)}
+body.ytc-open{overflow:hidden}
+@keyframes ytcIn{from{opacity:0}to{opacity:1}}
+/* mobile carousel: each card keeps its own height when details open */
+@media (max-width:767px){.gridp{align-items:flex-start}}
+/* projects page */
+.pg{padding-top:6.5rem}
+.pg-hero{text-align:center;max-width:46rem;margin:0 auto 2rem}
+.pg-back{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem 1rem .5rem .75rem;border-radius:9999px;font-size:.85rem;font-weight:800;color:#0B1325}
+.pg-back:hover{color:#7c3aed}
+.pg-eb{margin-top:1.5rem;font-size:.8rem;font-weight:800;letter-spacing:.14em;color:#7e22ce}
+.pg h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.1;font-weight:800;color:#0B1325;margin:.35rem 0 .75rem;white-space:normal}
+.pg-sub{color:rgba(11,19,37,.72);font-weight:500;line-height:1.6}
+.pg-jump{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1.4rem}
+.pj{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .9rem .45rem .5rem;border-radius:9999px;font-size:.85rem;font-weight:700;color:#0B1325;transition:transform .2s}
+.pj:hover{transform:translateY(-2px)}
+.pj b{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:9999px;font-size:.7rem;color:#fff;background:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6)}
+.pf{padding:2rem;border-radius:2rem;margin-top:1.75rem;scroll-margin-top:6rem}
+.pf-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1.75rem}
+.pf .gal{margin:0}
+.pf-no{display:block;font-size:2.4rem;line-height:1;font-weight:800;background-image:linear-gradient(90deg,#db2777,#7c3aed 60%,#2563eb);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:.35rem}
+.pf-t{font-size:1.6rem;line-height:1.25;font-weight:800;margin-bottom:.9rem}
+.pf-t.c-blue700{color:#1d4ed8}.pf-t.c-purple700{color:#7e22ce}.pf-t.c-pink600{color:#db2777}.pf-t.c-yellow600{color:#ca8a04}
+.pf p.pf-ov,.pf p.pf-dev{color:rgba(11,19,37,.8);font-weight:500;line-height:1.65;margin-bottom:.75rem}
+.pf .tech{margin-top:.25rem}
+.pf .demo{margin-top:1.1rem}
+.pf .fx{margin-top:1.75rem}
+@media (min-width:900px){.pf .fx-l{grid-template-columns:1fr 1fr;column-gap:1.5rem}}
+@media (min-width:1024px){.pf{padding:2.5rem}.pf-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:2.5rem;align-items:start}.pf-media{position:sticky;top:6rem}}
+.pf .dev.mob{width:200px}
+.pg-end{text-align:center;margin:2.5rem 0 1rem}
+@media (max-width:767px){.pg{padding-top:5.5rem}.pf{padding:1.25rem;border-radius:1.5rem}.pf-t{font-size:1.3rem}.pf-no{font-size:2rem}}
+.pg h1{text-align:center;width:100%;letter-spacing:-.01em}
+.pg .pg-hero{display:flex;flex-direction:column;align-items:center}
+</style>
+</head>
+<body>
+<div class="aurora-bg">
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<nav id="nav">
+<div class="nav-in">
+<div class="cats glass-panel"><svg class="ic c-black" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-amber700" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-slate400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-yellow600" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg></div>
+<div class="nav-right">
+<div class="nav-links glass-panel">
+<a href="/portfolio#summary" data-kl data-th="เกี่ยวกับฉัน">Summary</a>
+<a href="/portfolio#experience" data-kl data-th="ประสบการณ์ทำงาน">Experience</a>
+<a href="/portfolio#education" data-kl data-th="การศึกษา">Education</a>
+<a href="/portfolio#projects" data-kl data-th="ผลงาน">Projects</a>
+<a href="/portfolio#hobbies" data-kl data-th="งานอดิเรก">Hobbies</a>
+</div>
+<button id="langBtn" class="lang-btn glass-panel" type="button" aria-label="Switch language / เปลี่ยนภาษา"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span id="langLabel">ไทย</span></button>
+<button id="menuBtn" class="menu-btn glass-panel" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav"><span class="burger"><i></i><i></i><i></i></span></button>
+</div>
+</div>
+</nav>
+<div id="mobileNav" class="mobile-nav" aria-hidden="true"><div class="mn-blob mb1"></div><div class="mn-blob mb2"></div><div class="mn-inner">
+<p class="mn-eyebrow" data-th="เมนู">MENU</p><div class="mn-links">
+<a class="mn-link" href="/portfolio#summary" data-kl style="--i:0"><span class="mn-ic c-pink500"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span><span class="mn-t" data-th="เกี่ยวกับฉัน">Summary</span><span class="mn-n">01</span></a>
+<a class="mn-link" href="/portfolio#experience" data-kl style="--i:1"><span class="mn-ic c-purple500"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg></span><span class="mn-t" data-th="ประสบการณ์ทำงาน">Experience</span><span class="mn-n">02</span></a>
+<a class="mn-link" href="/portfolio#education" data-kl style="--i:2"><span class="mn-ic c-blue600"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span><span class="mn-t" data-th="การศึกษา">Education</span><span class="mn-n">03</span></a>
+<a class="mn-link" href="/portfolio#projects" data-kl style="--i:3"><span class="mn-ic c-yellow600"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg></span><span class="mn-t" data-th="ผลงาน">Projects</span><span class="mn-n">04</span></a>
+<a class="mn-link" href="/portfolio#hobbies" data-kl style="--i:4"><span class="mn-ic c-pink600"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg></span><span class="mn-t" data-th="งานอดิเรก">Hobbies</span><span class="mn-n">05</span></a>
+</div><div class="mn-foot" style="--i:5"><a class="mn-chip" href="mailto:suwimonsaeung@gmail.com"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span data-th="อีเมล">Email</span></a><a class="mn-chip" href="#" data-tel="KzY2ODAwNDIwMDQ1"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span data-th="โทร">Call</span></a><a class="mn-chip" href="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@d52efa2b4b1b551c1b0c67131896afc6e4834b1e/resume/Suwimon_Sae-ung_Resume.pdf" target="_blank" rel="noopener"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg><span data-th="เรซูเม่">Resume</span></a></div></div></div>
+<main class="pg"><section class="pg-hero"><a class="glass-tag pg-back" href="/portfolio#projects" data-kl><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span data-th="กลับหน้าพอร์ตโฟลิโอ">Back to portfolio</span></a>
+<p class="pg-eb" data-th="ผลงานแอปพลิเคชัน">APPLICATION PROJECTS</p>
+<h1 data-th="ผลงานทั้งหมด">All Projects</h1>
+<p class="pg-sub" data-th="แอปพลิเคชันที่ใช้งานได้จริง 4 ตัว ดูภาพหน้าจอ ฟังก์ชันที่แอปทำได้ และลองใช้เดโมได้เลย">Four working applications — browse the screenshots, see what each app can do, and try the live demos.</p>
+<div class="pg-jump" role="navigation" aria-label="Projects">
+<a class="glass-tag pj" href="#p1"><b>01</b>Condo Management App</a>
+<a class="glass-tag pj" href="#p2"><b>02</b>Support Operations Portal</a>
+<a class="glass-tag pj" href="#p3"><b>03</b>CHRONOLIER</a>
+<a class="glass-tag pj" href="#p4"><b>04</b>PukPui Pay</a>
+</div></section>
+<div class="glass-panel rolecard"><div class="rc-h"><svg class="ic c-purple700" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><h3 data-th="บทบาทของฉันในโปรเจกต์">My role in these projects</h3></div><p class="rc-p" data-th="ฉันเป็นคนกำหนดว่าแต่ละแอปต้องทำอะไร พัฒนาโดยใช้ AI ช่วย ตรวจทาน workflow ที่ AI เสนอ ทดสอบทุกฟีเจอร์ด้วยตัวเอง แจ้งบั๊กและตรวจสอบหลังแก้ไข และประสานการขึ้นระบบจริง ส่วนดีไซน์ โค้ด และโครงสร้างระบบ สร้างด้วย AI ภายใต้การกำหนดทิศทางและตรวจทานของฉัน ไม่ได้เขียนเองทั้งหมด">I defined what each app needed to do, built it with AI-assisted development, reviewed the proposed workflows, tested every feature hands-on, reported and verified bugs, and coordinated deployment. Design, code and architecture were produced with AI assistance under my direction and review — not independently by me.</p><ol class="rc-l"><li><span class="rc-n">1</span><span data-th="กำหนดความต้องการ">Requirements definition</span></li><li><span class="rc-n">2</span><span data-th="พัฒนาโดยใช้ AI ช่วย">AI-assisted building</span></li><li><span class="rc-n">3</span><span data-th="ตรวจทาน Workflow">Workflow review</span></li><li><span class="rc-n">4</span><span data-th="ทดสอบใช้งานจริง">Hands-on testing</span></li><li><span class="rc-n">5</span><span data-th="แจ้งบั๊กและตรวจสอบหลังแก้">Bug reporting & verification</span></li><li><span class="rc-n">6</span><span data-th="ประสานการขึ้นระบบ">Deployment coordination</span></li></ol></div>
+<section class="glass-panel pf" id="p1"><div class="pf-grid"><div class="pf-media"><div class="gal" data-mode="mobile"><div class="seg" role="tablist"><span class="seg-ind"></span><button type="button" class="seg-b" data-m="desktop"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>Desktop</span></button><button type="button" class="seg-b on" data-m="mobile"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span>Mobile</span></button></div><div class="view v-desktop" hidden><div class="dev dsk"><div class="bar3"><i></i><i></i><i></i><span class="url"><svg class="ic " width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>chewvy.shop</span></div><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/fc-d-tickets.webp" alt="Admin · Maintenance requests" loading="lazy" decoding="async" data-cap="Admin · Maintenance requests" data-cap-th="แอดมิน · งานแจ้งซ่อม"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/fc-d-detail.webp" alt="Request detail &amp; assignment" loading="lazy" decoding="async" data-cap="Request detail &amp; assignment" data-cap-th="รายละเอียดและมอบหมายช่าง"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/fc-d-new.webp" alt="Log a request for a resident" loading="lazy" decoding="async" data-cap="Log a request for a resident" data-cap-th="แจ้งซ่อมแทนลูกบ้าน"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/fc-d-news.webp" alt="Announcements" loading="lazy" decoding="async" data-cap="Announcements" data-cap-th="ประกาศ"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/fc-d-manage.webp" alt="Manage announcements" loading="lazy" decoding="async" data-cap="Manage announcements" data-cap-th="จัดการประกาศ"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="แอดมิน · งานแจ้งซ่อม">Admin · Maintenance requests</span><b>1 / 5</b></p><p class="gnote"><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span data-th="เฉพาะสิทธิ์ Admin — หน้าเว็บเวอร์ชัน Desktop นี้ใช้ได้เฉพาะบัญชีผู้ดูแลระบบเท่านั้น">Admin only — this desktop web panel is available to administrator accounts only.</span></p></div><div class="view v-mobile"><div class="dev mob"><span class="island"></span><div class="gtrack"><figure class="sl"><img src="/portfolio-assets/condo-condo-dashboard.jpg" alt="Home dashboard" loading="lazy" decoding="async" data-cap="Home dashboard" data-cap-th="หน้าหลัก"></figure><figure class="sl"><img src="/portfolio-assets/condo-condo-resident-menu.jpg" alt="Resident menu" loading="lazy" decoding="async" data-cap="Resident menu" data-cap-th="เมนูลูกบ้าน"></figure><figure class="sl"><img src="/portfolio-assets/condo-condo-resident-bills.jpg" alt="Resident bills" loading="lazy" decoding="async" data-cap="Resident bills" data-cap-th="บิลของลูกบ้าน"></figure><figure class="sl"><img src="/portfolio-assets/condo-condo-operations.jpg" alt="Operations" loading="lazy" decoding="async" data-cap="Operations" data-cap-th="งานปฏิบัติการ"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="หน้าหลัก">Home dashboard</span><b>1 / 4</b></p></div></div></div><div class="pf-info">
+<span class="pf-no">01</span><h2 class="c-blue700 pf-t" data-th="Condo Management App">Condo Management App</h2>
+<p class="pf-ov" data-th="&lt;strong&gt;ภาพรวม:&lt;/strong&gt; แอปบริหารจัดการคอนโดสำหรับลูกบ้าน เจ้าหน้าที่ และผู้ดูแลระบบ ช่วยให้งานประจำวันและการสื่อสารภายในคอนโดสะดวกขึ้น"><strong>Overview:</strong> A condominium management application with functions for residents, staff, and administrators to streamline daily operations and communication.</p>
+<div class="tech"><strong data-th="เทคโนโลยีที่ใช้:">Technologies used:</strong><span class="glass-tag tech-tag">Flutter</span><span class="glass-tag tech-tag">NestJS</span><span class="glass-tag tech-tag">PostgreSQL</span><span class="glass-tag tech-tag">Cloudflare Tunnel</span></div><div class="demo"><div class="creds"><span class="demo-lab" data-th="บัญชีทดลอง">DEMO ACCESS</span><button type="button" class="cred" data-copy="owner@chewvy.shop" title="Copy"><span class="cred-l" data-th="คัดลอกชื่อผู้ใช้">Copy Username</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button><button type="button" class="cred" data-copy="Owner@20122569" title="Copy"><span class="cred-l" data-th="คัดลอกรหัสผ่าน">Copy Password</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button></div><p class="demo-note" data-th="บัญชีเจ้าของสำหรับทดลอง ลองได้ทุกฟีเจอร์ การแก้ไขทั้งหมดเกิดในระบบทดลอง (Sandbox) ข้อมูลจริงไม่ถูกแตะต้อง">Owner demo account. Try every feature: changes go to a sandbox copy, real data never changes.</p></div><div class="demo-links"><a class="demo-btn" href="https://staging-app.chewvy.shop/" target="_blank" rel="noopener noreferrer"><span data-th="เปิดเว็บแอป (iOS / เบราว์เซอร์)">Open Web App (iOS / Browser)</span> <svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a><a class="demo-btn" href="https://drive.google.com/file/d/1yKqmEKHGqOsnNaUdLhErocxgHrHp9dMT/view?usp=sharing" target="_blank" rel="noopener noreferrer"><span data-th="ดาวน์โหลดแอป Android (APK)">Download Android App (APK)</span> <svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div>
+</div></div><div class="glass-tag fx bd-blue"><strong class="fx-h" data-th="แอปนี้ทำอะไรได้บ้าง">What the app can do:</strong><ul class="fx-l"><li data-th="แจ้งซ่อมพร้อมติดตามสถานะทีละขั้น (แจ้งแล้ว → มอบหมายช่าง → กำลังซ่อม → ซ่อมเสร็จ → ปิดงาน) มอบหมาย/เปลี่ยนช่าง นัดหมาย และแชทในใบงาน">Maintenance requests tracked step by step (reported → assigned → repairing → done → closed), with technician assignment, appointment slots and an in-ticket chat.</li><li data-th="เว็บแอดมิน: กรองงานซ่อมตามสถานะและความสำคัญ และแจ้งซ่อมแทนลูกบ้านได้">Admin web panel: filter requests by status and priority, and log a request on behalf of a resident.</li><li data-th="ประกาศข่าวสาร เลือกกลุ่มผู้รับ ปักหมุด และดูจำนวนคนที่อ่านแล้ว">Announcements with audience targeting, pinning and read counts.</li><li data-th="บิลค่าใช้จ่ายของลูกบ้าน: ยอดค้างชำระ บิลรายเดือนพร้อมวันครบกำหนด และประวัติการชำระ">Resident bills: outstanding balance, monthly bills with due dates and payment history.</li><li data-th="หน้า Priority Hub สรุปงานประจำวัน พร้อมพัสดุ เรื่องร้องเรียน ผู้มาติดต่อ คลังวัสดุ ลงเวลาทำงาน และจองพื้นที่ส่วนกลาง">Daily Priority Hub plus parcels, complaints, visitors, inventory, attendance and facility booking.</li><li data-th="แยกมุมมองตามสิทธิ์ ลูกบ้าน / เจ้าหน้าที่ / แอดมิน รองรับภาษาไทยและอังกฤษ">Role-based views for residents, staff and admins, in Thai and English.</li></ul></div></section>
+<section class="glass-panel pf" id="p2"><div class="pf-grid"><div class="pf-media"><div class="gal" data-mode="desktop"><div class="seg" role="tablist"><span class="seg-ind"></span><button type="button" class="seg-b on" data-m="desktop"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>Desktop</span></button><button type="button" class="seg-b" data-m="mobile"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span>Mobile</span></button></div><div class="view v-desktop"><div class="dev dsk"><div class="bar3"><i></i><i></i><i></i><span class="url"><svg class="ic " width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>chronolier.xyz</span></div><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-d-dashboard.webp" alt="SLA dashboard" loading="lazy" decoding="async" data-cap="SLA dashboard" data-cap-th="แดชบอร์ด SLA"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-d-tickets.webp" alt="Ticket queue" loading="lazy" decoding="async" data-cap="Ticket queue" data-cap-th="คิวทิกเก็ต"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-d-handover.webp" alt="Shift handover" loading="lazy" decoding="async" data-cap="Shift handover" data-cap-th="ส่งต่องานระหว่างกะ"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-d-attendance.webp" alt="Shift &amp; attendance" loading="lazy" decoding="async" data-cap="Shift &amp; attendance" data-cap-th="ตารางกะและการเข้างาน"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-d-knowledge.webp" alt="Knowledge hub" loading="lazy" decoding="async" data-cap="Knowledge hub" data-cap-th="คลังความรู้"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="แดชบอร์ด SLA">SLA dashboard</span><b>1 / 5</b></p></div><div class="view v-mobile" hidden><div class="dev mob"><span class="island"></span><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-m-dashboard.webp" alt="SLA dashboard" loading="lazy" decoding="async" data-cap="SLA dashboard" data-cap-th="แดชบอร์ด SLA"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-m-tickets.webp" alt="Ticket queue" loading="lazy" decoding="async" data-cap="Ticket queue" data-cap-th="คิวทิกเก็ต"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-m-handover.webp" alt="Shift handover" loading="lazy" decoding="async" data-cap="Shift handover" data-cap-th="ส่งต่องานระหว่างกะ"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-m-attendance.webp" alt="Shift &amp; attendance" loading="lazy" decoding="async" data-cap="Shift &amp; attendance" data-cap-th="ตารางกะและการเข้างาน"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/ops-m-knowledge.webp" alt="Knowledge hub" loading="lazy" decoding="async" data-cap="Knowledge hub" data-cap-th="คลังความรู้"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="แดชบอร์ด SLA">SLA dashboard</span><b>1 / 5</b></p></div></div></div><div class="pf-info">
+<span class="pf-no">02</span><h2 class="c-pink600 pf-t" data-th="Support Operations Portal">Support Operations Portal</h2>
+<p class="pf-ov" data-th="&lt;strong&gt;ภาพรวม:&lt;/strong&gt; พอร์ทัลภายในสำหรับทีมซัพพอร์ตไอที ทีมซัพพอร์ตทั้ง 7 คนใช้งานจริงในการทำงานประจำวัน"><strong>Overview:</strong> An internal portal for IT support operations, used by all 7 members of the support team in their daily work.</p>
+<div class="tech"><strong data-th="เทคโนโลยีที่ใช้:">Technologies used:</strong><span class="glass-tag tech-tag">Next.js</span><span class="glass-tag tech-tag">JWT</span><span class="glass-tag tech-tag">Docker</span></div><div class="demo"><div class="creds"><span class="demo-lab" data-th="บัญชีทดลอง">DEMO ACCESS</span><button type="button" class="cred" data-copy="demo@chronolier.xyz" title="Copy"><span class="cred-l" data-th="คัดลอกชื่อผู้ใช้">Copy Username</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button><button type="button" class="cred" data-copy="Demo@ChronolierView2026" title="Copy"><span class="cred-l" data-th="คัดลอกรหัสผ่าน">Copy Password</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button></div><p class="demo-note" data-th="บัญชีทดลอง ดูได้อย่างเดียว">Demo account. Read-only access.</p></div><div class="demo-links"><a class="demo-btn" href="https://chronolier.xyz/login" target="_blank" rel="noopener noreferrer"><span data-th="เปิดเดโม">Open Live Demo</span> <svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div>
+</div></div><div class="glass-tag fx bd-pink"><strong class="fx-h" data-th="แอปนี้ทำอะไรได้บ้าง">What the app can do:</strong><ul class="fx-l"><li data-th="แดชบอร์ด SLA: เคสที่เปิดอยู่ เคสใกล้หลุด SLA (ไม่ถึง 30 นาที) เคสที่เกิน SLA และเคสที่ยังไม่มีผู้รับ รีเฟรชอัตโนมัติ และบันทึกเคสด่วนได้">SLA dashboard: open cases, cases close to breaching (under 30 min), breached and unassigned cases, with auto refresh and quick case logging.</li><li data-th="คิว ticket ซิงก์จาก Freshdesk กรองตามสถานะและผู้รับผิดชอบ เปิดดูรายละเอียดและรับเคสได้">Ticket queue synced from Freshdesk, filterable by status and agent, so cases can be reviewed and picked up.</li><li data-th="ส่งต่องานระหว่างกะแบบเรียลไทม์ สรุปเคสที่ยังค้างให้กะถัดไป (Office / กะเช้า / กะดึก)">Real-time shift handover: summarises open and pending cases for the outgoing shift (office, day, night).</li><li data-th="คลังความรู้ ค้นหาได้และจัดหมวดด้วยแท็ก มีคู่มือ และคลังสคริปต์ตอบกลับลูกค้า">Knowledge hub with searchable, tagged knowledge cards, manuals and a reply-script library.</li><li data-th="ลงเวลาเข้างาน แจ้งเตือนจากระบบมอนิเตอร์ รายงานรายวัน/รายสัปดาห์ และประวัติการตรวจสอบ">Attendance, monitoring alerts, daily and weekly reports, and an audit history.</li></ul></div></section>
+<section class="glass-panel pf" id="p3"><div class="pf-grid"><div class="pf-media"><div class="gal" data-mode="desktop"><div class="seg" role="tablist"><span class="seg-ind"></span><button type="button" class="seg-b on" data-m="desktop"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>Desktop</span></button><button type="button" class="seg-b" data-m="mobile"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span>Mobile</span></button></div><div class="view v-desktop"><div class="dev dsk"><div class="bar3"><i></i><i></i><i></i><span class="url"><svg class="ic " width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>chronolier.monster</span></div><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-d-home.webp" alt="Business overview" loading="lazy" decoding="async" data-cap="Business overview" data-cap-th="ภาพรวมธุรกิจ"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-d-pos.webp" alt="POS checkout" loading="lazy" decoding="async" data-cap="POS checkout" data-cap-th="หน้าขาย POS"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-d-stock.webp" alt="Stock" loading="lazy" decoding="async" data-cap="Stock" data-cap-th="สต็อกสินค้า"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-d-invoices.webp" alt="Customer invoices" loading="lazy" decoding="async" data-cap="Customer invoices" data-cap-th="ใบแจ้งหนี้ลูกค้า"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-d-reports.webp" alt="Sales dashboard" loading="lazy" decoding="async" data-cap="Sales dashboard" data-cap-th="แดชบอร์ดยอดขาย"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="ภาพรวมธุรกิจ">Business overview</span><b>1 / 5</b></p></div><div class="view v-mobile" hidden><div class="dev mob"><span class="island"></span><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-m-home.webp" alt="Business overview" loading="lazy" decoding="async" data-cap="Business overview" data-cap-th="ภาพรวมธุรกิจ"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-m-pos.webp" alt="POS checkout" loading="lazy" decoding="async" data-cap="POS checkout" data-cap-th="หน้าขาย POS"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-m-stock.webp" alt="Stock" loading="lazy" decoding="async" data-cap="Stock" data-cap-th="สต็อกสินค้า"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-m-invoices.webp" alt="Customer invoices" loading="lazy" decoding="async" data-cap="Customer invoices" data-cap-th="ใบแจ้งหนี้ลูกค้า"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pos-m-reports.webp" alt="Sales dashboard" loading="lazy" decoding="async" data-cap="Sales dashboard" data-cap-th="แดชบอร์ดยอดขาย"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="ภาพรวมธุรกิจ">Business overview</span><b>1 / 5</b></p></div></div></div><div class="pf-info">
+<span class="pf-no">03</span><h2 class="c-yellow600 pf-t" data-th="CHRONOLIER - POS &amp; Business Management Platform">CHRONOLIER - POS &amp; Business Management Platform</h2>
+<p class="pf-ov" data-th="&lt;strong&gt;ภาพรวม:&lt;/strong&gt; แพลตฟอร์มบริหารธุรกิจแบบ Multi-tenant ครอบคลุม POS สต็อกสินค้า CRM การวิเคราะห์ข้อมูล การจัดซื้อ และการเงิน"><strong>Overview:</strong> A multi-tenant business management platform covering POS, inventory, CRM, analytics, procurement, and finance modules.</p>
+<p class="pf-dev" data-th="&lt;strong&gt;กำลังพัฒนา:&lt;/strong&gt; โมดูลวิเคราะห์ข้อมูลขั้นสูง การจัดซื้อ และการเงิน"><strong>In development:</strong> Advanced analytics, procurement, and finance modules.</p>
+<div class="tech"><strong data-th="เทคโนโลยีที่ใช้:">Technologies used:</strong><span class="glass-tag tech-tag">NestJS</span><span class="glass-tag tech-tag">Next.js</span><span class="glass-tag tech-tag">PostgreSQL</span></div><div class="demo"><div class="creds"><span class="demo-lab" data-th="บัญชีทดลอง">DEMO ACCESS</span><button type="button" class="cred" data-copy="guest@chronolier.monster" title="Copy"><span class="cred-l" data-th="คัดลอกชื่อผู้ใช้">Copy Username</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button><button type="button" class="cred" data-copy="GeBjWF4xGBSkVrD" title="Copy"><span class="cred-l" data-th="คัดลอกรหัสผ่าน">Copy Password</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button></div><p class="demo-note" data-th="บัญชีทดลองสำหรับระบบ POS และสต็อก">POS &amp; Inventory demo account.</p></div><div class="demo-links"><a class="demo-btn" href="https://chronolier.monster/" target="_blank" rel="noopener noreferrer"><span data-th="เปิดเดโม">Open Live Demo</span> <svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div>
+</div></div><div class="glass-tag fx bd-yellow"><strong class="fx-h" data-th="แอปนี้ทำอะไรได้บ้าง">What the app can do:</strong><ul class="fx-l"><li data-th="หน้าขาย POS: สินค้าแยกหมวด ค้นหาลูกค้า ส่วนลด VAT 7% รับชำระเงินสด/โอน/อื่น ๆ และพักบิลได้">POS screen: products by category, customer lookup, discounts, 7% VAT, cash / transfer / other payments, and parked bills.</li><li data-th="ภาพรวมธุรกิจ: มูลค่าใบสั่งซื้อ ค่าใช้จ่าย ยอดขาย และยอดรับเงิน พร้อมกราฟรายรับ–รายจ่ายและสถานะใบสั่งซื้อ">Business overview: purchase orders, expenses, sales and receipts, with income–expense and PO-status charts.</li><li data-th="แดชบอร์ดยอดขาย: รายได้ จำนวนออเดอร์ ยอดเฉลี่ยต่อบิล สินค้าใกล้หมด สินค้าขายดี ช่วงเวลาขายดี และธุรกรรมล่าสุด พร้อมการแจ้งเตือนอัตโนมัติ">Sales dashboard: revenue, orders, average bill, low-stock items, best sellers, peak hours and recent transactions, plus rule-based alerts.</li><li data-th="สต็อกรายสินค้า (SKU) แสดงคงเหลือ สถานะ และกรองสินค้าใกล้หมด">Stock list per SKU with remaining quantity, status and a low-stock filter.</li><li data-th="จัดการออเดอร์ สินค้า ลูกค้า สมาชิกและคำเชิญ บันทึกการใช้งาน ค้นหาเอกสาร และสลับโหมดค้าปลีก / คาเฟ่ / บริการ รองรับไทยและอังกฤษ">Orders, products, customers, members and invitations, activity log, document search, and retail / café / service modes in Thai and English.</li></ul></div></section>
+<section class="glass-panel pf" id="p4"><div class="pf-grid"><div class="pf-media"><div class="gal" data-mode="desktop"><div class="seg" role="tablist"><span class="seg-ind"></span><button type="button" class="seg-b on" data-m="desktop"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>Desktop</span></button><button type="button" class="seg-b" data-m="mobile"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span>Mobile</span></button></div><div class="view v-desktop"><div class="dev dsk"><div class="bar3"><i></i><i></i><i></i><span class="url"><svg class="ic " width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>debt.chewvy.shop</span></div><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-d-home.webp" alt="This month" loading="lazy" decoding="async" data-cap="This month" data-cap-th="ยอดเดือนนี้"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-d-debts.webp" alt="All debts progress" loading="lazy" decoding="async" data-cap="All debts progress" data-cap-th="ความคืบหน้าก้อนหนี้"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-d-bill.webp" alt="Bill &amp; interest" loading="lazy" decoding="async" data-cap="Bill &amp; interest" data-cap-th="บิลและดอกเบี้ย"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-d-forecast.webp" alt="Payment forecast" loading="lazy" decoding="async" data-cap="Payment forecast" data-cap-th="พยากรณ์ยอดชำระ"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="ยอดเดือนนี้">This month</span><b>1 / 4</b></p></div><div class="view v-mobile" hidden><div class="dev mob"><span class="island"></span><div class="gtrack"><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-m-home.webp" alt="This month" loading="lazy" decoding="async" data-cap="This month" data-cap-th="ยอดเดือนนี้"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-m-debts.webp" alt="All debts progress" loading="lazy" decoding="async" data-cap="All debts progress" data-cap-th="ความคืบหน้าก้อนหนี้"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-m-cards.webp" alt="Credit cards" loading="lazy" decoding="async" data-cap="Credit cards" data-cap-th="บัตรเครดิต"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-m-bill.webp" alt="Bill &amp; interest" loading="lazy" decoding="async" data-cap="Bill &amp; interest" data-cap-th="บิลและดอกเบี้ย"></figure><figure class="sl"><img src="https://cdn.jsdelivr.net/gh/cocoaswm/portfolio-assets@8bf6f18d4e9e6a0797024d40805f5f3eeec51dac/v2/pp-m-forecast.webp" alt="Payment forecast" loading="lazy" decoding="async" data-cap="Payment forecast" data-cap-th="พยากรณ์ยอดชำระ"></figure></div><button type="button" class="nav-a prev" aria-label="Previous"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="nav-a next" aria-label="Next"><svg class="ic " width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="gdots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><p class="gcap"><span data-th="ยอดเดือนนี้">This month</span><b>1 / 5</b></p></div></div></div><div class="pf-info">
+<span class="pf-no">04</span><h2 class="c-purple700 pf-t" data-th="PukPui Pay - Personal Debt &amp; Payment Tracking">PukPui Pay - Personal Debt &amp; Payment Tracking</h2>
+<p class="pf-ov" data-th="&lt;strong&gt;ภาพรวม:&lt;/strong&gt; โปรเจกต์ส่วนตัวสำหรับจัดการการชำระเงินและวางแผนการเงิน เวอร์ชันเดโมใช้ข้อมูลจำลองทั้งหมด และแยกขาดจากข้อมูลการเงินจริง"><strong>Overview:</strong> A personal project for managing personal payments and financial planning. The demo environment uses synthetic data only and is fully isolated from real personal financial data.</p>
+<div class="tech"><strong data-th="เทคโนโลยีที่ใช้:">Technologies used:</strong><span class="glass-tag tech-tag">Next.js</span><span class="glass-tag tech-tag">Prisma</span><span class="glass-tag tech-tag">PostgreSQL</span><span class="glass-tag tech-tag">PWA</span></div><div class="demo"><div class="creds"><span class="demo-lab" data-th="บัญชีทดลอง">DEMO ACCESS</span><button type="button" class="cred" data-copy="2026" title="Copy"><span class="cred-l" data-th="คัดลอก PIN">Copy PIN</span><svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button></div><p class="demo-note" data-th="เดโมนี้ใช้ข้อมูลจำลองทั้งหมด เข้าสู่ระบบด้วย PIN ทดลอง">Demo environment with synthetic data only. Sign in with the demo PIN.</p></div><div class="demo-links"><a class="demo-btn" href="https://debt.chewvy.shop/" target="_blank" rel="noopener noreferrer"><span data-th="เปิดเดโม">Open Live Demo</span> <svg class="ic " width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div>
+</div></div><div class="glass-tag fx bd-purple"><strong class="fx-h" data-th="แอปนี้ทำอะไรได้บ้าง">What the app can do:</strong><ul class="fx-l"><li data-th="ภาพรวมรายเดือน: ยอดที่ต้องจ่ายเดือนนี้ แยกยอดของแต่ละคน ความคืบหน้า และติ๊กว่าจ่ายแล้ว">Monthly view: total due this month, each person’s share, payment progress, and marking items as paid.</li><li data-th="กรองตามคนและประเภท (ผ่อนรถ บัตร สินเชื่อ ค่าใช้จ่ายประจำ) และเรียงตามยอดคงเหลือ">Filters by person and type (car, card, loans, monthly bills) and sorting by remaining balance.</li><li data-th="ภาพรวมหนี้ทั้งหมด: ยอดรวม เปอร์เซ็นต์ที่จ่ายไปแล้ว และจำนวนงวดที่จ่ายแล้ว/คงเหลือของแต่ละรายการ">Debt overview: total debt, percentage paid, and installments paid / remaining for each debt.</li><li data-th="บิลและดอกเบี้ยบัตรเครดิต: ตั้งค่าบัตร บันทึกบิลรายเดือน รายการหลังวันตัดรอบ และยอดขั้นต่ำที่ต้องชำระ">Credit card bills & interest: card settings, monthly statements, transactions after the statement date, and minimum payment due.</li><li data-th="พยากรณ์การปิดหนี้: ใส่ยอดที่จะจ่ายต่อเดือน แล้วดูว่าต้องใช้กี่เดือน ดอกเบี้ยรวมเท่าไร พร้อมตารางรายเดือน">Payoff forecast: enter a monthly amount to see how long it takes to clear the card, total interest and a month-by-month schedule.</li><li data-th="แจ้งเตือนรายการใกล้ครบกำหนด ติดตั้งเป็นแอป (PWA) ได้ และรองรับหน้าจอแท็บเล็ต">Due-date notifications, installable as a PWA, with a tablet-friendly layout.</li></ul></div></section>
+<div class="pg-end"><a class="glass-tag pg-back" href="/portfolio" data-kl><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span data-th="กลับหน้าพอร์ตโฟลิโอ">Back to portfolio</span></a></div></main>
+<div id="lb" class="lb" aria-hidden="true"><button type="button" class="lb-x" aria-label="Close"><svg class="ic " width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button><button type="button" class="lb-n lb-p" aria-label="Previous"><svg class="ic " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><figure class="lb-f"><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure><button type="button" class="lb-n lb-nx" aria-label="Next"><svg class="ic " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<button type="button" id="toTop" class="to-top" aria-label="Back to top"><svg class="ic " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+<footer><div class="foot"><div class="cats glass-panel fcats"><svg class="ic c-black" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-amber700" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-slate400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg><svg class="ic c-yellow600" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg></div><div class="copy">© <span id="yr">2026</span> Suwimon Sae-ung. <span data-th="สงวนลิขสิทธิ์">All Rights Reserved.</span></div></div></footer>
+<script>(function(){
+var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn'),mn=document.getElementById('mobileNav'),lb=document.getElementById('langBtn'),ll=document.getElementById('langLabel');
+function onScroll(){nav.classList.toggle('scrolled',window.scrollY>20)}
+window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+var open=false;function setMenu(o){open=o;mn.classList.toggle('open',o);mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',o);mn.setAttribute('aria-hidden',!o);document.body.classList.toggle('menu-open',o)}
+mb.addEventListener('click',function(){setMenu(!open)});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&open)setMenu(false)});
+window.addEventListener('resize',function(){if(open&&innerWidth>=768)setMenu(false)});
+try{if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js');var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){var t=x.target;t.classList.add('in');io.unobserve(t);setTimeout(function(){t.classList.remove('reveal','in')},900)}})},{rootMargin:'0px 0px -8% 0px'});[].forEach.call(document.querySelectorAll('.card,.xp,.pcard,.track,.sec-head,.proj-head,.hob-head'),function(el){el.classList.add('reveal');io.observe(el)})}}catch(e){}
+document.getElementById('yr').textContent=new Date().getFullYear();
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.cred,.cp');if(!b)return;var v=b.getAttribute('data-copy');
+function ok(){b.classList.add('ok');setTimeout(function(){b.classList.remove('ok')},1500);var t=document.getElementById('toast'),m=b.getAttribute(document.documentElement.lang==='th'?'data-toast-th':'data-toast-en')||(document.documentElement.lang==='th'?'คัดลอกแล้ว':'Copied');t.textContent='✓ '+m;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(function(){t.classList.remove('show')},1600)}
+function fb(){var t=document.createElement('textarea');t.value=v;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(x){}document.body.removeChild(t)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(ok,fb)}else fb()});
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){document.addEventListener('pointermove',function(e){var p=e.target.closest&&e.target.closest('.glass-panel');if(!p)return;var r=p.getBoundingClientRect();p.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');p.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%')},{passive:true})}
+function galInit(g){
+  g.querySelectorAll('.seg-b[data-m]').forEach(function(b){b.addEventListener('click',function(){var m=b.getAttribute('data-m');g.setAttribute('data-mode',m);g.querySelectorAll('.seg-b').forEach(function(x){x.classList.toggle('on',x===b)});g.querySelectorAll('.view').forEach(function(v){v.hidden=!v.classList.contains('v-'+m)})})});
+  g.querySelectorAll('.view:not(.empty)').forEach(function(v){var t=v.querySelector('.gtrack'),ds=v.querySelectorAll('.gdots i'),cap=v.querySelector('.gcap span'),num=v.querySelector('.gcap b'),imgs=t.querySelectorAll('img');
+    function idx(){return Math.round(t.scrollLeft/t.clientWidth)}
+    function upd(){var i=idx();ds.forEach(function(d,k){d.classList.toggle('on',k===i)});var im=imgs[i];if(im){cap.setAttribute('data-en',im.getAttribute('data-cap'));cap.setAttribute('data-th',im.getAttribute('data-cap-th'));cap.textContent=im.getAttribute(document.documentElement.lang==='th'?'data-cap-th':'data-cap');num.textContent=(i+1)+' / '+imgs.length}}
+    var rt;t.addEventListener('scroll',function(){clearTimeout(rt);rt=setTimeout(upd,60)},{passive:true});
+    function go(d){var n=(idx()+d+imgs.length)%imgs.length;t.scrollTo({left:n*t.clientWidth,behavior:'smooth'})}
+    v.querySelector('.prev').addEventListener('click',function(){go(-1)});v.querySelector('.next').addEventListener('click',function(){go(1)});
+    ds.forEach(function(d,k){d.style.cursor='pointer';d.addEventListener('click',function(){t.scrollTo({left:k*t.clientWidth,behavior:'smooth'})})});
+    imgs.forEach(function(im,k){im.addEventListener('click',function(){openLb(imgs,k)})});
+    v._upd=upd;
+  });
+}
+var lbx=document.getElementById('lb'),lbImg=document.getElementById('lbImg'),lbCap=document.getElementById('lbCap'),lbList=[],lbI=0;
+function lbShow(){var im=lbList[lbI];lbImg.src=im.src;lbImg.alt=im.alt;lbCap.textContent=im.getAttribute(document.documentElement.lang==='th'?'data-cap-th':'data-cap')+'  ·  '+(lbI+1)+' / '+lbList.length}
+function openLb(list,i){lbList=list;lbI=i;lbShow();lbx.classList.add('open');lbx.setAttribute('aria-hidden','false');document.body.classList.add('menu-open')}
+function closeLb(){lbx.classList.remove('open');lbx.setAttribute('aria-hidden','true');document.body.classList.remove('menu-open')}
+function lbGo(d){lbI=(lbI+d+lbList.length)%lbList.length;lbShow()}
+lbx.querySelector('.lb-x').addEventListener('click',closeLb);lbx.querySelector('.lb-p').addEventListener('click',function(e){e.stopPropagation();lbGo(-1)});lbx.querySelector('.lb-nx').addEventListener('click',function(e){e.stopPropagation();lbGo(1)});
+lbx.addEventListener('click',function(e){if(e.target===lbx)closeLb()});
+document.addEventListener('keydown',function(e){if(!lbx.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')lbGo(-1);if(e.key==='ArrowRight')lbGo(1)});
+var sx=null;lbx.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});lbx.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)lbGo(dx<0?1:-1);sx=null});
+document.querySelectorAll('.gal').forEach(galInit);
+document.querySelectorAll('.more-b').forEach(function(b){b.addEventListener('click',function(){var c=b.closest('.pcard'),o=!c.classList.contains('open');c.classList.toggle('open',o);b.setAttribute('aria-expanded',o);var s=b.querySelector('span');s.setAttribute('data-en',o?'Hide details':'View details');s.setAttribute('data-th',o?'ซ่อนรายละเอียด':'ดูรายละเอียด');s.textContent=s.getAttribute(document.documentElement.lang==='th'?'data-th':'data-en')})});
+(function(){var gp=document.querySelector('.gridp'),pd=document.querySelectorAll('.pdots i'),pc=document.querySelector('.pcount');if(!gp||!pd.length)return;var cards=gp.children,rt;
+gp.addEventListener('scroll',function(){clearTimeout(rt);rt=setTimeout(function(){var best=0,bd=1e9,mid=gp.scrollLeft+gp.clientWidth/2;for(var k=0;k<cards.length;k++){var c=cards[k],d=Math.abs(c.offsetLeft+c.offsetWidth/2-mid);if(d<bd){bd=d;best=k}}pd.forEach(function(x,k){x.classList.toggle('on',k===best)});pc.textContent=(best+1)+' / '+cards.length},60)},{passive:true});
+pd.forEach(function(x,k){x.style.cursor='pointer';x.addEventListener('click',function(){var c=cards[k];gp.scrollTo({left:c.offsetLeft-(gp.clientWidth-c.offsetWidth)/2,behavior:'smooth'})})});fitHeads();})();
+var tt=document.getElementById('toTop');window.addEventListener('scroll',function(){tt.classList.toggle('show',scrollY>900)},{passive:true});tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+function fitHeads(){var hs=document.querySelectorAll('.sh-pill .h-sec');hs.forEach(function(h){h.style.fontSize=''});var base=hs.length?parseFloat(getComputedStyle(hs[0]).fontSize):0,min=base;hs.forEach(function(h){var p=h.closest('.sh-pill'),box=p.parentElement.clientWidth,fs=base,n=0;h.style.fontSize=fs+'px';while(p.scrollWidth>box+1&&fs>12&&n<60){fs-=.5;h.style.fontSize=fs+'px';n++}if(fs<min)min=fs});hs.forEach(function(h){h.style.fontSize=min+'px'});
+var h1=document.querySelector('h1');h1.style.fontSize='';if(document.documentElement.lang!=='th'){var f=parseFloat(getComputedStyle(h1).fontSize),k=0;while(h1.scrollWidth>h1.parentElement.clientWidth&&f>12&&k<60){f-=.5;h1.style.fontSize=f+'px';k++}}}
+window.addEventListener('resize',function(){clearTimeout(window.__fh);window.__fh=setTimeout(fitHeads,120)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHeads);
+var els=[].slice.call(document.querySelectorAll('[data-th]'));
+els.forEach(function(e){e.setAttribute('data-en',e.innerHTML)});
+var titles={en:'Suwimon Sae-ung | Resume & Portfolio',th:'Suwimon Sae-ung | เรซูเม่และพอร์ตโฟลิโอ'};
+var lang='en';
+function setLang(l){lang=l;els.forEach(function(e){e.innerHTML=e.getAttribute('data-'+l)});
+document.documentElement.lang=l;setTimeout(fitHeads,0);document.querySelectorAll('.view').forEach(function(v){v._upd&&v._upd()});document.title=titles[l];ll.textContent=l==='en'?'ไทย':'EN';
+try{var u=new URL(location.href);if(l==='th')u.searchParams.set('lang','th');else u.searchParams.delete('lang');history.replaceState(null,'',u)}catch(e){}}
+lb.addEventListener('click',function(){setLang(lang==='en'?'th':'en')});
+try{if(new URL(location.href).searchParams.get('lang')==='th')setLang('th')}catch(e){}
+fitHeads();})();
+;(function(){var c=document.querySelector('.salary');if(!c)return;var v=c.querySelector('.sal-v'),b=c.querySelector('.sal-b'),bt=c.querySelector('.sal-bt'),mask=v.textContent,d=null;
+function dec(){if(!d){try{d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(c.dataset.sv),function(x){return x.charCodeAt(0)})))}catch(e){d={en:'',th:''}}}return d}
+function th(){return document.documentElement.lang==='th'}
+function paint(){var on=c.classList.contains('shown');v.textContent=on?dec()[th()?'th':'en']:mask;var en=on?'Hide':'Show',t=on?'ซ่อน':'แสดง';bt.dataset.en=en;bt.dataset.th=t;bt.textContent=th()?t:en;b.setAttribute('aria-pressed',on)}
+b.addEventListener('click',function(){c.classList.toggle('shown');paint()});
+new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});})();
+;(function(){function dec(x){try{return new TextDecoder().decode(Uint8Array.from(atob(x),function(c){return c.charCodeAt(0)}))}catch(e){return ''}}
+var p=document.querySelector('.ph');if(p){p.querySelector('.ph-b').addEventListener('click',function(){var v=p.querySelector('.ph-v'),t=dec(p.dataset.pht);v.textContent=dec(p.dataset.ph);v.setAttribute('href','tel:'+t);var c=p.querySelector('.ph-cp');c.setAttribute('data-copy',t);c.hidden=false;p.classList.add('shown')})}
+document.querySelectorAll('[data-tel]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();location.href='tel:'+dec(a.dataset.tel)})});})();
+;(function(){var b=document.querySelector('.va-b'),g=document.getElementById('pgrid');if(!b||!g)return;var t=b.querySelector('.va-t');
+function lbl(){var on=g.classList.contains('all');t.dataset.en=on?'Back to swipe view':'View All Projects';t.dataset.th=on?'กลับไปแบบปัดดู':'ดูผลงานทั้งหมด';t.textContent=document.documentElement.lang==='th'?t.dataset.th:t.dataset.en;b.setAttribute('aria-expanded',on)}
+b.addEventListener('click',function(){g.classList.toggle('all');document.getElementById('projects').classList.toggle('pall',g.classList.contains('all'));g.scrollLeft=0;lbl();var top=document.getElementById('projects').getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:top,behavior:'smooth'})});
+new MutationObserver(lbl).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});})();
+;(function(){var d=document.getElementById('ytc');if(!d)return;var go=d.querySelector('.ytc-go'),no=d.querySelector('.ytc-no'),last=null;
+function close(){d.hidden=true;document.body.classList.remove('ytc-open');last&&last.focus()}
+document.querySelectorAll('a.track').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();last=a;go.href=a.href;var h=a.querySelector('h3');d.querySelectorAll('.ytc-song').forEach(function(s){s.textContent=h?'“'+h.textContent+'”':'Cocoa S.'});d.hidden=false;document.body.classList.add('ytc-open');setTimeout(function(){no.focus()},30)})});
+go.addEventListener('click',function(){setTimeout(close,50)});no.addEventListener('click',close);
+d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!d.hidden)close()});
+new MutationObserver(function(){if(d.hidden)return;var h=last&&last.querySelector('h3');d.querySelectorAll('.ytc-song').forEach(function(s){s.textContent=h?'“'+h.textContent+'”':'Cocoa S.'})}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});})();
+;(function(){function upd(){var th=document.documentElement.lang==='th';document.querySelectorAll('a[data-kl]').forEach(function(a){var h=a.getAttribute('href'),i=h.indexOf('#'),base=i<0?h:h.slice(0,i),hash=i<0?'':h.slice(i);base=base.split('?')[0];a.setAttribute('href',base+(th?'?lang=th':'')+hash)})}upd();new MutationObserver(upd).observe(document.documentElement,{attributes:true,attributeFilter:['lang']})})();
+;(function(){var g=document.getElementById('pgrid');if(!g)return;var mq=window.matchMedia('(max-width:767px)');
+function eq(){var cs=[].slice.call(g.children);cs.forEach(function(c){c.style.minHeight=''});if(!mq.matches)return;var m=0;cs.forEach(function(c){var h=c.classList.contains('open')?(c._ch||0):c.offsetHeight;if(!c.classList.contains('open'))c._ch=h;if(h>m)m=h});cs.forEach(function(c){c.style.minHeight=m+'px'})}
+var t;function later(){clearTimeout(t);t=setTimeout(eq,150)}
+window.addEventListener('resize',later);new MutationObserver(later).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(eq);window.addEventListener('load',eq);g.querySelectorAll('img').forEach(function(i){i.addEventListener('load',later)});eq();})();
+</script>
+</body>
+</html>
