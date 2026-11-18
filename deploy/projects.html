@@ -464,6 +464,13 @@ body.ytc-open{overflow:hidden}
 @media (min-width:768px){.contact{border-radius:1.75rem}}
 @media (min-width:768px){.contact{row-gap:.6rem;padding-top:.9rem;padding-bottom:.9rem}}
 .dl-row{margin:-1.75rem auto 2.5rem}.dl-row .dl-cv{margin:0}@media (max-width:767px){.dl-row{margin:-1.5rem auto 2rem;flex-direction:column;align-items:center}}
+/* privacy note: two balanced lines matching the contact row width */
+.contact .ph-note{display:flex;align-items:flex-start;justify-content:center;gap:.4rem;width:100%;max-width:none;flex-basis:100%;text-align:center;font-size:.74rem;line-height:1.55}
+.contact .ph-note svg{margin-top:.2rem}
+.pn-t{display:inline-block}
+.pn-l{display:block}
+@media (max-width:767px){.contact .ph-note{text-align:left;justify-content:flex-start}.pn-l{display:inline}.pn-l+.pn-l::before{content:" "}}
+@media (min-width:768px){.contact .ph-note{font-size:.86rem}html[lang=th] .contact .ph-note{font-size:.755rem}}
 </style>
 </head>
 <body>
